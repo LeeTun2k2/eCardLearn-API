@@ -13,8 +13,12 @@ namespace API.Data.Repositories
     /// <typeparam name="T"></typeparam>
     public class BaseRepository<T> : IBaseRepository<T> where T : class
     {
-        private readonly DbSet<T> _entities;
         private readonly IUnitOfWork _unitOfWork;
+
+        /// <summary>
+        /// Db Set
+        /// </summary>
+        public DbSet<T> Entities { get; }
 
         /// <summary>
         /// Constructor
@@ -23,7 +27,7 @@ namespace API.Data.Repositories
         /// <param name="unitOfWork"></param>
         public BaseRepository(DataContext context, IUnitOfWork unitOfWork)
         {
-            _entities = context.Set<T>();
+            Entities = context.Set<T>();
             _unitOfWork = unitOfWork;
         }
 
@@ -34,7 +38,7 @@ namespace API.Data.Repositories
         /// <returns></returns>
         public async Task<T?> AddAsync(T entity)
         {
-            await _entities.AddAsync(entity);
+            await Entities.AddAsync(entity);
             await _unitOfWork.SaveChangesAsync(); 
             return entity;
         }
@@ -46,7 +50,7 @@ namespace API.Data.Repositories
         /// <returns></returns>
         public async Task<IEnumerable<T>?> AddRangeAsync(IEnumerable<T> entities)
         {
-            await _entities.AddRangeAsync(entities);
+            await Entities.AddRangeAsync(entities);
             await _unitOfWork.SaveChangesAsync();
             return entities;
         }
@@ -57,7 +61,7 @@ namespace API.Data.Repositories
         /// <returns></returns>
         public async Task<IEnumerable<T>?> GetAsync(Expression<Func<T, bool>>? filter = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null)
         {
-            IQueryable<T> query = _entities;
+            IQueryable<T> query = Entities;
 
             if (filter != null)
             {
@@ -79,7 +83,7 @@ namespace API.Data.Repositories
         /// <returns></returns>
         public async Task<T?> GetByIdAsync(Guid id)
         {
-            return await _entities.FindAsync(id);
+            return await Entities.FindAsync(id);
         }
 
         /// <summary>
@@ -89,7 +93,7 @@ namespace API.Data.Repositories
         /// <returns></returns>
         public async Task<bool> RemoveAsync(T entity)
         {
-            _entities.Remove(entity);
+            Entities.Remove(entity);
             await _unitOfWork.SaveChangesAsync(); 
             return true;
         }
@@ -101,7 +105,7 @@ namespace API.Data.Repositories
         /// <returns></returns>
         public async Task<bool> RemoveRangeAsync(IEnumerable<T> entities)
         {
-            _entities.RemoveRange(entities);
+            Entities.RemoveRange(entities);
             await _unitOfWork.SaveChangesAsync();
             return true;
         }
@@ -113,7 +117,7 @@ namespace API.Data.Repositories
         /// <returns></returns>
         public async Task<T?> UpdateAsync(T entity)
         {
-            _entities.Update(entity);
+            Entities.Update(entity);
             await _unitOfWork.SaveChangesAsync();
             return entity;
         }
@@ -125,7 +129,7 @@ namespace API.Data.Repositories
         /// <returns></returns>
         public async Task<IEnumerable<T>?> UpdateRangeAsync(IEnumerable<T> entities)
         {
-            _entities.UpdateRange(entities);
+            Entities.UpdateRange(entities);
             await _unitOfWork.SaveChangesAsync();
             return entities;
         }

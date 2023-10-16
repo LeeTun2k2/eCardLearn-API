@@ -3,7 +3,7 @@ using API.Data.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Emit;
+using Microsoft.Extensions.Options;
 
 namespace API.Data;
 
@@ -12,6 +12,14 @@ namespace API.Data;
 /// </summary>
 public partial class DataContext : IdentityDbContext<User, Role, Guid>
 {
+    /// <summary>
+    /// Default Constructor
+    /// </summary>
+    public DataContext()
+    {
+
+    }
+
     /// <summary>
     /// Constructor
     /// </summary>
@@ -107,13 +115,20 @@ public partial class DataContext : IdentityDbContext<User, Role, Guid>
     public virtual DbSet<TestAnswer> TestAnswer { get; set; }
 
     /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="optionsBuilder"></param>
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        => optionsBuilder.UseSqlServer("Server=localhost;Database=eCardLearn;User id=sa;Password=P@ssw0rd;TrustServerCertificate=True;");
+    
+    /// <summary>
     /// On model creating
     /// </summary>
     /// <param name="builder"></param>
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-        
+
         // Config Role
         builder.Entity<IdentityUserRole<Guid>>().HasKey(x => new { x.UserId, x.RoleId });
 

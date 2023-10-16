@@ -6,7 +6,7 @@ namespace API.Data.Repositories
     /// <summary>
     /// Unit of work
     /// </summary>
-    public class UnitOfWork : IUnitOfWork
+    public class UnitOfWork : IUnitOfWork, IDisposable
     {
         private readonly DbContext _dbContext;
         private IDbContextTransaction? _transaction = null;

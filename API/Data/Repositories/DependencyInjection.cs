@@ -1,6 +1,5 @@
 ﻿using API.Data.Repositories.Interfaces;
 using API.Data.Repositories.Implements;
-using API.Data.Entities;
 
 namespace API.Data.Repositories
 {
@@ -16,6 +15,7 @@ namespace API.Data.Repositories
         /// <returns></returns>
         public static IServiceCollection AddRepositories(this IServiceCollection service)
         {
+            service.AddTransient<IUnitOfWork, UnitOfWork>();
             service.AddTransient<IAchievementRepository, AchievementRepository>();
             service.AddTransient<IAdminRepository, AdminRepository>();
             service.AddTransient<IAnswerRepository, AnswerRepository>();
