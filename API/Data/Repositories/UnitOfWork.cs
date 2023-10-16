@@ -6,7 +6,7 @@ namespace API.Data.Repositories
     /// <summary>
     /// Unit of work
     /// </summary>
-    public class UnitOfWork : IUnitOfWork, IDisposable
+    public class UnitOfWork : IUnitOfWork
     {
         private readonly DbContext _dbContext;
         private IDbContextTransaction? _transaction = null;
@@ -24,9 +24,9 @@ namespace API.Data.Repositories
         /// Save Changes
         /// </summary>
         /// <returns></returns>
-        public int SaveChanges()
+        public async Task<int> SaveChangesAsync()
         {
-            return _dbContext.SaveChanges();
+            return await _dbContext.SaveChangesAsync();
         }
 
         /// <summary>
@@ -41,32 +41,32 @@ namespace API.Data.Repositories
         /// <summary>
         /// Begin transaction
         /// </summary>
-        public void BeginTransaction()
+        public async Task BeginTransactionAsync()
         {
-            _transaction = _dbContext.Database.BeginTransaction();
+            _transaction = await _dbContext.Database.BeginTransactionAsync();
         }
 
         /// <summary>
         /// Commit transaction
         /// </summary>
-        public void CommitTransaction()
+        public async Task CommitTransactionAsync()
         {
             if (_transaction != null)
             {
-                _transaction.Commit();
-                _transaction.Dispose();
+                await _transaction.CommitAsync();
+                await _transaction.DisposeAsync();
             }
         }
 
         /// <summary>
         /// Rollback transaction
         /// </summary>
-        public void RollbackTransaction()
+        public async Task RollbackTransactionAsync()
         {
             if (_transaction != null)
             {
-                _transaction.Rollback();
-                _transaction.Dispose();
+                await _transaction.RollbackAsync();
+                await _transaction.DisposeAsync();
             }
         }
     }

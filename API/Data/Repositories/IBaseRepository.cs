@@ -12,43 +12,49 @@ namespace API.Data.Repositories
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        T? GetById(Guid id);
+        Task<T?> GetByIdAsync(Guid id);
 
         /// <summary>
         /// Get all entities
         /// </summary>
         /// <returns></returns>
-        IEnumerable<T> GetAll();
-
-        /// <summary>
-        /// Find entities by expression
-        /// </summary>
-        /// <param name="expression"></param>
-        /// <returns></returns>
-        IEnumerable<T> Find(Expression<Func<T, bool>> expression);
+        Task<IEnumerable<T>?> GetAsync(Expression<Func<T, bool>>? filter = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null);
 
         /// <summary>
         /// Add entity
         /// </summary>
         /// <param name="entity"></param>
-        void Add(T entity);
+        Task<T?> AddAsync(T entity);
 
         /// <summary>
         /// Add range of entities
         /// </summary>
         /// <param name="entities"></param>
-        void AddRange(IEnumerable<T> entities);
+        Task<IEnumerable<T>?> AddRangeAsync(IEnumerable<T> entities);
 
         /// <summary>
         /// Remove entity
         /// </summary>
         /// <param name="entity"></param>
-        void Remove(T entity);
+        Task<bool> RemoveAsync(T entity);
 
         /// <summary>
         /// Remove range of entities
         /// </summary>
         /// <param name="entities"></param>
-        void RemoveRange(IEnumerable<T> entities);
+        Task<bool> RemoveRangeAsync(IEnumerable<T> entities);
+
+
+        /// <summary>
+        /// Update entity
+        /// </summary>
+        /// <param name="entity"></param>
+        Task<T?> UpdateAsync(T entity);
+
+        /// <summary>
+        /// Update range of entities
+        /// </summary>
+        /// <param name="entities"></param>
+        Task<IEnumerable<T>?> UpdateRangeAsync(IEnumerable<T> entities);
     }
 }
