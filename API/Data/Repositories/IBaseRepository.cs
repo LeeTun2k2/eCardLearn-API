@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace api.Data.Repositories
+namespace API.Data.Repositories
 {
     /// <summary>
     /// Base repository interface

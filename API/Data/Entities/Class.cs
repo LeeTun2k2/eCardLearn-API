@@ -1,4 +1,4 @@
-﻿namespace api.Data.Entities
+﻿namespace API.Data.Entities
 {
     /// <summary>
     /// Class
@@ -18,5 +18,20 @@
         /// Class Description
         /// </summary>
         public string ClassDescription { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Teacher
+        /// </summary>
+        public Guid TeacherId { get; set; }
+
+        /// <summary>
+        /// Teacher
+        /// </summary>
+        public virtual Teacher? Teacher { get; set; }
+
+        /// <summary>
+        /// Student Join Classes
+        /// </summary>
+        public virtual IEnumerable<StudentJoinClass>? StudentJoinClasses { get; set; }
     }
 }

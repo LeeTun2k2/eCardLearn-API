@@ -1,6 +1,7 @@
-﻿using System.Linq.Expressions;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
-namespace api.Data.Repositories
+namespace API.Data.Repositories
 {
     /// <summary>
     /// Base repository

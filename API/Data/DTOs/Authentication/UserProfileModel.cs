@@ -1,4 +1,4 @@
-﻿namespace api.Data.DTOs.Authentication
+﻿namespace API.Data.DTOs.Authentication
 {
     /// <summary>
     /// User profile

@@ -1,11 +1,11 @@
-using api.Commons.Utils;
-using api.Data;
-using api.Data.Constants;
-using api.Data.DTOs.Mail;
-using api.Data.Entities;
-using api.Data.Mappings;
-using api.Data.Repositories;
-using api.Services;
+using API.Commons.Utils;
+using API.Data;
+using API.Data.Constants;
+using API.Data.DTOs.Mail;
+using API.Data.Entities;
+using API.Data.Mappings;
+using API.Data.Repositories;
+using API.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -55,15 +55,15 @@ builder.Services.Configure<IdentityOptions>(options =>
 });
 
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// Learn more about configuring Swagger/OpenApi at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
     {
         Version = "v1",
-        Title = "ToDo API",
-        Description = "An ASP.NET Core Web API for managing ToDo items",
+        Title = "ToDo Api",
+        Description = "An ASP.NET Core Web Api for managing ToDo items",
         TermsOfService = new Uri("https://example.com/terms"),
         Contact = new OpenApiContact
         {

@@ -1,7 +1,7 @@
-﻿using api.Data.Constants;
+﻿using API.Data.Constants;
 using System.ComponentModel.DataAnnotations;
 
-namespace api.Data.DTOs.Authentication
+namespace API.Data.DTOs.Authentication
 {
     /// <summary>
     /// Register model

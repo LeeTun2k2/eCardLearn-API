@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
-namespace api.Data.Repositories
+namespace API.Data.Repositories
 {
     /// <summary>
     /// Unit of work

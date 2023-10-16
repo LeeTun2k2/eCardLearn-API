@@ -1,8 +1,8 @@
-﻿using api.Services;
-using api.Services.Implements;
-using api.Services.Interfaces;
+﻿using API.Services;
+using API.Services.Implements;
+using API.Services.Interfaces;
 
-namespace api.Services
+namespace API.Services
 {
     /// <summary>
     /// Dependency injection

@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using api.Data.Entities;
-using api.Data.DTOs.Authentication;
+using API.Data.Entities;
+using API.Data.DTOs.Authentication;
 
-namespace api.Data.Mappings
+namespace API.Data.Mappings
 {
     /// <summary>
     /// Automapper maps

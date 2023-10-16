@@ -1,4 +1,4 @@
-﻿namespace api.Data.Entities
+﻿namespace API.Data.Entities
 {
     /// <summary>
     /// Test
@@ -32,6 +32,11 @@
         /// <summary>
         /// Duration
         /// </summary>
-        public int Duration { get; set; }
+        public int Duration { get; set; } = 0;
+
+        /// <summary>
+        /// Student Join Tests
+        /// </summary>
+        public virtual IEnumerable<StudentJoinTest>? StudentJoinTests { get; set; }
     }
 }

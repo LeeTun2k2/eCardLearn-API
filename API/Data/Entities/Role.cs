@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace api.Data.Constants
+namespace API.Data.Constants
 {
     /// <summary>
     /// Role class

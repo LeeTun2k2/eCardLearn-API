@@ -1,8 +1,8 @@
-﻿using api.Commons.Utils;
-using api.Data.Constants;
-using api.Data.DTOs.Authentication;
-using api.Data.Entities;
-using api.Services.Interfaces;
+﻿using API.Commons.Utils;
+using API.Data.Constants;
+using API.Data.DTOs.Authentication;
+using API.Data.Entities;
+using API.Services.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
@@ -11,7 +11,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace api.Services.Implements
+namespace API.Services.Implements
 {
     /// <summary>
     /// Authentication service
@@ -70,7 +70,7 @@ namespace api.Services.Implements
                 var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
 
                 // generate email confirmation link
-                var confirmationLink = $"{_config["AppUrl"]}/api/confirm-email?email={email}&token={encodedToken}";
+                var confirmationLink = $"{_config["AppUrl"]}/API/confirm-email?email={email}&token={encodedToken}";
 
                 // send email confirmation link
                 await _mailService.SendAsync(MailTemplate.Registration(email, confirmationLink), new CancellationToken());
@@ -165,7 +165,7 @@ namespace api.Services.Implements
                 var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
                 // Generate password reset URL
-                var callbackUrl = $"{_config["AppUrl"]}/api/reset-password?email={email}&token={token}";
+                var callbackUrl = $"{_config["AppUrl"]}/API/reset-password?email={email}&token={token}";
 
                 // Send password reset email
                 await _mailService.SendAsync(MailTemplate.ForgotPassword(email, callbackUrl), new CancellationToken());

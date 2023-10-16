@@ -1,0 +1,37 @@
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
+
+namespace API.Data.Entities
+{
+    /// <summary>
+    /// StudentJoinTest
+    /// </summary>
+    public class StudentJoinTest
+    {
+        /// <summary>
+        /// Id
+        /// </summary>
+        public Guid StudentJoinTestId { get; set; }
+
+        /// <summary>
+        /// Student Id
+        /// </summary>
+        public Guid StudentId { get; set; }
+
+        /// <summary>
+        /// Student
+        /// </summary>
+        public virtual Student? Student { get; set; }
+
+        /// <summary>
+        /// TestId
+        /// </summary>
+        public Guid TestId { get; set; }
+
+        /// <summary>
+        /// Test
+        /// </summary>
+        public virtual Test? Test { get; set; }
+    }
+}

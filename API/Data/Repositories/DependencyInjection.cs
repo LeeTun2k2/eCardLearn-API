@@ -1,4 +1,4 @@
-﻿namespace api.Data.Repositories
+﻿namespace API.Data.Repositories
 {
     /// <summary>
     /// Dependency injection

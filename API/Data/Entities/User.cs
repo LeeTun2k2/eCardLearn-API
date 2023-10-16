@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 
-namespace api.Data.Entities
+namespace API.Data.Entities
 {
     /// <summary>
     /// User
@@ -28,5 +28,15 @@ namespace api.Data.Entities
         /// </summary>
         [Required]
         public bool IsActive { get; set; } = true;
+
+        /// <summary>
+        /// Link to get avatar
+        /// </summary>
+        public string? AvatarUri { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Feedbacks
+        /// </summary>
+        public virtual IEnumerable<Feedback>? Feedbacks { get; set; }
     }
 }

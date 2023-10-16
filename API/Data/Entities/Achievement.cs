@@ -1,4 +1,4 @@
-﻿namespace api.Data.Entities
+﻿namespace API.Data.Entities
 {
     /// <summary>
     /// Achievement
@@ -28,5 +28,15 @@
         /// Day Requirement
         /// </summary>
         public int DayRequirement { get; set; } = 0;
+
+        /// <summary>
+        /// Id of User earn achievement
+        /// </summary>
+        public Guid UserEarnId { get; set; }
+
+        /// <summary>
+        /// User earn achievement
+        /// </summary>
+        public virtual User? UserEarn { get; set; }
     }
 }

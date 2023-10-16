@@ -1,4 +1,4 @@
-﻿namespace api.Data.Entities
+﻿namespace API.Data.Entities
 {
     /// <summary>
     /// Question
@@ -17,6 +17,26 @@
         /// <summary>
         /// Question Answer
         /// </summary>
-        public Guid CorrectAnswer { get; set; }
+        public Guid CorrectAnswerId { get; set; }
+
+        /// <summary>
+        /// Course
+        /// </summary>
+        public Guid CourseId { get; set; }
+
+        /// <summary>
+        /// Course
+        /// </summary>
+        public virtual Course? Course { get; set; }
+
+        /// <summary>
+        /// Answer
+        /// </summary>
+        public virtual IEnumerable<Answer>? Answers { get; set; }
+
+        /// <summary>
+        /// TestAnswer
+        /// </summary>
+        public virtual IEnumerable<TestAnswer>? TestAnswers { get; set; }
     }
 }

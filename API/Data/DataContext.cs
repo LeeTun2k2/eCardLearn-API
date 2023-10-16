@@ -1,10 +1,11 @@
-﻿using api.Data.Constants;
-using api.Data.Entities;
+﻿using API.Data.Constants;
+using API.Data.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
-namespace api.Data;
+namespace API.Data;
 
 /// <summary>
 /// Data context
@@ -41,9 +42,9 @@ public partial class DataContext : IdentityDbContext<User, Role, Guid>
     public virtual DbSet<Answer> Answer { get; set; }
 
     /// <summary>
-    /// Category
+    /// Topic
     /// </summary>
-    public virtual DbSet<Category> Category { get; set; }
+    public virtual DbSet<Topic> Topic { get; set; }
 
     /// <summary>
     /// Class
@@ -71,13 +72,103 @@ public partial class DataContext : IdentityDbContext<User, Role, Guid>
     public virtual DbSet<Test> Test { get; set; }
 
     /// <summary>
+    /// Admin
+    /// </summary>
+    public virtual DbSet<Admin> Admin { get; set; }
+
+    /// <summary>
+    /// Teacher
+    /// </summary>
+    public virtual DbSet<Teacher> Teacher { get; set; }
+
+    /// <summary>
+    /// Student
+    /// </summary>
+    public virtual DbSet<Student> Student { get; set; }
+
+    /// <summary>
+    /// Feedback
+    /// </summary>
+    public virtual DbSet<Feedback> Feedback { get; set; }
+
+    /// <summary>
+    /// StudentJoinClass
+    /// </summary>
+    public virtual DbSet<StudentJoinClass> StudentJoinClass { get; set; }
+
+    /// <summary>
+    /// StudentJoinTest
+    /// </summary>
+    public virtual DbSet<StudentJoinTest> StudentJoinTest { get; set; }
+
+    /// <summary>
+    /// TestAnswer
+    /// </summary>
+    public virtual DbSet<TestAnswer> TestAnswer { get; set; }
+
+    /// <summary>
     /// On model creating
     /// </summary>
     /// <param name="builder"></param>
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-        builder.Entity<IdentityUserRole<Guid>>().HasKey(p => new { p.UserId, p.RoleId });
+        
+        // Config Role
+        builder.Entity<IdentityUserRole<Guid>>().HasKey(x => new { x.UserId, x.RoleId });
+
+        // Config Student Join Class
+        builder.Entity<StudentJoinClass>()
+            .HasOne(x => x.Student)
+            .WithMany(x => x.StudentJoinClasses)
+            .HasForeignKey(x => x.StudentId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        builder.Entity<StudentJoinClass>()
+            .HasOne(x => x.Class)
+            .WithMany(x => x.StudentJoinClasses)
+            .HasForeignKey(x => x.StudentId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        // Config Student Join Test
+        builder.Entity<StudentJoinTest>()
+            .HasOne(x => x.Student)
+            .WithMany(x => x.StudentJoinTests)
+            .HasForeignKey(x => x.StudentId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        builder.Entity<StudentJoinTest>()
+            .HasOne(x => x.Test)
+            .WithMany(x => x.StudentJoinTests)
+            .HasForeignKey(x => x.StudentId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        // Config Feedback
+        builder.Entity<Feedback>()
+            .HasOne(x => x.User)
+            .WithMany(x => x.Feedbacks)
+            .HasForeignKey(x => x.FeedbackId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        builder.Entity<Feedback>()
+            .HasOne(x => x.Course)
+            .WithMany(x => x.Feedbacks)
+            .HasForeignKey(x => x.FeedbackId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+
+        // Config TestAnswer
+        builder.Entity<TestAnswer>()
+            .HasOne(x => x.Question)
+            .WithMany(x => x.TestAnswers)
+            .HasForeignKey(x => x.TestAnswerId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        builder.Entity<TestAnswer>()
+            .HasOne(x => x.Student)
+            .WithMany(x => x.TestAnswers)
+            .HasForeignKey(x => x.TestAnswerId)
+            .OnDelete(DeleteBehavior.NoAction);
 
         OnModelCreatingPartial(builder);
     }

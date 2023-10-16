@@ -1,9 +1,9 @@
-﻿using api.Data.DTOs.Authentication;
-using api.Services.Interfaces;
+﻿using API.Data.DTOs.Authentication;
+using API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace api.Controllers
+namespace API.Controllers
 {
     /// <summary>
     /// Authentication controller
