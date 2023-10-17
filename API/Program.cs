@@ -3,7 +3,6 @@ using API.Data;
 using API.Data.Constants;
 using API.Data.DTOs.Mail;
 using API.Data.Entities;
-using API.Data.Mappings;
 using API.Data.Repositories;
 using API.Services;
 using Microsoft.AspNetCore.Identity;
@@ -15,22 +14,30 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
-builder.Services.AddRepositories();
+
+// Add dependency injections
 builder.Services.AddServices();
+builder.Services.AddRepositories();
+
+// Config email service
+builder.Services.Configure<MailSettingsModel>(builder.Configuration.GetSection(nameof(MailSettingsModel)));
+builder.Services.AddTransient<IMailService, MailService>();
+
+// Add auto mapper
 builder.Services.AddAutoMapper(typeof(Maps).Assembly);
 
+// Add Db Context
 builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-builder.Services.Configure<MailSettingsModel>(builder.Configuration.GetSection(nameof(MailSettingsModel)));
-builder.Services.AddTransient<IMailService, MailService>();
-
+// Add identity framework
 builder.Services
     .AddIdentity<User, Role>()
     .AddEntityFrameworkStores<DataContext>();
 
+// Config identity framework
 builder.Services.Configure<IdentityOptions>(options =>
 {
     // Password
@@ -53,11 +60,9 @@ builder.Services.Configure<IdentityOptions>(options =>
     // Login
     options.SignIn.RequireConfirmedEmail = UserSignIn.RequireConfirmedEmail;
     options.SignIn.RequireConfirmedPhoneNumber = UserSignIn.RequireConfirmedPhoneNumber;
-
 });
 
-
-// Learn more about configuring Swagger/OpenApi at https://aka.ms/aspnetcore/swashbuckle
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -86,6 +91,19 @@ builder.Services.AddSwaggerGen(options =>
 
 var app = builder.Build();
 
+// Seed data
+using (var scope = app.Services.CreateScope())
+{
+    var serviceProvider = scope.ServiceProvider;
+
+    // Identity Authentication
+    var roleManager = serviceProvider.GetRequiredService<RoleManager<Role>>();
+    SeedData.Seed(roleManager).Wait();
+
+    // AppCtl
+    SeedData.Seed(serviceProvider).Wait();
+}
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -93,23 +111,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-
 app.UseHttpsRedirection();
 
-//Seed data
-using (var scope = app.Services.CreateScope())
-{
-    var serviceProvider = scope.ServiceProvider;
-
-    //Identity Authentication
-    var roleManager = serviceProvider.GetRequiredService<RoleManager<Role>>();
-    SeedData.Seed(roleManager).Wait();
-
-    //AppCtl
-    SeedData.Seed(serviceProvider).Wait();
-}
-
 app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapControllers();

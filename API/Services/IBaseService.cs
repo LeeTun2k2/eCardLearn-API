@@ -8,7 +8,12 @@
     /// <typeparam name="AddModel"></typeparam>
     /// <typeparam name="EditModel"></typeparam>
     /// <typeparam name="FilterModel"></typeparam>
-    public interface IBaseService<TEntity, ViewModel, AddModel, EditModel, FilterModel> where TEntity : class
+    public interface IBaseService<TEntity, ViewModel, AddModel, EditModel, FilterModel>
+        where TEntity : class
+        where ViewModel : class
+        where AddModel : class
+        where EditModel : class
+        where FilterModel : class
     {
         /// <summary>
         /// Get by Id

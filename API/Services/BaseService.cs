@@ -1,5 +1,8 @@
-﻿using API.Data.Repositories;
+﻿using API.Data.Entities;
+using API.Data.Repositories;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace API.Services
 {
@@ -9,11 +12,15 @@ namespace API.Services
     /// <typeparam name="TEntity"></typeparam>
     /// <typeparam name="ViewModel"></typeparam>
     /// <typeparam name="AddModel"></typeparam>
-    /// <typeparam name="UpdateModel"></typeparam>
+    /// <typeparam name="EditModel"></typeparam>
     /// <typeparam name="FilterModel"></typeparam>
-    public class BaseService<TEntity, ViewModel, AddModel, UpdateModel, FilterModel>
-        : IBaseService<TEntity, ViewModel, AddModel, UpdateModel, FilterModel>
+    public class BaseService<TEntity, ViewModel, AddModel, EditModel, FilterModel>
+        : IBaseService<TEntity, ViewModel, AddModel, EditModel, FilterModel>
         where TEntity : class
+        where ViewModel : class
+        where AddModel : class
+        where EditModel : class
+        where FilterModel : class
     {
         /// <summary>
         /// Base Repository
@@ -95,7 +102,7 @@ namespace API.Services
         /// <param name="id"></param>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<ViewModel?> UpdateAsync(Guid id, UpdateModel model)
+        public async Task<ViewModel?> UpdateAsync(Guid id, EditModel model)
         {
             var existingEntity = await _repository.GetByIdAsync(id);
             if (existingEntity == null)

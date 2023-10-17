@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
+﻿using Microsoft.EntityFrameworkCore.Storage;
 
 namespace API.Data.Repositories
 {
@@ -8,14 +7,14 @@ namespace API.Data.Repositories
     /// </summary>
     public class UnitOfWork : IUnitOfWork, IDisposable
     {
-        private readonly DbContext _dbContext;
+        private readonly DataContext _dbContext;
         private IDbContextTransaction? _transaction = null;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="dbContext"></param>
-        public UnitOfWork(DbContext dbContext)
+        public UnitOfWork(DataContext dbContext)
         {
             _dbContext = dbContext;
         }

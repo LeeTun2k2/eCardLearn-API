@@ -1,8 +1,6 @@
 ﻿using API.Data.Repositories.Interfaces;
 using API.Data.Repositories.Implements;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+using API.Data.Entities;
 
 namespace API.Data.Repositories
 {
@@ -18,23 +16,73 @@ namespace API.Data.Repositories
         /// <returns></returns>
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
+            // Unit of work
             services.AddTransient<IUnitOfWork, UnitOfWork>();
-            services.AddTransient<IAchievementRepository, AchievementRepository>();
-            services.AddTransient<IAdminRepository, AdminRepository>();
-            services.AddTransient<IAnswerRepository, AnswerRepository>();
-            services.AddTransient<IClassRepository, ClassRepository>();
-            services.AddTransient<ICourseRepository, CourseRepository>();
-            services.AddTransient<IFeedbackRepository, FeedbackRepository>();
-            services.AddTransient<INotificationRepository, NotificationRepository>();
-            services.AddTransient<IQuestionRepository, QuestionRepository>();
-            services.AddTransient<IStudentRepository, StudentRepository>();
-            services.AddTransient<IStudentJoinClassRepository, StudentJoinClassRepository>();
-            services.AddTransient<IStudentJoinTestRepository, StudentJoinTestRepository>();
-            services.AddTransient<ITeacherRepository, TeacherRepository>();
-            services.AddTransient<ITestRepository, TestRepository>();
-            services.AddTransient<ITestAnswerRepository, TestAnswerRepository>();
-            services.AddTransient<ITopicRepository, TopicRepository>();
+
+            // User
+            services.AddTransient<IBaseRepository<User>, UserRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
+
+            // Admin
+            services.AddTransient<IBaseRepository<Admin>, AdminRepository>();
+            services.AddTransient<IAdminRepository, AdminRepository>();
+
+            // Answer
+            services.AddTransient<IBaseRepository<Answer>, AnswerRepository>();
+            services.AddTransient<IAnswerRepository, AnswerRepository>();
+
+            // Class
+            services.AddTransient<IBaseRepository<Class>, ClassRepository>();
+            services.AddTransient<IClassRepository, ClassRepository>();
+
+            // Course
+            services.AddTransient<IBaseRepository<Course>, CourseRepository>();
+            services.AddTransient<ICourseRepository, CourseRepository>();
+
+            // Feedback
+            services.AddTransient<IBaseRepository<Feedback>, FeedbackRepository>();
+            services.AddTransient<IFeedbackRepository, FeedbackRepository>();
+
+            // Notification
+            services.AddTransient<IBaseRepository<Notification>, NotificationRepository>();
+            services.AddTransient<INotificationRepository, NotificationRepository>();
+
+            // Question
+            services.AddTransient<IBaseRepository<Question>, QuestionRepository>();
+            services.AddTransient<IQuestionRepository, QuestionRepository>();
+
+            // Student
+            services.AddTransient<IBaseRepository<Student>, StudentRepository>();
+            services.AddTransient<IStudentRepository, StudentRepository>();
+
+            // Student join class
+            services.AddTransient<IBaseRepository<StudentJoinClass>, StudentJoinClassRepository>();
+            services.AddTransient<IStudentJoinClassRepository, StudentJoinClassRepository>();
+
+            // Student join test
+            services.AddTransient<IBaseRepository<StudentJoinTest>, StudentJoinTestRepository>();
+            services.AddTransient<IStudentJoinTestRepository, StudentJoinTestRepository>();
+
+            // Teacher
+            services.AddTransient<IBaseRepository<Teacher>, TeacherRepository>();
+            services.AddTransient<ITeacherRepository, TeacherRepository>();
+
+            // Test
+            services.AddTransient<IBaseRepository<Test>, TestRepository>();
+            services.AddTransient<ITestRepository, TestRepository>();
+
+            // Test answer
+            services.AddTransient<IBaseRepository<TestAnswer>, TestAnswerRepository>();
+            services.AddTransient<ITestAnswerRepository, TestAnswerRepository>();
+
+            // Topic
+            services.AddTransient<IBaseRepository<Topic>, TopicRepository>();
+            services.AddTransient<ITopicRepository, TopicRepository>();
+
+            // User
+            services.AddTransient<IBaseRepository<User>, UserRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
+
             return services;
         }
     }

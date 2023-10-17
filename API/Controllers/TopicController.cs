@@ -1,8 +1,10 @@
-﻿using API.Data.DTOs.Topic;
+﻿using API.Data.Constants;
+using API.Data.DTOs.Topic;
+using API.Data.Entities;
 using API.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ApplicationModels;
 
 namespace API.Controllers
 {
@@ -19,7 +21,8 @@ namespace API.Controllers
         /// </summary>
         /// <param name="topicService"></param>
         /// <param name="logger"></param>
-        public TopicController(ITopicService topicService, ILogger<TopicController> logger) : base()
+        /// <param name="userManager"></param>
+        public TopicController(ITopicService topicService, ILogger<TopicController> logger, UserManager<User> userManager) : base(userManager)
         {
             _topicService = topicService;
             _logger = logger;
@@ -31,6 +34,7 @@ namespace API.Controllers
         /// <param name="filter"></param>
         /// <returns></returns>
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Get([FromQuery] TopicFilterModel filter)
         {
             try
@@ -52,6 +56,7 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetById(Guid id)
         {
             try
@@ -76,6 +81,7 @@ namespace API.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
+        [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
         public async Task<IActionResult> Create([FromBody] TopicAddModel model)
         {
             try
@@ -104,6 +110,7 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpPut]
         [Route("{id}")]
+        [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] TopicEditModel model)
         {
             try
@@ -135,6 +142,7 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpDelete]
         [Route("{id}")]
+        [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
         public async Task<IActionResult> Delete(Guid id)
         {
             try

@@ -18,7 +18,8 @@ namespace API.Services.Implements
         /// </summary>
         /// <param name="repository"></param>
         /// <param name="mapper"></param>
-        public TopicService(IBaseRepository<Topic> repository, IMapper mapper) : base(repository, mapper)
+        public TopicService(IBaseRepository<Topic> repository, IMapper mapper) 
+            : base(repository, mapper)
         {
 
         }
