@@ -1,6 +1,8 @@
 ﻿using API.Data.DTOs.Authentication;
+using API.Data.Entities;
 using API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -18,7 +20,12 @@ namespace API.Controllers
         /// </summary>
         /// <param name="authenticationService"></param>
         /// <param name="logger"></param>
-        public AuthenticationController(IAuthenticationService authenticationService, ILogger<AuthenticationController> logger) : base()
+        /// <param name="userManager"></param>
+        public AuthenticationController(
+            IAuthenticationService authenticationService, 
+            ILogger<AuthenticationController> logger, 
+            UserManager<User> userManager) 
+            : base(userManager)
         {
             _authenticationService = authenticationService;
             _logger = logger;
