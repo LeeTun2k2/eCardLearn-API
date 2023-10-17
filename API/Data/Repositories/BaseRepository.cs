@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
 using System.Linq;
+using API.Commons.Paginations;
 
 namespace API.Data.Repositories
 {
@@ -59,7 +60,7 @@ namespace API.Data.Repositories
         /// Get
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<T>?> GetAsync(Expression<Func<T, bool>>? filter = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null)
+        public async Task<IEnumerable<T>?> GetAsync(Expression<Func<T, bool>>? filter = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null, PaginationParameters? pagination = null)
         {
             IQueryable<T> query = Entities;
 
@@ -71,6 +72,23 @@ namespace API.Data.Repositories
             if (orderBy != null)
             {
                 query = orderBy(query);
+            }
+
+            if (pagination != null)
+            {
+                if (pagination.PageNumber < 1)
+                {
+                    pagination.PageNumber = 1; // Ensure the page number is at least 1
+                }
+
+                if (pagination.PageSize < 1)
+                {
+                    pagination.PageSize = 10; // Default page size
+                }
+
+                int itemsToSkip = (pagination.PageNumber - 1) * pagination.PageSize;
+
+                query = query.Skip(itemsToSkip).Take(pagination.PageSize);
             }
 
             return await query.ToListAsync();

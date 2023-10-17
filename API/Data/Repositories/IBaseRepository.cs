@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using API.Commons.Paginations;
+using System.Linq.Expressions;
 
 namespace API.Data.Repositories
 {
@@ -18,7 +19,7 @@ namespace API.Data.Repositories
         /// Get all entities
         /// </summary>
         /// <returns></returns>
-        Task<IEnumerable<T>?> GetAsync(Expression<Func<T, bool>>? filter = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null);
+        Task<IEnumerable<T>?> GetAsync(Expression<Func<T, bool>>? filter = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null, PaginationParameters? pagination = null);
 
         /// <summary>
         /// Add entity

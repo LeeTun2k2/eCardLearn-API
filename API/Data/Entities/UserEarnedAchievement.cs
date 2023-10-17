@@ -1,33 +1,39 @@
 ﻿namespace API.Data.Entities
 {
     /// <summary>
-    /// Achievement
+    /// UserEarnedAchievement
     /// </summary>
-    public class Achievement
+    public class UserEarnedAchievement
     {
         /// <summary>
         /// Id
         /// </summary>
+        public Guid UserEarnedAchievementId { get; set; }
+
+        /// <summary>
+        /// Id of User earned achievement
+        /// </summary>
+        public Guid UserId { get; set; }
+
+        /// <summary>
+        /// User earned achievement
+        /// </summary>
+        public virtual User? User { get; set; }
+
+        /// <summary>
+        /// Achievement
+        /// </summary>
         public Guid AchievementId { get; set; }
-        /// <summary>
-        /// Achievement Name
-        /// </summary>
-        public string AchievementName { get; set; } = string.Empty;
 
         /// <summary>
-        /// Achievement Description
+        /// Achievement 
         /// </summary>
-        public string AchievementDescription { get; set; } = string.Empty;
+        public virtual Achievement? Achievement { get; set; }
 
         /// <summary>
-        /// Date Earned
+        /// Date earned
         /// </summary>
         public DateTime DateEarned { get; set; }
-
-        /// <summary>
-        /// Day Requirement
-        /// </summary>
-        public int DayRequirement { get; set; } = 0;
 
         /// <summary>
         /// Created User Id

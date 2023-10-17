@@ -6,22 +6,19 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers
 {
     /// <summary>
-    /// Authentication controller
+    /// Authentication Controller
     /// </summary>
-    [Route("api/[controller]")]
-    [ApiController]
-    public class AuthenticationController : ControllerBase
+    public class AuthenticationController : BaseController
     {
         private readonly IAuthenticationService _authenticationService;
         private readonly ILogger<AuthenticationController> _logger;
-
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="authenticationService"></param>
         /// <param name="logger"></param>
-        public AuthenticationController(IAuthenticationService authenticationService, ILogger<AuthenticationController> logger)
+        public AuthenticationController(IAuthenticationService authenticationService, ILogger<AuthenticationController> logger) : base()
         {
             _authenticationService = authenticationService;
             _logger = logger;
@@ -48,10 +45,11 @@ namespace API.Controllers
             {
                 foreach (var error in result.Errors)
                 {
-                    _logger.LogInformation($"Registration attempt failed. ErrorCode: {error.Code}. Description: {error.Description}");
+                    string message = $"Registration attempt failed. ErrorCode: {error.Code}. Description: {error.Description}";
+                    _logger.LogInformation(message);
                 }
 
-                return BadRequest(new { Errors = result.Errors });
+                return BadRequest(new { result.Errors });
             }
 
             return Ok(new { result.Succeeded });
@@ -77,7 +75,7 @@ namespace API.Controllers
 
             if (!result.Succeeded)
             {
-                return BadRequest(new { Errors = result.Errors });
+                return BadRequest(new { result.Errors });
             }
 
             return Ok(new { result.Succeeded });

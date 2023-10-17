@@ -17,6 +17,7 @@ namespace API.Services
         public static IServiceCollection AddServices(this IServiceCollection service)
         {
             service.AddTransient<IAuthenticationService, AuthenticationService>();
+            service.AddTransient<ITopicService, TopicService>();
             return service;
         }
     }

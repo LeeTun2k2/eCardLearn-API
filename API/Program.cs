@@ -18,10 +18,12 @@ builder.Services.AddControllers();
 builder.Services.AddRepositories();
 builder.Services.AddServices();
 builder.Services.AddAutoMapper(typeof(Maps).Assembly);
+
 builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
 builder.Services.Configure<MailSettingsModel>(builder.Configuration.GetSection(nameof(MailSettingsModel)));
 builder.Services.AddTransient<IMailService, MailService>();
 

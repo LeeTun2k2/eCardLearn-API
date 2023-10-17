@@ -1,33 +1,23 @@
-﻿namespace API.Data.Entities
+﻿namespace API.Data.DTOs.Topic
 {
     /// <summary>
-    /// Achievement
+    /// Topic View Model
     /// </summary>
-    public class Achievement
+    public class TopicViewModel
     {
         /// <summary>
         /// Id
         /// </summary>
-        public Guid AchievementId { get; set; }
+        public Guid TopicId { get; set; }
         /// <summary>
-        /// Achievement Name
+        /// Topic Name
         /// </summary>
-        public string AchievementName { get; set; } = string.Empty;
+        public string TopicName { get; set; } = string.Empty;
 
         /// <summary>
-        /// Achievement Description
+        /// Topic Description
         /// </summary>
-        public string AchievementDescription { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Date Earned
-        /// </summary>
-        public DateTime DateEarned { get; set; }
-
-        /// <summary>
-        /// Day Requirement
-        /// </summary>
-        public int DayRequirement { get; set; } = 0;
+        public string TopicDescription { get; set; } = string.Empty;
 
         /// <summary>
         /// Created User Id

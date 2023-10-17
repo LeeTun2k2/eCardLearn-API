@@ -1,5 +1,8 @@
 ﻿using API.Data.Repositories.Interfaces;
 using API.Data.Repositories.Implements;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace API.Data.Repositories
 {
@@ -11,29 +14,28 @@ namespace API.Data.Repositories
         /// <summary>
         /// Add repositories
         /// </summary>
-        /// <param name="service"></param>
+        /// <param name="services"></param>
         /// <returns></returns>
-        public static IServiceCollection AddRepositories(this IServiceCollection service)
+        public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
-            service.AddTransient<IUnitOfWork, UnitOfWork>();
-            service.AddTransient<IAchievementRepository, AchievementRepository>();
-            service.AddTransient<IAdminRepository, AdminRepository>();
-            service.AddTransient<IAnswerRepository, AnswerRepository>();
-            service.AddTransient<IClassRepository, ClassRepository>();
-            service.AddTransient<ICourseRepository, CourseRepository>();
-            service.AddTransient<IFeedbackRepository, FeedbackRepository>();
-            service.AddTransient<INotificationRepository, NotificationRepository>();
-            service.AddTransient<IQuestionRepository, QuestionRepository>();
-            service.AddTransient<IStudentRepository, StudentRepository>();
-            service.AddTransient<IStudentJoinClassRepository, StudentJoinClassRepository>();
-            service.AddTransient<IStudentJoinTestRepository, StudentJoinTestRepository>();
-            service.AddTransient<ITeacherRepository, TeacherRepository>();
-            service.AddTransient<ITestRepository, TestRepository>();
-            service.AddTransient<ITestAnswerRepository, TestAnswerRepository>();
-            service.AddTransient<ITopicRepository, TopicRepository>();
-            service.AddTransient<IUserRepository, UserRepository>();
-            return service;
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IAchievementRepository, AchievementRepository>();
+            services.AddTransient<IAdminRepository, AdminRepository>();
+            services.AddTransient<IAnswerRepository, AnswerRepository>();
+            services.AddTransient<IClassRepository, ClassRepository>();
+            services.AddTransient<ICourseRepository, CourseRepository>();
+            services.AddTransient<IFeedbackRepository, FeedbackRepository>();
+            services.AddTransient<INotificationRepository, NotificationRepository>();
+            services.AddTransient<IQuestionRepository, QuestionRepository>();
+            services.AddTransient<IStudentRepository, StudentRepository>();
+            services.AddTransient<IStudentJoinClassRepository, StudentJoinClassRepository>();
+            services.AddTransient<IStudentJoinTestRepository, StudentJoinTestRepository>();
+            services.AddTransient<ITeacherRepository, TeacherRepository>();
+            services.AddTransient<ITestRepository, TestRepository>();
+            services.AddTransient<ITestAnswerRepository, TestAnswerRepository>();
+            services.AddTransient<ITopicRepository, TopicRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
+            return services;
         }
     }
-
 }
