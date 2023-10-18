@@ -6,17 +6,17 @@
     public class LoginModel
     {
         /// <summary>
-        /// Email
+        /// Email must have format like "example@gmail.com"
         /// </summary>
         public string Email { get; set; } = string.Empty;
 
         /// <summary>
-        /// Password
+        /// Password must contain at least ["0~9", "a~z", "A~Z", "-._@+"]
         /// </summary>
         public string Password { get; set; } = string.Empty;
 
         /// <summary>
-        /// Remember me
+        /// Remember me login section
         /// </summary>
         public bool RememberMe { get; set; } = false;
     }

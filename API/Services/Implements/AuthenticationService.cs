@@ -1,5 +1,4 @@
 ﻿using API.Commons.Utils;
-using API.Data.Constants;
 using API.Data.DTOs.Authentication;
 using API.Data.Entities;
 using API.Services.Interfaces;
@@ -70,20 +69,12 @@ namespace API.Services.Implements
                 var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
 
                 // generate email confirmation link
-                var confirmationLink = $"{_config["AppUrl"]}/API/confirm-email?email={email}&token={encodedToken}";
+                var confirmationLink = $"{_config["AppUrl"]}/api/confirm-email?email={email}&token={encodedToken}";
 
                 // send email confirmation link
                 await _mailService.SendAsync(MailTemplate.Registration(email, confirmationLink), new CancellationToken());
 
-                // add user to user role
-                var user = await _userManager.FindByEmailAsync(email);
-
-                if (user != null)
-                {
-                    var result = await _userManager.AddToRoleAsync(user, UserRoles.Student);
-
-                    return result;
-                }
+                return IdentityResult.Success;
             }
 
             return IdentityResult.Failed(new IdentityError { Code = "500", Description = "Failed to register user." });
@@ -131,7 +122,7 @@ namespace API.Services.Implements
 
             if (user != null)
             {
-                var username = user.UserName!;
+                var username = user.UserName ?? string.Empty;
 
                 var result = await _signInManager.PasswordSignInAsync(username, password, rememberMe, true);
 
@@ -165,7 +156,7 @@ namespace API.Services.Implements
                 var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
                 // Generate password reset URL
-                var callbackUrl = $"{_config["AppUrl"]}/API/reset-password?email={email}&token={token}";
+                var callbackUrl = $"{_config["AppUrl"]}/api/reset-password?email={email}&token={token}";
 
                 // Send password reset email
                 await _mailService.SendAsync(MailTemplate.ForgotPassword(email, callbackUrl), new CancellationToken());

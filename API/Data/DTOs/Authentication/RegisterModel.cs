@@ -9,20 +9,20 @@ namespace API.Data.DTOs.Authentication
     public class RegisterModel
     {
         /// <summary>
-        /// User name
+        /// User name must be unique
         /// </summary>
         [Required]
         public string UserName { get; set; } = null!;
 
         /// <summary>
-        /// Email
+        /// Email must have format like "example@gmail.com"
         /// </summary>
         [Required]
         [EmailAddress]
         public string Email { get; set; } = null!;
 
         /// <summary>
-        /// Password
+        /// Password must contain at least ["0~9", "a~z", "A~Z", "-._@+"]
         /// </summary>
         [Required]
         [DataType(DataType.Password)]
@@ -31,7 +31,7 @@ namespace API.Data.DTOs.Authentication
         public string Password { get; set; } = null!;
 
         /// <summary>
-        /// Phone number
+        /// Phone must be unique
         /// </summary>
         [Required]
         [Phone]
@@ -41,7 +41,7 @@ namespace API.Data.DTOs.Authentication
         /// Full name
         /// </summary>
         [Required]
-        public string FullName { get; set; } = null!;
+        public string Name { get; set; } = null!;
 
         /// <summary>
         /// Birth date

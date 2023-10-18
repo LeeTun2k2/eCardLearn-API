@@ -104,14 +104,8 @@ namespace API.Services
         /// <returns></returns>
         public async Task<ViewModel?> UpdateAsync(Guid id, EditModel model)
         {
-            var existingEntity = await _repository.GetByIdAsync(id);
-            if (existingEntity == null)
-            {
-                return _mapper.Map<ViewModel>(null);
-            }
-
-            _mapper.Map(model, existingEntity);
-            var updatedEntity = await _repository.UpdateAsync(existingEntity);
+            var entity = _mapper.Map<TEntity>(model);
+            var updatedEntity = await _repository.UpdateAsync(entity);
             return _mapper.Map<ViewModel>(updatedEntity);
         }
     }

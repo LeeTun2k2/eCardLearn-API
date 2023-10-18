@@ -12,8 +12,9 @@ namespace API.Data
         /// </summary>
         public Maps()
         {
-            MapUser();
+            MapAuthentication();
             MapTopic();
+            MapUser();
         }
     }
 }

@@ -1,20 +1,21 @@
 ﻿using AutoMapper;
 using API.Data.Entities;
+using API.Data.DTOs.Topic;
 using API.Data.DTOs.Authentication;
 
 namespace API.Data
 {
     /// <summary>
-    /// User maps
+    /// Authentication maps
     /// </summary>
     public partial class Maps : Profile
     {
         /// <summary>
-        /// Auto mapping for User model
+        /// Auto mapping for Authentication model 
         /// </summary>
-        protected void MapUser()
+        protected void MapAuthentication()
         {
-            CreateMap<User, UserProfileModel>().ReverseMap();
+            CreateMap<User, RegisterModel>().ReverseMap();
         }
     }
 }

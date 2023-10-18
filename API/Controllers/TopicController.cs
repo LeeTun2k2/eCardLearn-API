@@ -29,11 +29,13 @@ namespace API.Controllers
         }
 
         /// <summary>
-        /// Get Topic
+        /// Get a list of Topics filted by Topic filter model
         /// </summary>
         /// <param name="filter"></param>
         /// <returns></returns>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [AllowAnonymous]
         public async Task<IActionResult> Get([FromQuery] TopicFilterModel filter)
         {
@@ -56,6 +58,9 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(TopicViewModel), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [AllowAnonymous]
         public async Task<IActionResult> GetById(Guid id)
         {
@@ -76,16 +81,31 @@ namespace API.Controllers
         }
 
         /// <summary>
-        /// Add Topic
+        /// Add Topic to database
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(TopicAddModel), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
         public async Task<IActionResult> Create([FromBody] TopicAddModel model)
         {
             try
             {
+                // Get date time
+                var today = DateTime.Today;
+                var contextUser = await GetHttpContextUser();
+                var userId = contextUser?.Id;
+
+                // Log user id, date
+                model.CreatedUserId = userId;
+                model.CreatedDate = DateTime.Today;
+                model.UpdatedUserId = null;
+                model.UpdatedDate = null;
+
+                // Add
                 var view = await _topicService.AddAsync(model);
 
                 if (view == null)
@@ -103,13 +123,17 @@ namespace API.Controllers
         }
 
         /// <summary>
-        /// Update Topic
+        /// Update Topic to database
         /// </summary>
         /// <param name="id"></param>
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPut]
         [Route("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(TopicEditModel), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(TopicViewModel), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] TopicEditModel model)
         {
@@ -120,6 +144,25 @@ namespace API.Controllers
                     return BadRequest("ID in the URL does not match the ID in the request body.");
                 }
 
+                // Check existing entity
+                var existingEntity = await _topicService.GetByIdAsync(id);
+                if (existingEntity == null)
+                {
+                    return NotFound();
+                }
+
+                // Get date time
+                var today = DateTime.Today;
+                var contextUser = await GetHttpContextUser();
+                var userId = contextUser?.Id;
+
+                // Log user id, date
+                model.CreatedUserId = existingEntity.CreatedUserId;
+                model.CreatedDate = existingEntity.CreatedDate;
+                model.UpdatedUserId = userId;
+                model.UpdatedDate = DateTime.Today;
+
+                // Update
                 var view = await _topicService.UpdateAsync(id, model);
                 if (view == null)
                 {
@@ -136,12 +179,15 @@ namespace API.Controllers
         }
 
         /// <summary>
-        /// Delete Topic
+        /// Delete Topic from database
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete]
         [Route("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(TopicViewModel), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
         public async Task<IActionResult> Delete(Guid id)
         {

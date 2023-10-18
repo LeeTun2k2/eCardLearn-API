@@ -1,9 +1,11 @@
-﻿using API.Data.DTOs.Authentication;
+﻿using API.Data.Constants;
+using API.Data.DTOs.Authentication;
 using API.Data.Entities;
 using API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace API.Controllers
 {
@@ -18,9 +20,9 @@ namespace API.Controllers
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="authenticationService"></param>
-        /// <param name="logger"></param>
-        /// <param name="userManager"></param>
+        /// <param name="authenticationService">Authentication</param>
+        /// <param name="logger">Logger on server</param>
+        /// <param name="userManager">User manager</param>
         public AuthenticationController(
             IAuthenticationService authenticationService, 
             ILogger<AuthenticationController> logger, 
@@ -32,11 +34,13 @@ namespace API.Controllers
         }
 
         /// <summary>
-        /// Register
+        /// Register a new user, but do not set up user's role yet.
         /// </summary>
         /// <param name="userModel"></param>
         /// <returns></returns>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(RegisterModel), StatusCodes.Status400BadRequest)]
         [AllowAnonymous]
         [Route("[action]")]
         public async Task<IActionResult> Register([FromBody] RegisterModel userModel)
@@ -63,14 +67,59 @@ namespace API.Controllers
         }
 
         /// <summary>
+        /// Request role for student and teacher after register.
+        /// </summary>
+        /// <param name="setup"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("[action]")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(UserRoles), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(UserProfileModel), StatusCodes.Status404NotFound)]
+        [Authorize]
+        public async Task<IActionResult> RequestRole([FromBody] SetUserRole setup)
+        {
+            // Get user id
+            User? user = await GetHttpContextUser();
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            // Validate user role
+            string userRole = string.Empty;
+            if (setup.UserRole == UserRoles.Student || setup.UserRole == UserRoles.Teacher)
+            {
+                userRole = setup.UserRole;
+            }
+            else
+            {
+                return BadRequest("Invalid user's role");
+            }
+
+            // Set role
+            var result = await _userManager.AddToRoleAsync(user, userRole);
+
+            if (!result.Succeeded)
+            {
+                return BadRequest("Can not set up user's role");
+            }
+
+            return Ok(new { result.Succeeded });
+        }
+
+        /// <summary>
         /// Confirm email
         /// </summary>
         /// <param name="email"></param>
         /// <param name="token"></param>
         /// <returns></returns>
         [HttpGet]
-        [AllowAnonymous]
         [Route("[action]")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(UserProfileModel), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(UserProfileModel), StatusCodes.Status404NotFound)]
+        [AllowAnonymous]
         public async Task<IActionResult> ConfirmEmail(string email, string token)
         {
             if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(token))
@@ -94,8 +143,11 @@ namespace API.Controllers
         /// <param name="loginModel"></param>
         /// <returns></returns>
         [HttpPost]
-        [AllowAnonymous]
         [Route("[action]")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(LoginModel), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(UserProfileModel), StatusCodes.Status401Unauthorized)]
+        [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginModel loginModel)
         {
             if (!ModelState.IsValid)
@@ -123,8 +175,10 @@ namespace API.Controllers
         /// <param name="email"></param>
         /// <returns></returns>
         [HttpPost]
-        [AllowAnonymous]
         [Route("[action]")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(UserProfileModel), StatusCodes.Status400BadRequest)]
+        [AllowAnonymous]
         public async Task<IActionResult> ForgotPassword(string email)
         {
             if (!ModelState.IsValid)
@@ -150,6 +204,8 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpPost]
         [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResetPasswordModel), StatusCodes.Status400BadRequest)]
         [Route("[action]")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordModel resetPasswordModel)
         {
@@ -175,8 +231,10 @@ namespace API.Controllers
         /// <param name="changePasswordModel"></param>
         /// <returns></returns>
         [HttpPost]
-        [Authorize]
         [Route("[action]")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ChangePasswordModel), StatusCodes.Status400BadRequest)]
+        [Authorize]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordModel changePasswordModel)
         {
             if (!ModelState.IsValid)
@@ -201,6 +259,7 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpGet]
         [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [Route("[action]")]
         public async Task<IActionResult> Logout()
         {

@@ -24,22 +24,22 @@
         /// <summary>
         /// Require digit
         /// </summary>
-        public const bool RequireDigit = false;
+        public const bool RequireDigit = true;
 
         /// <summary>
         /// Require lowercase
         /// </summary>
-        public const bool RequireLowercase = false;
+        public const bool RequireLowercase = true;
 
         /// <summary>
         /// Require non alphanumeric
         /// </summary>
-        public const bool RequireNonAlphanumeric = false;
+        public const bool RequireNonAlphanumeric = true;
 
         /// <summary>
         /// Require uppercase
         /// </summary>
-        public const bool RequireUppercase = false;
+        public const bool RequireUppercase = true;
 
         /// <summary>
         /// Required unique chars

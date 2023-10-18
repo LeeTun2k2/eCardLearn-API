@@ -33,14 +33,14 @@ namespace API.Controllers
         /// <returns></returns>
         protected async Task<User?> GetHttpContextUser()
         {
-            var username = Request.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userId = Request.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            if (username == null)
+            if (userId == null)
             {
                 return null;
             }
 
-            var user = await _userManager.FindByNameAsync(username);
+            var user = await _userManager.FindByIdAsync(userId);
 
             return user;
         }

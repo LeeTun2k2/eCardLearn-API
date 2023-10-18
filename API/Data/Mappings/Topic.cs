@@ -9,6 +9,9 @@ namespace API.Data
     /// </summary>
     public partial class Maps : Profile
     {
+        /// <summary>
+        /// Auto mapping for Topic model
+        /// </summary>
         protected void MapTopic()
         {
             CreateMap<Topic, TopicViewModel>().ReverseMap();

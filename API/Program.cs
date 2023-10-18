@@ -1,14 +1,15 @@
+using API.Commons;
 using API.Commons.Utils;
 using API.Data;
 using API.Data.Constants;
 using API.Data.DTOs.Mail;
-using API.Data.Entities;
 using API.Data.Repositories;
 using API.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
-using System.Reflection;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,7 +21,7 @@ builder.Services.AddServices();
 builder.Services.AddRepositories();
 
 // Config email service
-builder.Services.Configure<MailSettingsModel>(builder.Configuration.GetSection(nameof(MailSettingsModel)));
+builder.Services.Configure<MailSettingsModel>(builder.Configuration.GetSection("MailSettings"));
 builder.Services.AddTransient<IMailService, MailService>();
 
 // Add auto mapper
@@ -33,61 +34,26 @@ builder.Services.AddDbContext<DataContext>(options =>
 });
 
 // Add identity framework
-builder.Services
-    .AddIdentity<User, Role>()
-    .AddEntityFrameworkStores<DataContext>();
+builder.Services.AddIdentityService();
 
-// Config identity framework
-builder.Services.Configure<IdentityOptions>(options =>
-{
-    // Password
-    options.Password.RequireDigit = UserPassword.RequireDigit;
-    options.Password.RequireLowercase = UserPassword.RequireLowercase;
-    options.Password.RequireNonAlphanumeric = UserPassword.RequireNonAlphanumeric;
-    options.Password.RequireUppercase = UserPassword.RequireUppercase;
-    options.Password.RequiredLength = UserPassword.Length.Min;
-    options.Password.RequiredUniqueChars = UserPassword.RequiredUniqueChars;
-
-    // Lockout when trying spam password
-    options.Lockout.DefaultLockoutTimeSpan = UserLockout.DefaultLockoutTimeSpan;
-    options.Lockout.MaxFailedAccessAttempts = UserLockout.MaxFailedAccessAttempts;
-    options.Lockout.AllowedForNewUsers = UserLockout.AllowedForNewUsers;
-
-    // User
-    options.User.AllowedUserNameCharacters = UserConfig.AllowedUserNameCharacters;
-    options.User.RequireUniqueEmail = UserConfig.RequireUniqueEmail;
-
-    // Login
-    options.SignIn.RequireConfirmedEmail = UserSignIn.RequireConfirmedEmail;
-    options.SignIn.RequireConfirmedPhoneNumber = UserSignIn.RequireConfirmedPhoneNumber;
-});
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options =>
-{
-    options.SwaggerDoc("v1", new OpenApiInfo
+// Add authentication
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
     {
-        Version = "v1",
-        Title = "ToDo Api",
-        Description = "An ASP.NET Core Web Api for managing ToDo items",
-        TermsOfService = new Uri("https://example.com/terms"),
-        Contact = new OpenApiContact
+        options.TokenValidationParameters = new TokenValidationParameters
         {
-            Name = "Example Contact",
-            Url = new Uri("https://example.com/contact")
-        },
-        License = new OpenApiLicense
-        {
-            Name = "Example License",
-            Url = new Uri("https://example.com/license")
-        }
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["JWT:Issuer"],
+            ValidAudience = builder.Configuration["JWT:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"] ?? string.Empty))
+        };
     });
 
-    // using System.Reflection;
-    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
-});
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddSwagger();
 
 var app = builder.Build();
 

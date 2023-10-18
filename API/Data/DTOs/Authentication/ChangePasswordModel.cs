@@ -9,14 +9,14 @@ namespace API.Data.DTOs.Authentication
     public class ChangePasswordModel
     {
         /// <summary>
-        /// Email
+        /// Email must have format like "example@gmail.com"
         /// </summary>
         [Required]
         [EmailAddress]
         public string Email { get; set; } = null!;
 
         /// <summary>
-        /// Password
+        /// Password must contain at least ["0~9", "a~z", "A~Z", "-._@+"]
         /// </summary>
         [Required]
         [DataType(DataType.Password)]
@@ -25,7 +25,7 @@ namespace API.Data.DTOs.Authentication
         public string Password { get; set; } = null!;
 
         /// <summary>
-        /// New password
+        /// New password must contain at least ["0~9", "a~z", "A~Z", "-._@+"]
         /// </summary>
         [Required]
         [DataType(DataType.Password)]
@@ -34,7 +34,7 @@ namespace API.Data.DTOs.Authentication
         public string NewPassword { get; set; } = null!;
 
         /// <summary>
-        /// Confirm new password
+        /// Confirm new password must contain at least ["0~9", "a~z", "A~Z", "-._@+"]
         /// </summary>
         [Required]
         [DataType(DataType.Password)]
