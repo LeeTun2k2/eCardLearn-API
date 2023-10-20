@@ -1,27 +1,34 @@
-﻿namespace API.Data.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace API.Data.DTOs.Achievement
 {
     /// <summary>
-    /// Achievement
+    /// Achievement Edit Model
     /// </summary>
-    public class Achievement
+    public class AchievementEditModel
     {
         /// <summary>
         /// Id
         /// </summary>
+        [Required]
         public Guid AchievementId { get; set; }
+
         /// <summary>
         /// Achievement Name
         /// </summary>
+        [Required]
         public string AchievementName { get; set; } = string.Empty;
 
         /// <summary>
         /// Achievement Description
         /// </summary>
+        [Required]
         public string AchievementDescription { get; set; } = string.Empty;
 
         /// <summary>
         /// Day Requirement
         /// </summary>
+        [Required]
         public int DayRequirement { get; set; } = 0;
 
         /// <summary>

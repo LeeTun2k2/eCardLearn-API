@@ -1,14 +1,15 @@
-﻿namespace API.Data.Entities
+﻿namespace API.Data.DTOs.Achievement
 {
     /// <summary>
-    /// Achievement
+    /// Achievement View Model
     /// </summary>
-    public class Achievement
+    public class AchievementViewModel
     {
         /// <summary>
         /// Id
         /// </summary>
         public Guid AchievementId { get; set; }
+
         /// <summary>
         /// Achievement Name
         /// </summary>

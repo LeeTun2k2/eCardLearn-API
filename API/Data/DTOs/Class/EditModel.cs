@@ -1,28 +1,36 @@
-﻿namespace API.Data.Entities
+﻿using API.Data.Entities;
+using System.ComponentModel.DataAnnotations;
+
+namespace API.Data.DTOs.Class
 {
     /// <summary>
-    /// Achievement
+    /// Class Edit Model
     /// </summary>
-    public class Achievement
+    public class ClassEditModel
     {
         /// <summary>
         /// Id
         /// </summary>
-        public Guid AchievementId { get; set; }
-        /// <summary>
-        /// Achievement Name
-        /// </summary>
-        public string AchievementName { get; set; } = string.Empty;
+        [Required]
+        public Guid ClassId { get; set; }
 
         /// <summary>
-        /// Achievement Description
+        /// Class Name
         /// </summary>
-        public string AchievementDescription { get; set; } = string.Empty;
+        [Required]
+        public string ClassName { get; set; } = string.Empty;
 
         /// <summary>
-        /// Day Requirement
+        /// Class Description
         /// </summary>
-        public int DayRequirement { get; set; } = 0;
+        [Required]
+        public string ClassDescription { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Teacher
+        /// </summary>
+        [Required]
+        public Guid TeacherId { get; set; }
 
         /// <summary>
         /// Created User Id

@@ -87,10 +87,10 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(typeof(TopicAddModel), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(AnswerAddModel), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
-        public async Task<IActionResult> Create([FromBody] TopicAddModel model)
+        public async Task<IActionResult> Create([FromBody] AnswerAddModel model)
         {
             try
             {

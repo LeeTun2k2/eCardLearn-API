@@ -1,28 +1,41 @@
-﻿namespace API.Data.Entities
+﻿using API.Data.Entities;
+
+namespace API.Data.DTOs.Class
 {
     /// <summary>
-    /// Achievement
+    /// Class View Model
     /// </summary>
-    public class Achievement
+    public class ClassViewModel
     {
         /// <summary>
         /// Id
         /// </summary>
-        public Guid AchievementId { get; set; }
-        /// <summary>
-        /// Achievement Name
-        /// </summary>
-        public string AchievementName { get; set; } = string.Empty;
+        public Guid ClassId { get; set; }
 
         /// <summary>
-        /// Achievement Description
+        /// Class Name
         /// </summary>
-        public string AchievementDescription { get; set; } = string.Empty;
+        public string ClassName { get; set; } = string.Empty;
 
         /// <summary>
-        /// Day Requirement
+        /// Class Description
         /// </summary>
-        public int DayRequirement { get; set; } = 0;
+        public string ClassDescription { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Teacher
+        /// </summary>
+        public Guid TeacherId { get; set; }
+
+        /// <summary>
+        /// Teacher
+        /// </summary>
+        public virtual Teacher? Teacher { get; set; }
+
+        /// <summary>
+        /// Student Join Classes
+        /// </summary>
+        public virtual IEnumerable<StudentJoinClass>? StudentJoinClasses { get; set; }
 
         /// <summary>
         /// Created User Id
