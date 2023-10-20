@@ -1,6 +1,4 @@
-﻿using API.Data.Entities;
-
-namespace API.Data.DTOs.Class
+﻿namespace API.Data.DTOs.Class
 {
     /// <summary>
     /// Class View Model
@@ -26,16 +24,6 @@ namespace API.Data.DTOs.Class
         /// Teacher
         /// </summary>
         public Guid TeacherId { get; set; }
-
-        /// <summary>
-        /// Teacher
-        /// </summary>
-        public virtual Teacher? Teacher { get; set; }
-
-        /// <summary>
-        /// Student Join Classes
-        /// </summary>
-        public virtual IEnumerable<StudentJoinClass>? StudentJoinClasses { get; set; }
 
         /// <summary>
         /// Created User Id

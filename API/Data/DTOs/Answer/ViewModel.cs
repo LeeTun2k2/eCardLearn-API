@@ -1,6 +1,4 @@
-﻿using API.Data.Entities;
-
-namespace API.Data.DTOs.Answer
+﻿namespace API.Data.DTOs.Answer
 {
     /// <summary>
     /// Answer View Model
@@ -21,11 +19,6 @@ namespace API.Data.DTOs.Answer
         /// Question
         /// </summary>
         public Guid QuestionId { get; set; }
-
-        /// <summary>
-        /// Question
-        /// </summary>
-        public virtual Question? Question { get; set; }
 
         /// <summary>
         /// Created User Id

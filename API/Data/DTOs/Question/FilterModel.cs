@@ -8,6 +8,11 @@ namespace API.Data.DTOs.Question
     public class QuestionFilterModel
     {
         /// <summary>
+        /// Question String
+        /// </summary>
+        public string QuestionString { get; set; } = string.Empty;
+
+        /// <summary>
         /// Page Number
         /// </summary>
         [Required]

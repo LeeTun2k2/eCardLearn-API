@@ -15,7 +15,7 @@ namespace API.Data
         protected void MapTopic()
         {
             CreateMap<Topic, TopicViewModel>().ReverseMap();
-            CreateMap<Topic, AnswerAddModel>().ReverseMap();
+            CreateMap<Topic, TopicAddModel>().ReverseMap();
             CreateMap<Topic, TopicEditModel>().ReverseMap();
         }
     }

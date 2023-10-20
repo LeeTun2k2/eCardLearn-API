@@ -8,6 +8,27 @@ namespace API.Data.DTOs.Feedback
     public class FeedbackFilterModel
     {
         /// <summary>
+        /// Id
+        /// </summary>
+        [Required]
+        public Guid FeedbackId { get; set; }
+
+        /// <summary>
+        /// Title
+        /// </summary>
+        public string Title { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Description
+        /// </summary>
+        public string Description { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Rating
+        /// </summary>
+        public int Rating { get; set; }
+
+        /// <summary>
         /// Page Number
         /// </summary>
         [Required]

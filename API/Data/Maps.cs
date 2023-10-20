@@ -12,9 +12,21 @@ namespace API.Data
         /// </summary>
         public Maps()
         {
+            MapAchievement();
+            MapAnswer();
             MapAuthentication();
+            MapClass();
+            MapCourse();
+            MapFeedback();
+            MapNotification();
+            MapQuestion();
+            MapStudentJoinClass();
+            MapStudentJoinTest();
+            MapTest();
+            MapTestAnswer();
             MapTopic();
             MapUser();
+            MapUserEarnedAchievement();
         }
     }
 }

@@ -8,6 +8,16 @@ namespace API.Data.DTOs.Notification
     public class NotificationFilterModel
     {
         /// <summary>
+        /// Notification Title
+        /// </summary>
+        public string NotificationTitle { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Notification Content
+        /// </summary>
+        public string NotificationContent { get; set; } = string.Empty;
+
+        /// <summary>
         /// Page Number
         /// </summary>
         [Required]

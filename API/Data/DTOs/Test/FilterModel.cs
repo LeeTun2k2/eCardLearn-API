@@ -8,6 +8,21 @@ namespace API.Data.DTOs.Test
     public class TestFilterModel
     {
         /// <summary>
+        /// Test Name
+        /// </summary>
+        public string TestName { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Test Description
+        /// </summary>
+        public string TestDescription { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Test Date
+        /// </summary>
+        public DateTime TestDate { get; set; }
+
+        /// <summary>
         /// Page Number
         /// </summary>
         [Required]

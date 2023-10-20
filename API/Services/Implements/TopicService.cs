@@ -11,7 +11,7 @@ namespace API.Services.Implements
     /// <summary>
     /// Topic service
     /// </summary>
-    public class TopicService : BaseService<Topic, TopicViewModel, AnswerAddModel, TopicEditModel, TopicFilterModel>, ITopicService
+    public class TopicService : BaseService<Topic, TopicViewModel, TopicAddModel, TopicEditModel, TopicFilterModel>, ITopicService
     {
         /// <summary>
         /// Constructor

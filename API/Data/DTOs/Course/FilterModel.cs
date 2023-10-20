@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using API.Data.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace API.Data.DTOs.Course
 {
@@ -8,8 +9,19 @@ namespace API.Data.DTOs.Course
     public class CourseFilterModel
     {
         /// <summary>
+        /// Course Name
+        /// </summary>
+        public string CourseName { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Course Description
+        /// </summary>
+        public string CourseDescription { get; set; } = string.Empty;
+
+        /// <summary>
         /// Page Number
         /// </summary>
+        
         [Required]
         public int? PageNumber { get; set; }
 
