@@ -1,5 +1,5 @@
 ﻿using API.Data.Constants;
-using API.Data.DTOs.Topic;
+using API.Data.DTOs.Question;
 using API.Data.Entities;
 using API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -9,27 +9,27 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers
 {
     /// <summary>
-    /// Topic Controller
+    /// Question Controller
     /// </summary>
-    public class TopicController : BaseController
+    public class QuestionController : BaseController
     {
-        private readonly ITopicService _topicService;
-        private readonly ILogger<TopicController> _logger;
+        private readonly IQuestionService _questionService;
+        private readonly ILogger<QuestionController> _logger;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="topicService"></param>
+        /// <param name="questionService"></param>
         /// <param name="logger"></param>
         /// <param name="userManager"></param>
-        public TopicController(ITopicService topicService, ILogger<TopicController> logger, UserManager<User> userManager) : base(userManager)
+        public QuestionController(IQuestionService questionService, ILogger<QuestionController> logger, UserManager<User> userManager) : base(userManager)
         {
-            _topicService = topicService;
+            _questionService = questionService;
             _logger = logger;
         }
 
         /// <summary>
-        /// Get a list of Topics filted by Topic filter model
+        /// Get a list of Questions filted by Question filter model
         /// </summary>
         /// <param name="filter"></param>
         /// <returns></returns>
@@ -37,11 +37,11 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [AllowAnonymous]
-        public async Task<IActionResult> Get([FromQuery] TopicFilterModel filter)
+        public async Task<IActionResult> Get([FromQuery] QuestionFilterModel filter)
         {
             try
             {
-                var views = await _topicService.GetAsync(filter);
+                var views = await _questionService.GetAsync(filter);
                 return Ok(views);
             }
             catch (Exception ex)
@@ -52,21 +52,21 @@ namespace API.Controllers
         }
 
         /// <summary>
-        /// Get Topic by Id
+        /// Get Question by Id
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
         [Route("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(TopicViewModel), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(QuestionViewModel), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [AllowAnonymous]
         public async Task<IActionResult> GetById(Guid id)
         {
             try
             {
-                var view = await _topicService.GetByIdAsync(id);
+                var view = await _questionService.GetByIdAsync(id);
                 if (view == null)
                 {
                     return NotFound();
@@ -81,16 +81,16 @@ namespace API.Controllers
         }
 
         /// <summary>
-        /// Add Topic to database
+        /// Add Question to database
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(typeof(TopicAddModel), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(QuestionAddModel), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
-        public async Task<IActionResult> Create([FromBody] TopicAddModel model)
+        public async Task<IActionResult> Create([FromBody] QuestionAddModel model)
         {
             try
             {
@@ -106,14 +106,14 @@ namespace API.Controllers
                 model.UpdatedDate = null;
 
                 // Add
-                var view = await _topicService.AddAsync(model);
+                var view = await _questionService.AddAsync(model);
 
                 if (view == null)
                 {
                     return BadRequest("Can not create object");
                 }
 
-                return CreatedAtAction(nameof(Create), new { id = view.TopicId }, view);
+                return CreatedAtAction(nameof(Create), new { id = view.QuestionId }, view);
             }
             catch (Exception ex)
             {
@@ -123,7 +123,7 @@ namespace API.Controllers
         }
 
         /// <summary>
-        /// Update Topic to database
+        /// Update Question to database
         /// </summary>
         /// <param name="id"></param>
         /// <param name="model"></param>
@@ -131,21 +131,21 @@ namespace API.Controllers
         [HttpPut]
         [Route("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(TopicEditModel), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(TopicViewModel), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(QuestionEditModel), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(QuestionViewModel), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
-        public async Task<IActionResult> Update(Guid id, [FromBody] TopicEditModel model)
+        public async Task<IActionResult> Update(Guid id, [FromBody] QuestionEditModel model)
         {
             try
             {
-                if (id != model.TopicId)
+                if (id != model.QuestionId)
                 {
                     return BadRequest("ID in the URL does not match the ID in the request body.");
                 }
 
                 // Check existing entity
-                var existingEntity = await _topicService.GetByIdAsync(id);
+                var existingEntity = await _questionService.GetByIdAsync(id);
                 if (existingEntity == null)
                 {
                     return NotFound();
@@ -163,7 +163,7 @@ namespace API.Controllers
                 model.UpdatedDate = DateTime.Today;
 
                 // Update
-                var view = await _topicService.UpdateAsync(id, model);
+                var view = await _questionService.UpdateAsync(id, model);
                 if (view == null)
                 {
                     return BadRequest("Can not update object");
@@ -179,21 +179,21 @@ namespace API.Controllers
         }
 
         /// <summary>
-        /// Delete Topic from database
+        /// Delete Question from database
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete]
         [Route("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(typeof(TopicViewModel), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(QuestionViewModel), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
         public async Task<IActionResult> Delete(Guid id)
         {
             try
             {
-                if (await _topicService.DeleteAsync(id))
+                if (await _questionService.DeleteAsync(id))
                 {
                     return NoContent();
                 }
