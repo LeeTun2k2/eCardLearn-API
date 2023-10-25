@@ -1,6 +1,6 @@
-﻿using api.Data.DTOs.Mail;
+﻿using API.Data.DTOs.Mail;
 
-namespace api.Commons.Utils
+namespace API.Commons.Utils
 {
     /// <summary>
     /// Mail service interface

@@ -1,7 +1,7 @@
-﻿using api.Data.DTOs.Authentication;
+﻿using API.Data.DTOs.Authentication;
 using Microsoft.AspNetCore.Identity;
 
-namespace api.Services.Interfaces
+namespace API.Services.Interfaces
 {
     /// <summary>
     /// Authentication service

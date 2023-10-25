@@ -1,4 +1,4 @@
-﻿namespace api.Data.Constants
+﻿namespace API.Data.Constants
 {
     /// <summary>
     /// User roles

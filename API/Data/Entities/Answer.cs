@@ -1,4 +1,4 @@
-﻿namespace api.Data.Entities
+﻿namespace API.Data.Entities
 {
     /// <summary>
     /// Answer
@@ -13,5 +13,35 @@
         /// Answer String
         /// </summary>
         public string AnswerString { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Question
+        /// </summary>
+        public Guid QuestionId { get; set; }    
+
+        /// <summary>
+        /// Question
+        /// </summary>
+        public virtual Question? Question { get; set; }
+
+        /// <summary>
+        /// Created User Id
+        /// </summary>
+        public Guid? CreatedUserId { get; set; }
+
+        /// <summary>
+        /// Created Date
+        /// </summary>
+        public DateTime? CreatedDate { get; set; }
+
+        /// <summary>
+        /// Updated User Id
+        /// </summary>
+        public Guid? UpdatedUserId { get; set; }
+
+        /// <summary>
+        /// Updated User Date
+        /// </summary>
+        public DateTime? UpdatedDate { get; set; }
     }
 }
