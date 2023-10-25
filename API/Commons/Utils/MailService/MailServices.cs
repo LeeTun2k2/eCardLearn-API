@@ -1,10 +1,10 @@
-﻿using api.Data.DTOs.Mail;
+﻿using API.Data.DTOs.Mail;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Options;
 using MimeKit;
 
-namespace api.Commons.Utils
+namespace API.Commons.Utils
 {
     /// <summary>
     /// Mail Service

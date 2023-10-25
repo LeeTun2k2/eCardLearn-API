@@ -1,8 +1,7 @@
-﻿using api.Commons.Utils;
-using api.Data.Constants;
-using api.Data.DTOs.Authentication;
-using api.Data.Entities;
-using api.Services.Interfaces;
+﻿using API.Commons.Utils;
+using API.Data.DTOs.Authentication;
+using API.Data.Entities;
+using API.Services.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
@@ -11,7 +10,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace api.Services.Implements
+namespace API.Services.Implements
 {
     /// <summary>
     /// Authentication service
@@ -75,15 +74,7 @@ namespace api.Services.Implements
                 // send email confirmation link
                 await _mailService.SendAsync(MailTemplate.Registration(email, confirmationLink), new CancellationToken());
 
-                // add user to user role
-                var user = await _userManager.FindByEmailAsync(email);
-
-                if (user != null)
-                {
-                    var result = await _userManager.AddToRoleAsync(user, UserRoles.Student);
-
-                    return result;
-                }
+                return IdentityResult.Success;
             }
 
             return IdentityResult.Failed(new IdentityError { Code = "500", Description = "Failed to register user." });
@@ -131,7 +122,7 @@ namespace api.Services.Implements
 
             if (user != null)
             {
-                var username = user.UserName!;
+                var username = user.UserName ?? string.Empty;
 
                 var result = await _signInManager.PasswordSignInAsync(username, password, rememberMe, true);
 

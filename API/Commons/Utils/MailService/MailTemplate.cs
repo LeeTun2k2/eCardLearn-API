@@ -1,7 +1,7 @@
-﻿using api.Data.DTOs.Mail;
+﻿using API.Data.DTOs.Mail;
 using System.Drawing.Text;
 
-namespace api.Commons.Utils
+namespace API.Commons.Utils
 {
     /// <summary>
     /// Mail Template

@@ -1,6 +1,12 @@
-﻿using System.Linq.Expressions;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Linq.Expressions;
+using System.Linq;
+using API.Commons.Paginations;
 
-namespace api.Data.Repositories
+namespace API.Data.Repositories
 {
     /// <summary>
     /// Base repository
@@ -8,83 +14,142 @@ namespace api.Data.Repositories
     /// <typeparam name="T"></typeparam>
     public class BaseRepository<T> : IBaseRepository<T> where T : class
     {
+        private readonly IUnitOfWork _unitOfWork;
+
         /// <summary>
-        /// Data context
+        /// Db Set
         /// </summary>
-        protected readonly DataContext _context;
+        public DbSet<T> Entities { get; }
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="context"></param>
-        public BaseRepository(DataContext context)
+        /// <param name="unitOfWork"></param>
+        public BaseRepository(DataContext context, IUnitOfWork unitOfWork)
         {
-            _context = context;
+            Entities = context.Set<T>();
+            _unitOfWork = unitOfWork;
         }
 
         /// <summary>
-        /// Add entity
+        /// Add
         /// </summary>
         /// <param name="entity"></param>
-        public void Add(T entity)
+        /// <returns></returns>
+        public async Task<T?> AddAsync(T entity)
         {
-            _context.Set<T>().Add(entity);
+            await Entities.AddAsync(entity);
+            await _unitOfWork.SaveChangesAsync(); 
+            return entity;
         }
 
         /// <summary>
-        /// Add range of entities
+        /// Add multiple
         /// </summary>
         /// <param name="entities"></param>
-        public void AddRange(IEnumerable<T> entities)
-        {
-            _context.Set<T>().AddRange(entities);
-        }
-
-        /// <summary>
-        /// Find entities by expression
-        /// </summary>
-        /// <param name="expression"></param>
         /// <returns></returns>
-        public IEnumerable<T> Find(Expression<Func<T, bool>> expression)
+        public async Task<IEnumerable<T>?> AddRangeAsync(IEnumerable<T> entities)
         {
-            return _context.Set<T>().Where(expression);
+            await Entities.AddRangeAsync(entities);
+            await _unitOfWork.SaveChangesAsync();
+            return entities;
         }
 
         /// <summary>
-        /// Get all entities
+        /// Get
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<T> GetAll()
+        public async Task<IEnumerable<T>?> GetAsync(Expression<Func<T, bool>>? filter = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null, PaginationParameters? pagination = null)
         {
-            return _context.Set<T>().ToList();
+            IQueryable<T> query = Entities;
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            if (orderBy != null)
+            {
+                query = orderBy(query);
+            }
+
+            if (pagination != null)
+            {
+                if (pagination.PageNumber < 1)
+                {
+                    pagination.PageNumber = 1; // Ensure the page number is at least 1
+                }
+
+                if (pagination.PageSize < 1)
+                {
+                    pagination.PageSize = 10; // Default page size
+                }
+
+                int itemsToSkip = (pagination.PageNumber - 1) * pagination.PageSize;
+
+                query = query.Skip(itemsToSkip).Take(pagination.PageSize);
+            }
+
+            return await query.ToListAsync();
         }
 
         /// <summary>
-        /// Get entity by id
+        /// Get by Id
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public T? GetById(Guid id)
+        public async Task<T?> GetByIdAsync(Guid id)
         {
-            return _context.Set<T>().Find(id);
+            return await Entities.FindAsync(id);
         }
 
         /// <summary>
-        /// Remove entity
+        /// Remove
         /// </summary>
         /// <param name="entity"></param>
-        public void Remove(T entity)
+        /// <returns></returns>
+        public async Task<bool> RemoveAsync(T entity)
         {
-            _context.Set<T>().Remove(entity);
+            Entities.Remove(entity);
+            await _unitOfWork.SaveChangesAsync(); 
+            return true;
         }
 
         /// <summary>
-        /// Remove range of entities
+        /// Remove multiple
         /// </summary>
         /// <param name="entities"></param>
-        public void RemoveRange(IEnumerable<T> entities)
+        /// <returns></returns>
+        public async Task<bool> RemoveRangeAsync(IEnumerable<T> entities)
         {
-            _context.Set<T>().RemoveRange(entities);
+            Entities.RemoveRange(entities);
+            await _unitOfWork.SaveChangesAsync();
+            return true;
+        }
+
+        /// <summary>
+        /// Update 
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        public async Task<T?> UpdateAsync(T entity)
+        {
+            Entities.Update(entity);
+            await _unitOfWork.SaveChangesAsync();
+            return entity;
+        }
+
+        /// <summary>
+        /// Update multiple
+        /// </summary>
+        /// <param name="entities"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<T>?> UpdateRangeAsync(IEnumerable<T> entities)
+        {
+            Entities.UpdateRange(entities);
+            await _unitOfWork.SaveChangesAsync();
+            return entities;
         }
     }
 }
