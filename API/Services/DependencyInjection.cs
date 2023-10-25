@@ -1,8 +1,7 @@
-﻿using api.Services;
-using api.Services.Implements;
-using api.Services.Interfaces;
+﻿using API.Services.Implements;
+using API.Services.Interfaces;
 
-namespace api.Services
+namespace API.Services
 {
     /// <summary>
     /// Dependency injection
@@ -17,6 +16,7 @@ namespace api.Services
         public static IServiceCollection AddServices(this IServiceCollection service)
         {
             service.AddTransient<IAuthenticationService, AuthenticationService>();
+            service.AddTransient<ITopicService, TopicService>();
             return service;
         }
     }

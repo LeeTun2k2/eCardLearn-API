@@ -1,10 +1,10 @@
-﻿using api.Data.Constants;
-using api.Data.Entities;
+﻿using API.Data.Constants;
+using API.Data.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.CodeAnalysis;
 using System.Reflection;
 
-namespace api.Data
+namespace API.Data
 {
     /// <summary>
     /// Seed data

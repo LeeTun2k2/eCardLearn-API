@@ -1,4 +1,4 @@
-﻿namespace api.Data.Repositories
+﻿namespace API.Data.Repositories
 {
     /// <summary>
     /// Unit of Work Interface
@@ -8,23 +8,23 @@
         /// <summary>
         /// Commit Transaction
         /// </summary>
-        void CommitTransaction();
+        Task CommitTransactionAsync();
 
         /// <summary>
         /// Rollback Transaction
         /// </summary>
-        void RollbackTransaction();
+        Task RollbackTransactionAsync();
 
         /// <summary>
         /// Save Changes
         /// </summary>
         /// <returns></returns>
-        int SaveChanges();
+        Task<int> SaveChangesAsync();
 
         /// <summary>
         /// Begin Transaction
         /// </summary>
-        void BeginTransaction();
+        Task BeginTransactionAsync();
     }
 
 }

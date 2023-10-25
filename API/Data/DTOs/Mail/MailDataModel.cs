@@ -1,4 +1,4 @@
-﻿namespace api.Data.DTOs.Mail
+﻿namespace API.Data.DTOs.Mail
 {
     /// <summary>
     /// Mail Data Model
