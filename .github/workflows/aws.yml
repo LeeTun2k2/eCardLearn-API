@@ -73,7 +73,6 @@ jobs:
         # Build a docker container and
         # push it to ECR so that it can
         # be deployed to ECS.
-        cd API
         docker build -t ecardlearn .
         docker push ecardlearn
         echo "image=ecardlearn" >> $GITHUB_OUTPUT
