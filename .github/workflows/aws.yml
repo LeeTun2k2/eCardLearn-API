@@ -51,11 +51,11 @@ jobs:
       run: |
         echo "$SSH_PRIVATE_KEY" > id_rsa
         chmod 600 id_rsa
-        scp -i id_rsa -o "StrictHostKeyChecking no" -o "UserKnownHostsFile=/dev/null" $ECR_REGISTRY/$ECR_REPOSITORY:latest ec2-user@$EC2_IP_ADDRESS:~/$ECR_REPOSITORY:latest
-        ssh -i id_rsa -o "StrictHostKeyChecking no" -o "UserKnownHostsFile=/dev/null" ec2-user@$EC2_IP_ADDRESS 'docker stop $ECR_REPOSITORY && docker rm $ECR_REPOSITORY && docker rmi $ECR_REPOSITORY:latest && docker load -i $ECR_REPOSITORY:latest'
+        scp -i id_rsa -o "StrictHostKeyChecking no" -o "UserKnownHostsFile=/dev/null" $ECR_REGISTRY/$ECR_REPOSITORY:latest ec2-user@${{ EC2_IP_ADDRESS }}:~/$ECR_REPOSITORY:latest
+        ssh -i id_rsa -o "StrictHostKeyChecking no" -o "UserKnownHostsFile=/dev/null" ec2-user@${{ EC2_IP_ADDRESS }} 'docker stop $ECR_REPOSITORY && docker rm $ECR_REPOSITORY && docker rmi $ECR_REPOSITORY:latest && docker load -i $ECR_REPOSITORY:latest'
     
     - name: Start Docker container on EC2
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       run: |
-        ssh -i id_rsa -o "StrictHostKeyChecking no" -o "UserKnownHostsFile=/dev/null" ec2-user@$EC2_IP_ADDRESS 'docker run -d -p 80:80 --name $ECR_REPOSITORY $ECR_REPOSITORY:latest'
+        ssh -i id_rsa -o "StrictHostKeyChecking no" -o "UserKnownHostsFile=/dev/null" ec2-user@${{ EC2_IP_ADDRESS }} 'docker run -d -p 80:80 --name $ECR_REPOSITORY $ECR_REPOSITORY:latest'
