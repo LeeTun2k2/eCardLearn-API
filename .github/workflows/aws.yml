@@ -11,6 +11,7 @@ env:
   ECR_REPOSITORY: ecardlearn-api
   ECR_REGISTRY: 952043753825.dkr.ecr.us-east-2.amazonaws.com
   CONTAINER_NAME: ecardlearn-api
+  IMAGE_TAG: ${{ github.sha }}
 
 permissions:
   contents: read
@@ -38,8 +39,6 @@ jobs:
 
     - name: Build, tag, and push image to Amazon ECR
       id: build-image
-      env:
-        IMAGE_TAG: ${{ github.sha }}
       run: |
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
