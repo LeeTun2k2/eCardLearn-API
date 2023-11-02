@@ -9,9 +9,9 @@ env:
   AWS_REGION: ap-southeast-2
   EC2_IP_ADDRESS: "3.27.242.207"
   ECR_REPOSITORY: ecardlearn-api
-  ECR_REGISTRY: 952043753825.dkr.ecr.us-east-2.amazonaws.com
+  ECR_REGISTRY: 952043753825.dkr.ecr.ap-southeast-2.amazonaws.com
   CONTAINER_NAME: ecardlearn-api
-  IMAGE_TAG: latest
+  IMAGE_TAG: ${{ github.sha }}
 
 permissions:
   contents: read
@@ -35,26 +35,26 @@ jobs:
 
     - name: Login to Amazon ECR
       id: login-ecr
-      run: docker login -u AWS -p $(aws ecr get-login-password --region us-east-2 ) ${{ env.ECR_REGISTRY }}
+      run: docker login -u AWS -p $(aws ecr get-login-password --region ${{ env.AWS_REGION }} ) ${{ env.ECR_REGISTRY }}
 
     - name: Build, tag, and push image to Amazon ECR
       id: build-image
       run: |
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" 
 
-    #- name: SSH into EC2 and pull Docker image
-    #  env:
-    #    SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-    #  run: |
-    #    echo "$SSH_PRIVATE_KEY" > id_rsa
-    #    chmod 600 id_rsa
-    #    scp -i id_rsa -o "StrictHostKeyChecking no" -o "UserKnownHostsFile=/dev/null" $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ec2-user@${{ env.EC2_IP_ADDRESS }}:~/$ECR_REPOSITORY:latest
-    #    ssh -i id_rsa -o "StrictHostKeyChecking no" -o "UserKnownHostsFile=/dev/null" ec2-user@${{ env.EC2_IP_ADDRESS }} 'docker stop $ECR_REPOSITORY && docker rm $ECR_REPOSITORY && docker rmi $ECR_REPOSITORY:latest && docker load -i $ECR_REPOSITORY:latest'
+    - name: SSH into EC2 and pull Docker image
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      run: |
+        echo "$SSH_PRIVATE_KEY" > id_rsa
+        chmod 600 id_rsa
+        scp -i id_rsa -o "StrictHostKeyChecking no" -o "UserKnownHostsFile=/dev/null" $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ec2-user@${{ env.EC2_IP_ADDRESS }}:~/$ECR_REPOSITORY:latest
+        ssh -i id_rsa -o "StrictHostKeyChecking no" -o "UserKnownHostsFile=/dev/null" ec2-user@${{ env.EC2_IP_ADDRESS }} 'docker stop $ECR_REPOSITORY && docker rm $ECR_REPOSITORY && docker rmi $ECR_REPOSITORY:latest && docker load -i $ECR_REPOSITORY:latest'
     
-    #- name: Start Docker container on EC2
-    #  env:
-    #    SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-    #  run: |
-    #    ssh -i id_rsa -o "StrictHostKeyChecking no" -o "UserKnownHostsFile=/dev/null" ec2-user@${{ env.EC2_IP_ADDRESS }} 'docker run -d -p 80:80 --name $ECR_REPOSITORY $ECR_REPOSITORY:latest'
+    - name: Start Docker container on EC2
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      run: |
+        ssh -i id_rsa -o "StrictHostKeyChecking no" -o "UserKnownHostsFile=/dev/null" ec2-user@${{ env.EC2_IP_ADDRESS }} 'docker run -d -p 80:80 --name $ECR_REPOSITORY $ECR_REPOSITORY:latest'
