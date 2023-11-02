@@ -11,7 +11,7 @@ env:
   ECR_REPOSITORY: ecardlearn-api
   ECR_REGISTRY: 952043753825.dkr.ecr.us-east-2.amazonaws.com
   CONTAINER_NAME: ecardlearn-api
-  IMAGE_TAG: ${{ github.sha }}
+  IMAGE_TAG: latest
 
 permissions:
   contents: read
