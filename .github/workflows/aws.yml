@@ -63,7 +63,7 @@ jobs:
     - name: EC2 - Stop current container
       env:
         SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
-      run: ssh -i private.pem -o "StrictHostKeyChecking no" -o "UserKnownHostsFile=/dev/null" ec2-user@${{env.EC2_IP_ADDRESS}} 'docker stop $ECR_REPOSITORY && docker rm $ECR_REPOSITORY'
+      run: ssh -i private.pem -o "StrictHostKeyChecking no" -o "UserKnownHostsFile=/dev/null" ec2-user@${{env.EC2_IP_ADDRESS}} 'docker stop ${{env.ECR_REPOSITORY}} && docker rm ${{env.ECR_REPOSITORY}}'
     
     - name: EC2 - Start Docker container
       run: |
