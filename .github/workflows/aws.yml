@@ -44,6 +44,9 @@ jobs:
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" 
 
+    - name: Wait for ECR loading
+      run: sleep 60
+
     - name: SSH into EC2 and pull Docker image
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
