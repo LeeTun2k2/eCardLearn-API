@@ -27,6 +27,10 @@ namespace API.Data.Repositories
             services.AddTransient<IBaseRepository<Admin>, AdminRepository>();
             services.AddTransient<IAdminRepository, AdminRepository>();
 
+            // Achievement
+            services.AddTransient<IBaseRepository<Achievement>, AchievementRepository>();
+            services.AddTransient<IAchievementRepository, AchievementRepository>();
+
             // Answer
             services.AddTransient<IBaseRepository<Answer>, AnswerRepository>();
             services.AddTransient<IAnswerRepository, AnswerRepository>();
@@ -82,6 +86,10 @@ namespace API.Data.Repositories
             // User
             services.AddTransient<IBaseRepository<User>, UserRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
+
+            // UserEarnedAchievement
+            services.AddTransient<IBaseRepository<UserEarnedAchievement>, UserEarnedAchievementRepository>();
+            services.AddTransient<IUserEarnedAchievementRepository, UserEarnedAchievementRepository>();
 
             return services;
         }
