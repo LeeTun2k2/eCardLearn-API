@@ -133,12 +133,15 @@ namespace API.Services.Implements
                     var tokenString = await GenerateJsonWebToken(user);
                     return (tokenString, userVM);
                 }
+
                 if (result.IsLockedOut)
                 {
-                    throw new Exception("User account locked out.");
+                    return ("User account locked out.", null);
                 }
+
+                return ("Login fail.", null);
             }
-            return ("", null);
+            return ("User not found.", null);
         }
 
         /// <summary>

@@ -162,8 +162,7 @@ namespace API.Controllers
 
             if (string.IsNullOrEmpty(token) || userVM is null)
             {
-                _logger.LogError("User does not exist or login failed.");
-                return Unauthorized(new { Error = "Invalid credentials." }); // Nếu lỗi check Database xem email confirm chưa.
+                return Unauthorized(new { Error = token });
             }
 
             return Ok(new { Token = token, User = userVM });
