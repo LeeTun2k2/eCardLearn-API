@@ -69,7 +69,7 @@ namespace API.Services.Implements
                 var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
 
                 // generate email confirmation link
-                var confirmationLink = $"{_config["AppUrl"]}/api/confirm-email?email={email}&token={encodedToken}";
+                var confirmationLink = $"{_config["AppUrl"]}/api/Authentication/ConfirmEmail?email={email}&token={encodedToken}";
 
                 // send email confirmation link
                 await _mailService.SendAsync(MailTemplate.Registration(email, confirmationLink), new CancellationToken());
@@ -156,7 +156,7 @@ namespace API.Services.Implements
                 var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
                 // Generate password reset URL
-                var callbackUrl = $"{_config["AppUrl"]}/api/reset-password?email={email}&token={token}";
+                var callbackUrl = $"{_config["AppUrl"]}/api/Authentication/ResetPassword?email={email}&token={token}";
 
                 // Send password reset email
                 await _mailService.SendAsync(MailTemplate.ForgotPassword(email, callbackUrl), new CancellationToken());
