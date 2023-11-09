@@ -3,8 +3,6 @@ name: Deploy to Amazon EC2
 on:
   push:
     branches: [ "production" ]
-  pull_request:
-    branches: [ "production" ]
 env:
   AWS_REGION: ap-southeast-2
   EC2_IP_ADDRESS: "3.27.242.207"
