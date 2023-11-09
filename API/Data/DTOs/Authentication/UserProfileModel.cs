@@ -10,9 +10,9 @@ namespace API.Data.DTOs.Authentication
     public class UserProfileModel
     {
         /// <summary>
-        /// User name
+        /// Id
         /// </summary>
-        public string UserName { get; set; } = string.Empty;
+        public Guid Id { get; set; }
 
         /// <summary>
         /// Email must have format like "example@gmail.com"
@@ -50,5 +50,10 @@ namespace API.Data.DTOs.Authentication
         /// Link to get avatar
         /// </summary>
         public string? AvatarUri { get; set; } = string.Empty;
+
+        /// <summary>
+        /// List role of user
+        /// </summary>
+        public IList<string> Roles { get; set; } = new List<string>();
     }
 }
