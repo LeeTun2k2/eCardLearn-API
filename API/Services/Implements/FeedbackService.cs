@@ -1,7 +1,7 @@
 ﻿using API.Commons.Paginations;
 using API.Data.DTOs.Feedback;
 using API.Data.Entities;
-using API.Data.Repositories;
+using API.Data.Repositories.Interfaces;
 using API.Services.Interfaces;
 using AutoMapper;
 using System.Linq.Expressions;
@@ -13,15 +13,16 @@ namespace API.Services.Implements
     /// </summary>
     public class FeedbackService : BaseService<Feedback, FeedbackViewModel, FeedbackAddModel, FeedbackEditModel, FeedbackFilterModel>, IFeedbackService
     {
+        private new readonly IFeedbackRepository _repository;
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="repository"></param>
         /// <param name="mapper"></param>
-        public FeedbackService(IBaseRepository<Feedback> repository, IMapper mapper) 
+        public FeedbackService(IFeedbackRepository repository, IMapper mapper) 
             : base(repository, mapper)
         {
-
+            _repository = repository;
         }
 
         /// <summary>
@@ -62,6 +63,30 @@ namespace API.Services.Implements
             // Map the retrieved entities to ViewModel
             var models = _mapper.Map<IEnumerable<FeedbackViewModel>>(entities);
 
+            return models;
+        }
+
+        /// <summary>
+        /// Get Feedback by User id
+        /// </summary>
+        /// <param name="UserId"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<FeedbackViewModel>> GetByUserId(Guid UserId)
+        {
+            var entities = await _repository.GetByUserId(UserId);
+            var models = _mapper.Map<IEnumerable<FeedbackViewModel>>(entities);
+            return models;
+        }
+
+        /// <summary>
+        /// Get Feedback by Course id
+        /// </summary>
+        /// <param name="CourseId"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<FeedbackViewModel>> GetByCourseId(Guid CourseId)
+        {
+            var entities = await _repository.GetByCourseId(CourseId);
+            var models = _mapper.Map<IEnumerable<FeedbackViewModel>>(entities);
             return models;
         }
     }

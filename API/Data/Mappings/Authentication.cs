@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using API.Data.Entities;
-using API.Data.DTOs.Topic;
 using API.Data.DTOs.Authentication;
 
 namespace API.Data

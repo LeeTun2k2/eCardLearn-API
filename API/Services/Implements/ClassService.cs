@@ -1,7 +1,7 @@
 ﻿using API.Commons.Paginations;
 using API.Data.DTOs.Class;
 using API.Data.Entities;
-using API.Data.Repositories;
+using API.Data.Repositories.Interfaces;
 using API.Services.Interfaces;
 using AutoMapper;
 using System.Linq.Expressions;
@@ -13,15 +13,17 @@ namespace API.Services.Implements
     /// </summary>
     public class ClassService : BaseService<Class, ClassViewModel, ClassAddModel, ClassEditModel, ClassFilterModel>, IClassService
     {
+        private new readonly IClassRepository _repository;
+
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="repository"></param>
         /// <param name="mapper"></param>
-        public ClassService(IBaseRepository<Class> repository, IMapper mapper) 
+        public ClassService(IClassRepository repository, IMapper mapper) 
             : base(repository, mapper)
         {
-
+            _repository = repository;
         }
 
         /// <summary>
@@ -59,6 +61,18 @@ namespace API.Services.Implements
             // Map the retrieved entities to ViewModel
             var models = _mapper.Map<IEnumerable<ClassViewModel>>(entities);
 
+            return models;
+        }
+
+        /// <summary>
+        /// Get Class by Teacher id
+        /// </summary>
+        /// <param name="TeacherId"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<ClassViewModel>> GetByTeacherId(Guid TeacherId)
+        {
+            var entities = await _repository.GetByTeacherId(TeacherId);
+            var models = _mapper.Map<IEnumerable<ClassViewModel>>(entities);
             return models;
         }
     }

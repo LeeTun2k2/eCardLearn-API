@@ -1,7 +1,7 @@
 ﻿using API.Commons.Paginations;
 using API.Data.DTOs.Question;
 using API.Data.Entities;
-using API.Data.Repositories;
+using API.Data.Repositories.Interfaces;
 using API.Services.Interfaces;
 using AutoMapper;
 using System.Linq.Expressions;
@@ -13,15 +13,17 @@ namespace API.Services.Implements
     /// </summary>
     public class QuestionService : BaseService<Question, QuestionViewModel, QuestionAddModel, QuestionEditModel, QuestionFilterModel>, IQuestionService
     {
+        private new readonly IQuestionRepository _repository;
+
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="repository"></param>
         /// <param name="mapper"></param>
-        public QuestionService(IBaseRepository<Question> repository, IMapper mapper) 
+        public QuestionService(IQuestionRepository repository, IMapper mapper) 
             : base(repository, mapper)
         {
-
+            _repository = repository;
         }
 
         /// <summary>
@@ -58,5 +60,18 @@ namespace API.Services.Implements
 
             return models;
         }
+
+        /// <summary>
+        /// Get Question by Course id
+        /// </summary>
+        /// <param name="CourseId"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<QuestionViewModel>> GetByCourseId(Guid CourseId)
+        {
+            var entities = await _repository.GetByCourseId(CourseId);
+            var models = _mapper.Map<IEnumerable<QuestionViewModel>>(entities);
+            return models;
+        }
+
     }
 }

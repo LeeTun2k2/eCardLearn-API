@@ -1,5 +1,6 @@
 ﻿using API.Data.Entities;
 using API.Data.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Data.Repositories.Implements
 {
@@ -16,6 +17,19 @@ namespace API.Data.Repositories.Implements
         public ClassRepository(DataContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
         {
 
+        }
+
+        /// <summary>
+        /// Get Class by Teacher id
+        /// </summary>
+        /// <param name="TeacherId"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<Class>> GetByTeacherId(Guid TeacherId)
+        {
+            return await Entities
+                .Where(x => x.TeacherId == TeacherId)
+                .AsNoTracking()
+                .ToListAsync();
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using API.Data.Constants;
-using API.Data.DTOs.Notification;
+﻿using API.Data.DTOs.Notification;
 using API.Data.Entities;
 using API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -198,6 +197,64 @@ namespace API.Controllers
                     return NoContent();
                 }
                 return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        /// <summary>
+        /// Get Notification by Class Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("[action]/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(NotificationViewModel), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        // [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
+        public async Task<IActionResult> GetByClassId(Guid id)
+        {
+            try
+            {
+                var view = await _notificationService.GetByClassId(id);
+                if (view == null)
+                {
+                    return NotFound();
+                }
+                return Ok(view);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        /// <summary>
+        /// Get Notification by Teacher Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("[action]/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(NotificationViewModel), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        // [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
+        public async Task<IActionResult> GetByTeacherId(Guid id)
+        {
+            try
+            {
+                var view = await _notificationService.GetByTeacherId(id);
+                if (view == null)
+                {
+                    return NotFound();
+                }
+                return Ok(view);
             }
             catch (Exception ex)
             {

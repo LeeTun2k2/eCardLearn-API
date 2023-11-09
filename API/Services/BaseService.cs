@@ -1,8 +1,5 @@
-﻿using API.Data.Entities;
-using API.Data.Repositories;
+﻿using API.Data.Repositories;
 using AutoMapper;
-using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
 
 namespace API.Services
 {

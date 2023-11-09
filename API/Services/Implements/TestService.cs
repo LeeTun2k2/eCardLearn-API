@@ -1,7 +1,7 @@
 ﻿using API.Commons.Paginations;
 using API.Data.DTOs.Test;
 using API.Data.Entities;
-using API.Data.Repositories;
+using API.Data.Repositories.Interfaces;
 using API.Services.Interfaces;
 using AutoMapper;
 using System.Linq.Expressions;
@@ -13,15 +13,17 @@ namespace API.Services.Implements
     /// </summary>
     public class TestService : BaseService<Test, TestViewModel, TestAddModel, TestEditModel, TestFilterModel>, ITestService
     {
+        private new readonly ITestRepository _repository;
+
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="repository"></param>
         /// <param name="mapper"></param>
-        public TestService(IBaseRepository<Test> repository, IMapper mapper) 
+        public TestService(ITestRepository repository, IMapper mapper) 
             : base(repository, mapper)
         {
-
+            _repository = repository;
         }
 
         /// <summary>

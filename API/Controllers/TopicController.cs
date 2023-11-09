@@ -1,5 +1,4 @@
-﻿using API.Data.Constants;
-using API.Data.DTOs.Topic;
+﻿using API.Data.DTOs.Topic;
 using API.Data.Entities;
 using API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;

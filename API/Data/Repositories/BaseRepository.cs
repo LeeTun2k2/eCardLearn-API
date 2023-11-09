@@ -1,9 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Linq.Expressions;
-using System.Linq;
 using API.Commons.Paginations;
 
 namespace API.Data.Repositories

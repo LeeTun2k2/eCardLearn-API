@@ -1,5 +1,4 @@
-﻿using API.Data.Constants;
-using API.Data.DTOs.UserEarnedAchievement;
+﻿using API.Data.DTOs.UserEarnedAchievement;
 using API.Data.Entities;
 using API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;

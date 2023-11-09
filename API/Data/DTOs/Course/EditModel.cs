@@ -1,6 +1,4 @@
-﻿using API.Data.Entities;
-
-namespace API.Data.DTOs.Course
+﻿namespace API.Data.DTOs.Course
 {
     /// <summary>
     /// Course Edit Model
