@@ -1,8 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Identity;
-
-namespace API.Data.Entities
+﻿namespace API.Data.Entities
 {
     /// <summary>
     /// Teacher
@@ -13,5 +9,10 @@ namespace API.Data.Entities
         /// Courses
         /// </summary>
         public virtual IEnumerable<Course>? Courses { get; set; }
+
+        /// <summary>
+        /// Notifications
+        /// </summary>
+        public virtual IEnumerable<Notification>? Notifications { get; set; }
     }
 }

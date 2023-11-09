@@ -21,6 +21,16 @@
         public string NotificationContent { get; set; } = string.Empty;
 
         /// <summary>
+        /// Class Id
+        /// </summary>
+        public Guid ClassId { get; set; }
+
+        /// <summary>
+        /// Teacher Id
+        /// </summary>
+        public Guid TeacherId { get; set; }
+
+        /// <summary>
         /// Created User Id
         /// </summary>
         public Guid? CreatedUserId { get; set; }

@@ -8,6 +8,11 @@ namespace API.Services.Interfaces
     /// </summary>
     public interface ICourseService : IBaseService<Course, CourseViewModel, CourseAddModel, CourseEditModel, CourseFilterModel>
     {
-
+        /// <summary>
+        /// Get Course by Teacher id
+        /// </summary>
+        /// <param name="TeacherId"></param>
+        /// <returns></returns>
+        Task<IEnumerable<CourseViewModel>> GetByTeacherId(Guid TeacherId);
     }
 }

@@ -54,6 +54,7 @@ namespace API.Services.Implements
             // map model to entity
             var applicationUser = _mapper.Map<User>(registerModel);
             applicationUser.LockoutEnabled = true;
+            applicationUser.UserName = registerModel.Email;
 
             var password = registerModel.Password;
 
@@ -129,6 +130,7 @@ namespace API.Services.Implements
                 if (result.Succeeded)
                 {
                     var userVM = _mapper.Map<UserProfileModel>(user);
+                    userVM.Roles = await _userManager.GetRolesAsync(user);
 
                     var tokenString = await GenerateJsonWebToken(user);
                     return (tokenString, userVM);

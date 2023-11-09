@@ -34,6 +34,12 @@
         /// </summary>
         public virtual IEnumerable<StudentJoinClass>? StudentJoinClasses { get; set; }
 
+
+        /// <summary>
+        /// Notifications
+        /// </summary>
+        public virtual IEnumerable<Notification>? Notifications { get; set; }
+
         /// <summary>
         /// Created User Id
         /// </summary>

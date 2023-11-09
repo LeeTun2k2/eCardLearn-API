@@ -1,7 +1,7 @@
 ﻿using API.Commons.Paginations;
 using API.Data.DTOs.Course;
 using API.Data.Entities;
-using API.Data.Repositories;
+using API.Data.Repositories.Interfaces;
 using API.Services.Interfaces;
 using AutoMapper;
 using System.Linq.Expressions;
@@ -13,15 +13,17 @@ namespace API.Services.Implements
     /// </summary>
     public class CourseService : BaseService<Course, CourseViewModel, CourseAddModel, CourseEditModel, CourseFilterModel>, ICourseService
     {
+        private new readonly ICourseRepository _repository;
+
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="repository"></param>
         /// <param name="mapper"></param>
-        public CourseService(IBaseRepository<Course> repository, IMapper mapper) 
+        public CourseService(ICourseRepository repository, IMapper mapper) 
             : base(repository, mapper)
         {
-
+            _repository = repository;
         }
 
         /// <summary>
@@ -59,6 +61,18 @@ namespace API.Services.Implements
             // Map the retrieved entities to ViewModel
             var models = _mapper.Map<IEnumerable<CourseViewModel>>(entities);
 
+            return models;
+        }
+
+        /// <summary>
+        /// Get Course by Teacher id
+        /// </summary>
+        /// <param name="TeacherId"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<CourseViewModel>> GetByTeacherId(Guid TeacherId)
+        {
+            var entities = await _repository.GetByTeacherId(TeacherId);
+            var models = _mapper.Map<IEnumerable<CourseViewModel>>(entities);
             return models;
         }
     }

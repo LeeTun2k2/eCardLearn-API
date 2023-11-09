@@ -1,5 +1,4 @@
-﻿using API.Data.Constants;
-using API.Data.DTOs.Feedback;
+﻿using API.Data.DTOs.Feedback;
 using API.Data.Entities;
 using API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -8,10 +7,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-	/// <summary>
-	/// Feedback Controller
-	/// </summary>
-	public class FeedbackController : BaseController
+    /// <summary>
+    /// Feedback Controller
+    /// </summary>
+    public class FeedbackController : BaseController
     {
         private readonly IFeedbackService _feedbackService;
         private readonly ILogger<FeedbackController> _logger;
@@ -89,7 +88,7 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(FeedbackAddModel), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
+        // [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
         public async Task<IActionResult> Create([FromBody] FeedbackAddModel model)
         {
             try
@@ -134,7 +133,7 @@ namespace API.Controllers
         [ProducesResponseType(typeof(FeedbackEditModel), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(FeedbackViewModel), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
+        // [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] FeedbackEditModel model)
         {
             try
@@ -188,7 +187,7 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(FeedbackViewModel), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
+        // [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
         public async Task<IActionResult> Delete(Guid id)
         {
             try
@@ -198,6 +197,64 @@ namespace API.Controllers
                     return NoContent();
                 }
                 return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        /// <summary>
+        /// Get Feedback by User Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("[action]/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(FeedbackViewModel), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        // [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
+        public async Task<IActionResult> GetByUserId(Guid id)
+        {
+            try
+            {
+                var view = await _feedbackService.GetByUserId(id);
+                if (view == null)
+                {
+                    return NotFound();
+                }
+                return Ok(view);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        /// <summary>
+        /// Get Feedback by Course Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("[action]/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(FeedbackViewModel), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        // [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
+        public async Task<IActionResult> GetByCourseId(Guid id)
+        {
+            try
+            {
+                var view = await _feedbackService.GetByCourseId(id);
+                if (view == null)
+                {
+                    return NotFound();
+                }
+                return Ok(view);
             }
             catch (Exception ex)
             {

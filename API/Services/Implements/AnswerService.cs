@@ -1,7 +1,7 @@
 ﻿using API.Commons.Paginations;
 using API.Data.DTOs.Answer;
 using API.Data.Entities;
-using API.Data.Repositories;
+using API.Data.Repositories.Interfaces;
 using API.Services.Interfaces;
 using AutoMapper;
 using System.Linq.Expressions;
@@ -13,15 +13,16 @@ namespace API.Services.Implements
     /// </summary>
     public class AnswerService : BaseService<Answer, AnswerViewModel, AnswerAddModel, AnswerEditModel, AnswerFilterModel>, IAnswerService
     {
+        private new readonly IAnswerRepository _repository;
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="repository"></param>
         /// <param name="mapper"></param>
-        public AnswerService(IBaseRepository<Answer> repository, IMapper mapper) 
+        public AnswerService(IAnswerRepository repository, IMapper mapper) 
             : base(repository, mapper)
         {
-
+            _repository = repository;
         }
 
         /// <summary>
@@ -56,6 +57,30 @@ namespace API.Services.Implements
             // Map the retrieved entities to ViewModel
             var models = _mapper.Map<IEnumerable<AnswerViewModel>>(entities);
 
+            return models;
+        }
+
+        /// <summary>
+        /// Get Answer by Question id
+        /// </summary>
+        /// <param name="QuestionId"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<AnswerViewModel>> GetByQuestionId(Guid QuestionId)
+        {
+            var entities = await _repository.GetByQuestionId(QuestionId);
+            var models = _mapper.Map<IEnumerable<AnswerViewModel>>(entities);
+            return models;
+        }
+
+        /// <summary>
+        /// Get Answer by Course id
+        /// </summary>
+        /// <param name="CourseId"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<AnswerViewModel>> GetByCourseId(Guid CourseId)
+        {
+            var entities = await _repository.GetByCourseId(CourseId);
+            var models = _mapper.Map<IEnumerable<AnswerViewModel>>(entities);
             return models;
         }
     }

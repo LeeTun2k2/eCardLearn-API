@@ -1,7 +1,7 @@
 ﻿using API.Commons.Paginations;
 using API.Data.DTOs.Notification;
 using API.Data.Entities;
-using API.Data.Repositories;
+using API.Data.Repositories.Interfaces;
 using API.Services.Interfaces;
 using AutoMapper;
 using System.Linq.Expressions;
@@ -13,15 +13,16 @@ namespace API.Services.Implements
     /// </summary>
     public class NotificationService : BaseService<Notification, NotificationViewModel, NotificationAddModel, NotificationEditModel, NotificationFilterModel>, INotificationService
     {
+        private new readonly INotificationRepository _repository;
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="repository"></param>
         /// <param name="mapper"></param>
-        public NotificationService(IBaseRepository<Notification> repository, IMapper mapper) 
+        public NotificationService(INotificationRepository repository, IMapper mapper) 
             : base(repository, mapper)
         {
-
+            _repository = repository;
         }
 
         /// <summary>
@@ -59,6 +60,30 @@ namespace API.Services.Implements
             // Map the retrieved entities to ViewModel
             var models = _mapper.Map<IEnumerable<NotificationViewModel>>(entities);
 
+            return models;
+        }
+
+        /// <summary>
+        /// Get Notification by Class id
+        /// </summary>
+        /// <param name="ClassId"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<NotificationViewModel>> GetByClassId(Guid ClassId)
+        {
+            var entities = await _repository.GetByClassId(ClassId);
+            var models = _mapper.Map<IEnumerable<NotificationViewModel>>(entities);
+            return models;
+        }
+
+        /// <summary>
+        /// Get Notification by Teacher id
+        /// </summary>
+        /// <param name="TeacherId"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<NotificationViewModel>> GetByTeacherId(Guid TeacherId)
+        {
+            var entities = await _repository.GetByTeacherId(TeacherId);
+            var models = _mapper.Map<IEnumerable<NotificationViewModel>>(entities);
             return models;
         }
     }

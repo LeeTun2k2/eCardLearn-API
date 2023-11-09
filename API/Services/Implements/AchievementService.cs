@@ -1,7 +1,7 @@
 ﻿using API.Commons.Paginations;
 using API.Data.DTOs.Achievement;
 using API.Data.Entities;
-using API.Data.Repositories;
+using API.Data.Repositories.Interfaces;
 using API.Services.Interfaces;
 using AutoMapper;
 using System.Linq.Expressions;
@@ -13,15 +13,16 @@ namespace API.Services.Implements
     /// </summary>
     public class AchievementService : BaseService<Achievement, AchievementViewModel, AchievementAddModel, AchievementEditModel, AchievementFilterModel>, IAchievementService
     {
+        private new readonly IAchievementRepository _repository;
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="repository"></param>
         /// <param name="mapper"></param>
-        public AchievementService(IBaseRepository<Achievement> repository, IMapper mapper) 
+        public AchievementService(IAchievementRepository repository, IMapper mapper) 
             : base(repository, mapper)
         {
-
+            _repository = repository;
         }
 
         /// <summary>

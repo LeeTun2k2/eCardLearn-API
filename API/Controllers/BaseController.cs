@@ -1,6 +1,4 @@
 ﻿using API.Data.Entities;
-using API.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
