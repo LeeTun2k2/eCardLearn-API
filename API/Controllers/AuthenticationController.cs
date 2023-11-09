@@ -76,7 +76,7 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(UserRoles), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(UserProfileModel), StatusCodes.Status404NotFound)]
-        [Authorize]
+        // [Authorize]
         public async Task<IActionResult> RequestRole([FromBody] SetUserRole setup)
         {
             // Get user id
@@ -233,7 +233,7 @@ namespace API.Controllers
         [Route("[action]")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ChangePasswordModel), StatusCodes.Status400BadRequest)]
-        [Authorize]
+        // [Authorize]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordModel changePasswordModel)
         {
             if (!ModelState.IsValid)
@@ -257,7 +257,7 @@ namespace API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Authorize]
+        // [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Route("[action]")]
         public async Task<IActionResult> Logout()

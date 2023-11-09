@@ -89,7 +89,7 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ClassAddModel), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
+        // [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
         public async Task<IActionResult> Create([FromBody] ClassAddModel model)
         {
             try
@@ -134,7 +134,7 @@ namespace API.Controllers
         [ProducesResponseType(typeof(ClassEditModel), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ClassViewModel), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
+        // [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] ClassEditModel model)
         {
             try
@@ -188,7 +188,7 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ClassViewModel), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
+        // [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
         public async Task<IActionResult> Delete(Guid id)
         {
             try
@@ -198,6 +198,35 @@ namespace API.Controllers
                     return NoContent();
                 }
                 return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        /// <summary>
+        /// Get Class by Teacher Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("[action]/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ClassViewModel), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        // [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
+        public async Task<IActionResult> GetByTeacherId(Guid id)
+        {
+            try
+            {
+                var view = await _classService.GetByTeacherId(id);
+                if (view == null)
+                {
+                    return NotFound();
+                }
+                return Ok(view);
             }
             catch (Exception ex)
             {
