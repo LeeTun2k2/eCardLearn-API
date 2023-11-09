@@ -123,19 +123,7 @@ public partial class DataContext : IdentityDbContext<User, Role, Guid>
             .HasForeignKey(x => x.StudentId)
             .OnDelete(DeleteBehavior.NoAction);
 
-        builder.Entity<StudentJoinClass>()
-            .HasOne(x => x.Class)
-            .WithMany(x => x.StudentJoinClasses)
-            .HasForeignKey(x => x.StudentId)
-            .OnDelete(DeleteBehavior.NoAction);
-
         // Config Student Join Test
-        builder.Entity<StudentJoinTest>()
-            .HasOne(x => x.Student)
-            .WithMany(x => x.StudentJoinTests)
-            .HasForeignKey(x => x.StudentId)
-            .OnDelete(DeleteBehavior.NoAction);
-
         builder.Entity<StudentJoinTest>()
             .HasOne(x => x.Test)
             .WithMany(x => x.StudentJoinTests)
@@ -149,24 +137,24 @@ public partial class DataContext : IdentityDbContext<User, Role, Guid>
             .HasForeignKey(x => x.FeedbackId)
             .OnDelete(DeleteBehavior.NoAction);
 
-        builder.Entity<Feedback>()
-            .HasOne(x => x.Course)
-            .WithMany(x => x.Feedbacks)
-            .HasForeignKey(x => x.FeedbackId)
-            .OnDelete(DeleteBehavior.NoAction);
-
-
         // Config TestAnswer
-        builder.Entity<TestAnswer>()
-            .HasOne(x => x.Question)
-            .WithMany(x => x.TestAnswers)
-            .HasForeignKey(x => x.TestAnswerId)
-            .OnDelete(DeleteBehavior.NoAction);
-
         builder.Entity<TestAnswer>()
             .HasOne(x => x.Student)
             .WithMany(x => x.TestAnswers)
             .HasForeignKey(x => x.TestAnswerId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        builder.Entity<TestAnswer>()
+            .HasOne(x => x.Question)
+            .WithMany(x => x.TestAnswers)
+            .HasForeignKey(x => x.QuestionId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        // Config Notification
+        builder.Entity<Notification>()
+            .HasOne(x => x.Teacher)
+            .WithMany(x => x.Notifications)
+            .HasForeignKey(x => x.TeacherId)
             .OnDelete(DeleteBehavior.NoAction);
 
         OnModelCreatingPartial(builder);

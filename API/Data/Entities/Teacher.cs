@@ -9,5 +9,10 @@
         /// Courses
         /// </summary>
         public virtual IEnumerable<Course>? Courses { get; set; }
+
+        /// <summary>
+        /// Notifications
+        /// </summary>
+        public virtual IEnumerable<Notification>? Notifications { get; set; }
     }
 }
