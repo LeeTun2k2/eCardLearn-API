@@ -1,7 +1,7 @@
 ﻿using API.Commons.Paginations;
 using API.Data.DTOs.UserEarnedAchievement;
 using API.Data.Entities;
-using API.Data.Repositories;
+using API.Data.Repositories.Interfaces;
 using API.Services.Interfaces;
 using AutoMapper;
 using System.Linq.Expressions;
@@ -13,15 +13,17 @@ namespace API.Services.Implements
     /// </summary>
     public class UserEarnedAchievementService : BaseService<UserEarnedAchievement, UserEarnedAchievementViewModel, UserEarnedAchievementAddModel, UserEarnedAchievementEditModel, UserEarnedAchievementFilterModel>, IUserEarnedAchievementService
     {
+        private new readonly IUserEarnedAchievementRepository _repository;
+
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="repository"></param>
         /// <param name="mapper"></param>
-        public UserEarnedAchievementService(IBaseRepository<UserEarnedAchievement> repository, IMapper mapper) 
+        public UserEarnedAchievementService(IUserEarnedAchievementRepository repository, IMapper mapper) 
             : base(repository, mapper)
         {
-
+            _repository = repository;
         }
 
         /// <summary>

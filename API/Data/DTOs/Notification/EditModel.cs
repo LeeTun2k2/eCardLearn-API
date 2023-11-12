@@ -26,6 +26,18 @@ namespace API.Data.DTOs.Notification
         public string NotificationContent { get; set; } = string.Empty;
 
         /// <summary>
+        /// Class Id
+        /// </summary>
+        [Required]
+        public Guid ClassId { get; set; }
+
+        /// <summary>
+        /// Teacher Id
+        /// </summary>
+        [Required]
+        public Guid TeacherId { get; set; }
+
+        /// <summary>
         /// Created User Id
         /// </summary>
         public Guid? CreatedUserId { get; set; }

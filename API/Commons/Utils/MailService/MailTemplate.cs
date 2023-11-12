@@ -1,5 +1,4 @@
 ﻿using API.Data.DTOs.Mail;
-using System.Drawing.Text;
 
 namespace API.Commons.Utils
 {

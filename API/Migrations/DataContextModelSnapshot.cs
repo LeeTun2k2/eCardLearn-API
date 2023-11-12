@@ -17,7 +17,7 @@ namespace API.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.11")
+                .HasAnnotation("ProductVersion", "7.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -69,9 +69,6 @@ namespace API.Migrations
 
                     b.Property<Guid?>("CreatedUserId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("DateEarned")
-                        .HasColumnType("datetime2");
 
                     b.Property<int>("DayRequirement")
                         .HasColumnType("int");
@@ -232,6 +229,8 @@ namespace API.Migrations
 
                     b.HasKey("FeedbackId");
 
+                    b.HasIndex("CourseId");
+
                     b.ToTable("Feedback");
                 });
 
@@ -239,6 +238,9 @@ namespace API.Migrations
                 {
                     b.Property<Guid>("NotificationId")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ClassId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("CreatedDate")
@@ -255,6 +257,9 @@ namespace API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("TeacherId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
@@ -262,6 +267,10 @@ namespace API.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("NotificationId");
+
+                    b.HasIndex("ClassId");
+
+                    b.HasIndex("TeacherId");
 
                     b.ToTable("Notification");
                 });
@@ -327,6 +336,8 @@ namespace API.Migrations
 
                     b.HasKey("StudentJoinClassId");
 
+                    b.HasIndex("ClassId");
+
                     b.HasIndex("StudentId");
 
                     b.ToTable("StudentJoinClass");
@@ -347,6 +358,9 @@ namespace API.Migrations
                     b.Property<Guid>("StudentId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("StudentId1")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("TestId")
                         .HasColumnType("uniqueidentifier");
 
@@ -359,6 +373,8 @@ namespace API.Migrations
                     b.HasKey("StudentJoinTestId");
 
                     b.HasIndex("StudentId");
+
+                    b.HasIndex("StudentId1");
 
                     b.ToTable("StudentJoinTest");
                 });
@@ -435,6 +451,8 @@ namespace API.Migrations
                     b.HasKey("TestAnswerId");
 
                     b.HasIndex("AnswerId");
+
+                    b.HasIndex("QuestionId");
 
                     b.HasIndex("TestId");
 
@@ -740,8 +758,8 @@ namespace API.Migrations
                 {
                     b.HasOne("API.Data.Entities.Course", "Course")
                         .WithMany("Feedbacks")
-                        .HasForeignKey("FeedbackId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("API.Data.Entities.User", "User")
@@ -753,6 +771,25 @@ namespace API.Migrations
                     b.Navigation("Course");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("API.Data.Entities.Notification", b =>
+                {
+                    b.HasOne("API.Data.Entities.Class", "Class")
+                        .WithMany("Notifications")
+                        .HasForeignKey("ClassId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.Data.Entities.Teacher", "Teacher")
+                        .WithMany("Notifications")
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Class");
+
+                    b.Navigation("Teacher");
                 });
 
             modelBuilder.Entity("API.Data.Entities.Question", b =>
@@ -770,8 +807,8 @@ namespace API.Migrations
                 {
                     b.HasOne("API.Data.Entities.Class", "Class")
                         .WithMany("StudentJoinClasses")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .HasForeignKey("ClassId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("API.Data.Entities.Student", "Student")
@@ -787,16 +824,16 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Data.Entities.StudentJoinTest", b =>
                 {
-                    b.HasOne("API.Data.Entities.Student", "Student")
+                    b.HasOne("API.Data.Entities.Test", "Test")
                         .WithMany("StudentJoinTests")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("API.Data.Entities.Test", "Test")
+                    b.HasOne("API.Data.Entities.Student", "Student")
                         .WithMany("StudentJoinTests")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .HasForeignKey("StudentId1")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Student");
@@ -812,13 +849,13 @@ namespace API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("API.Data.Entities.Student", "Student")
+                    b.HasOne("API.Data.Entities.Question", "Question")
                         .WithMany("TestAnswers")
-                        .HasForeignKey("TestAnswerId")
+                        .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("API.Data.Entities.Question", "Question")
+                    b.HasOne("API.Data.Entities.Student", "Student")
                         .WithMany("TestAnswers")
                         .HasForeignKey("TestAnswerId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -892,6 +929,8 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Data.Entities.Class", b =>
                 {
+                    b.Navigation("Notifications");
+
                     b.Navigation("StudentJoinClasses");
                 });
 
@@ -929,6 +968,8 @@ namespace API.Migrations
             modelBuilder.Entity("API.Data.Entities.Teacher", b =>
                 {
                     b.Navigation("Courses");
+
+                    b.Navigation("Notifications");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,7 +1,7 @@
 ﻿using API.Commons.Paginations;
 using API.Data.DTOs.StudentJoinTest;
 using API.Data.Entities;
-using API.Data.Repositories;
+using API.Data.Repositories.Interfaces;
 using API.Services.Interfaces;
 using AutoMapper;
 using System.Linq.Expressions;
@@ -13,15 +13,17 @@ namespace API.Services.Implements
     /// </summary>
     public class StudentJoinTestService : BaseService<StudentJoinTest, StudentJoinTestViewModel, StudentJoinTestAddModel, StudentJoinTestEditModel, StudentJoinTestFilterModel>, IStudentJoinTestService
     {
+        private new readonly IStudentJoinTestRepository _repository;
+
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="repository"></param>
         /// <param name="mapper"></param>
-        public StudentJoinTestService(IBaseRepository<StudentJoinTest> repository, IMapper mapper) 
+        public StudentJoinTestService(IStudentJoinTestRepository repository, IMapper mapper) 
             : base(repository, mapper)
         {
-
+            _repository = repository;
         }
 
         /// <summary>

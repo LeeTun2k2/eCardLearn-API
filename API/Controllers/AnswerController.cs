@@ -1,5 +1,4 @@
-﻿using API.Data.Constants;
-using API.Data.DTOs.Answer;
+﻿using API.Data.DTOs.Answer;
 using API.Data.Entities;
 using API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -89,7 +88,7 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(AnswerAddModel), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
+        // [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
         public async Task<IActionResult> Create([FromBody] AnswerAddModel model)
         {
             try
@@ -134,7 +133,7 @@ namespace API.Controllers
         [ProducesResponseType(typeof(AnswerEditModel), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(AnswerViewModel), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
+        // [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] AnswerEditModel model)
         {
             try
@@ -188,7 +187,7 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(AnswerViewModel), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
+        // [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
         public async Task<IActionResult> Delete(Guid id)
         {
             try
@@ -198,6 +197,64 @@ namespace API.Controllers
                     return NoContent();
                 }
                 return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        /// <summary>
+        /// Get Answer by Question Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("[action]/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(AnswerViewModel), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        // [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
+        public async Task<IActionResult> GetByQuestionId(Guid id)
+        {
+            try
+            {
+                var view = await _answerService.GetByQuestionId(id);
+                if (view == null)
+                {
+                    return NotFound();
+                }
+                return Ok(view);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        /// <summary>
+        /// Get Answer by Course Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("[action]/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(AnswerViewModel), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        // [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
+        public async Task<IActionResult> GetByCourseId(Guid id)
+        {
+            try
+            {
+                var view = await _answerService.GetByCourseId(id);
+                if (view == null)
+                {
+                    return NotFound();
+                }
+                return Ok(view);
             }
             catch (Exception ex)
             {
