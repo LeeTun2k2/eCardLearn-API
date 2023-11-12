@@ -20,6 +20,21 @@ namespace API.Data.Repositories.Implements
         }
 
         /// <summary>
+        /// Get By Id
+        /// </summary>
+        /// <param name="CourseId"></param>
+        /// <returns></returns>
+        public async Task<Course?> GetById(Guid CourseId)
+        {
+            return await Entities
+                .Where(x => x.CourseId == CourseId)
+                .Include(x => x.Topic)
+                .Include(x => x.Questions)
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
+        }
+
+        /// <summary>
         /// Get Course by Teacher id
         /// </summary>
         /// <param name="TeacherId"></param>
@@ -28,6 +43,8 @@ namespace API.Data.Repositories.Implements
         {
             return await Entities
                 .Where(x => x.TeacherId == TeacherId)
+                .Include(x => x.Topic)
+                .Include(x => x.Questions)
                 .AsNoTracking()
                 .ToListAsync();
         }
@@ -41,6 +58,8 @@ namespace API.Data.Repositories.Implements
         {
             return await Entities
                 .Where(x => x.TopicId == TopicId)
+                .Include(x => x.Topic)
+                .Include(x => x.Questions)
                 .AsNoTracking()
                 .ToListAsync();
         }

@@ -65,6 +65,18 @@ namespace API.Services.Implements
         }
 
         /// <summary>
+        /// Get By Id
+        /// </summary>
+        /// <param name="CourseId"></param>
+        /// <returns></returns>
+        public async Task<CourseViewModel?> GetById(Guid CourseId)
+        {
+            var entity = await _repository.GetById(CourseId);
+            var model = _mapper.Map<CourseViewModel>(entity);
+            return model;
+        }
+
+        /// <summary>
         /// Get Course by Teacher id
         /// </summary>
         /// <param name="TeacherId"></param>

@@ -1,4 +1,6 @@
-﻿namespace API.Data.DTOs.Topic
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace API.Data.DTOs.Topic
 {
     /// <summary>
     /// Topic Filter Model
@@ -18,11 +20,13 @@
         /// <summary>
         /// Page Number
         /// </summary>
+        [Required]
         public int? PageNumber { get; set; }
 
         /// <summary>
         /// Page Size
         /// </summary>
+        [Required]
         public int? PageSize { get; set; }
     }
 }

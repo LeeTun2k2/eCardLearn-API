@@ -17,7 +17,7 @@
         /// <summary>
         /// Question Answer
         /// </summary>
-        public Guid CorrectAnswerId { get; set; }
+        public Guid? CorrectAnswerId { get; set; }
 
         /// <summary>
         /// Course
