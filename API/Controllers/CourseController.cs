@@ -1,4 +1,4 @@
-﻿using API.Data.DTOs.Answer;
+﻿using API.Data.DTOs.Course;
 using API.Data.DTOs.Course;
 using API.Data.Entities;
 using API.Services.Interfaces;
@@ -207,14 +207,14 @@ namespace API.Controllers
         }
 
         /// <summary>
-        /// Get Answer by Teacher Id
+        /// Get Course by Teacher Id
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
         [Route("[action]/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(AnswerViewModel), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(CourseViewModel), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         // [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
         public async Task<IActionResult> GetByTeacherId(Guid id)
@@ -222,6 +222,35 @@ namespace API.Controllers
             try
             {
                 var view = await _courseService.GetByTeacherId(id);
+                if (view == null)
+                {
+                    return NotFound();
+                }
+                return Ok(view);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        /// <summary>
+        /// Get Course by Topic Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("[action]/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(CourseViewModel), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        // [Authorize(Roles = $"{UserRoles.Topic}, {UserRoles.Admin}")]
+        public async Task<IActionResult> GetByTopicId(Guid id)
+        {
+            try
+            {
+                var view = await _courseService.GetByTopicId(id);
                 if (view == null)
                 {
                     return NotFound();
