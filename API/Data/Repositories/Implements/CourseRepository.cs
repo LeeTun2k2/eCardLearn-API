@@ -24,7 +24,7 @@ namespace API.Data.Repositories.Implements
         /// </summary>
         /// <param name="CourseId"></param>
         /// <returns></returns>
-        public new async Task<Course?> GetByIdAsync(Guid CourseId)
+        public async Task<Course?> GetById(Guid CourseId)
         {
             return await Entities
                 .Where(x => x.CourseId == CourseId)

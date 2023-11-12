@@ -9,6 +9,13 @@ namespace API.Services.Interfaces
     public interface ICourseService : IBaseService<Course, CourseViewModel, CourseAddModel, CourseEditModel, CourseFilterModel>
     {
         /// <summary>
+        /// Get By Id
+        /// </summary>
+        /// <param name="CourseId"></param>
+        /// <returns></returns>
+        Task<CourseViewModel?> GetById(Guid CourseId);
+
+        /// <summary>
         /// Get Course by Teacher id
         /// </summary>
         /// <param name="TeacherId"></param>
