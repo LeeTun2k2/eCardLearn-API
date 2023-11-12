@@ -1,4 +1,8 @@
-﻿namespace API.Data.DTOs.Course
+﻿using API.Data.DTOs.Question;
+using API.Data.DTOs.Topic;
+using API.Data.Entities;
+
+namespace API.Data.DTOs.Course
 {
     /// <summary>
     /// Course View Model
@@ -26,9 +30,19 @@
         public Guid TopicId { get; set; }
 
         /// <summary>
+        /// Topic
+        /// </summary>
+        public virtual TopicViewModel? Topic { get; set; }
+
+        /// <summary>
         /// Teacher Created Id
         /// </summary>
         public Guid TeacherId { get; set; }
+
+        /// <summary>
+        /// Questions
+        /// </summary>
+        public virtual IEnumerable<QuestionViewModel>? Questions { get; set; }
 
         /// <summary>
         /// Created User Id

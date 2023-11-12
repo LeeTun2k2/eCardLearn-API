@@ -45,6 +45,11 @@
         public virtual IEnumerable<Feedback>? Feedbacks { get; set; }
 
         /// <summary>
+        /// Questions
+        /// </summary>
+        public virtual IEnumerable<Question>? Questions { get; set; }
+
+        /// <summary>
         /// Created User Id
         /// </summary>
         public Guid? CreatedUserId { get; set; }
