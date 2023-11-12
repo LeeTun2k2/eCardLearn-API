@@ -75,5 +75,17 @@ namespace API.Services.Implements
             var models = _mapper.Map<IEnumerable<CourseViewModel>>(entities);
             return models;
         }
+
+        /// <summary>
+        /// Get Course by Topic id
+        /// </summary>
+        /// <param name="TopicId"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<CourseViewModel>> GetByTopicId(Guid TopicId)
+        {
+            var entities = await _repository.GetByTopicId(TopicId);
+            var models = _mapper.Map<IEnumerable<CourseViewModel>>(entities);
+            return models;
+        }
     }
 }
