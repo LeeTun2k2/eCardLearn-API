@@ -19,6 +19,11 @@ namespace API.Data.Repositories.Implements
 
         }
 
+        /// <summary>
+        /// Get Answer by Course Id
+        /// </summary>
+        /// <param name="CourseId"></param>
+        /// <returns></returns>
         public async Task<IEnumerable<Answer>> GetByCourseId(Guid CourseId)
         {
             return await Entities
@@ -28,6 +33,11 @@ namespace API.Data.Repositories.Implements
                 .ToListAsync();
         }
 
+        /// <summary>
+        /// Get Answer by Question Id
+        /// </summary>
+        /// <param name="QuestionId"></param>
+        /// <returns></returns>
         public async Task<IEnumerable<Answer>> GetByQuestionId(Guid QuestionId)
         {
             return await Entities

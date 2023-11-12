@@ -104,7 +104,12 @@ public partial class DataContext : IdentityDbContext<User, Role, Guid>
     /// TestAnswer
     /// </summary>
     public virtual DbSet<TestAnswer> TestAnswer { get; set; }
-    
+
+    /// <summary>
+    /// UserEarnedAchievement
+    /// </summary>
+    public virtual DbSet<UserEarnedAchievement> UserEarnedAchievement { get; set; }
+
     /// <summary>
     /// On model creating
     /// </summary>
