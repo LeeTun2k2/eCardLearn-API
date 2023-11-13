@@ -14,5 +14,12 @@ namespace API.Services.Interfaces
         /// <param name="CourseId"></param>
         /// <returns></returns>
         Task<IEnumerable<QuestionViewModel>> GetByCourseId(Guid CourseId);
+
+        /// <summary>
+        /// Get By Id
+        /// </summary>
+        /// <param name="QuestionId"></param>
+        /// <returns></returns>
+        Task<QuestionViewModel?> GetById(Guid QuestionId);
     }
 }

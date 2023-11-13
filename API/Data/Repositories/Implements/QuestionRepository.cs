@@ -28,8 +28,23 @@ namespace API.Data.Repositories.Implements
         {
             return await Entities
                 .Where(x => x.CourseId == CourseId)
+                .Include(x => x.Answers)
                 .AsNoTracking()
                 .ToListAsync();
+        }
+
+        /// <summary>
+        /// Get Question by Id
+        /// </summary>
+        /// <param name="QuestionId"></param>
+        /// <returns></returns>
+        public async Task<Question?> GetById(Guid QuestionId)
+        {
+            return await Entities
+                .Where(x => x.QuestionId == QuestionId)
+                .Include(x => x.Answers)
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
         }
     }
 }

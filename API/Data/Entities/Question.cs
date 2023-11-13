@@ -9,15 +9,11 @@
         /// Id
         /// </summary>
         public Guid QuestionId { get; set; }
+
         /// <summary>
         /// Question String
         /// </summary>
         public string QuestionString { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Question Answer
-        /// </summary>
-        public Guid? CorrectAnswerId { get; set; }
 
         /// <summary>
         /// Course
