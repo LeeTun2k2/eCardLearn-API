@@ -1,4 +1,5 @@
-﻿using API.Data.DTOs.StudentJoinTest;
+﻿using API.Data.Constants;
+using API.Data.DTOs.StudentJoinTest;
 using API.Data.Entities;
 using API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -88,7 +89,7 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(StudentJoinTestAddModel), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        // [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
+        [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
         public async Task<IActionResult> Create([FromBody] StudentJoinTestAddModel model)
         {
             try
@@ -133,7 +134,7 @@ namespace API.Controllers
         [ProducesResponseType(typeof(StudentJoinTestEditModel), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(StudentJoinTestViewModel), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        // [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
+        [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] StudentJoinTestEditModel model)
         {
             try
@@ -187,7 +188,7 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(StudentJoinTestViewModel), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        // [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
+        [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
         public async Task<IActionResult> Delete(Guid id)
         {
             try

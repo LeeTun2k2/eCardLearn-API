@@ -29,7 +29,8 @@ namespace API.Data.Repositories.Implements
             return await Entities
                 .Where(x => x.CourseId == CourseId)
                 .Include(x => x.Topic)
-                .Include(x => x.Questions)
+                .Include(x => x.Questions!)
+                .ThenInclude(x => x.Answers)
                 .AsNoTracking()
                 .FirstOrDefaultAsync();
         }
@@ -44,7 +45,8 @@ namespace API.Data.Repositories.Implements
             return await Entities
                 .Where(x => x.TeacherId == TeacherId)
                 .Include(x => x.Topic)
-                .Include(x => x.Questions)
+                .Include(x => x.Questions!)
+                .ThenInclude(x => x.Answers)
                 .AsNoTracking()
                 .ToListAsync();
         }
@@ -59,7 +61,8 @@ namespace API.Data.Repositories.Implements
             return await Entities
                 .Where(x => x.TopicId == TopicId)
                 .Include(x => x.Topic)
-                .Include(x => x.Questions)
+                .Include(x => x.Questions!)
+                .ThenInclude(x => x.Answers)
                 .AsNoTracking()
                 .ToListAsync();
         }
