@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using API.Data.DTOs.Answer;
+using System.ComponentModel.DataAnnotations;
 
 namespace API.Data.DTOs.Question
 {
@@ -14,16 +15,15 @@ namespace API.Data.DTOs.Question
         public string QuestionString { get; set; } = string.Empty;
 
         /// <summary>
-        /// Question Answer
-        /// </summary>
-        [Required]
-        public Guid CorrectAnswerId { get; set; }
-
-        /// <summary>
         /// Course
         /// </summary>
         [Required]
         public Guid CourseId { get; set; }
+
+        /// <summary>
+        /// Answer
+        /// </summary>
+        public virtual IEnumerable<AnswerAddModel>? Answers { get; set; }
 
         /// <summary>
         /// Created User Id

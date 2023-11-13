@@ -1,4 +1,5 @@
 ﻿using API.Commons.Paginations;
+using API.Data.DTOs.Course;
 using API.Data.DTOs.Question;
 using API.Data.Entities;
 using API.Data.Repositories.Interfaces;
@@ -73,5 +74,16 @@ namespace API.Services.Implements
             return models;
         }
 
+        /// <summary>
+        /// Get By Id
+        /// </summary>
+        /// <param name="QuestionId"></param>
+        /// <returns></returns>
+        public async Task<QuestionViewModel?> GetById(Guid QuestionId)
+        {
+            var entity = await _repository.GetById(QuestionId);
+            var model = _mapper.Map<QuestionViewModel>(entity);
+            return model;
+        }
     }
 }
