@@ -5,6 +5,7 @@ using API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace API.Controllers
 {
@@ -39,7 +40,7 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(RegisterModel), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [AllowAnonymous]
         [Route("[action]")]
         public async Task<IActionResult> Register([FromBody] RegisterModel userModel)
@@ -73,9 +74,9 @@ namespace API.Controllers
         [HttpPost]
         [Route("[action]")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(UserRoles), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(UserProfileModel), StatusCodes.Status404NotFound)]
-        // [Authorize]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize]
         public async Task<IActionResult> RequestRole([FromBody] SetUserRole setup)
         {
             // Get user id
@@ -116,10 +117,10 @@ namespace API.Controllers
         [HttpGet]
         [Route("[action]")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(UserProfileModel), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(UserProfileModel), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [AllowAnonymous]
-        public async Task<IActionResult> ConfirmEmail(string email, string token)
+        public async Task<IActionResult> ConfirmEmail([Required] string email, [Required] string token)
         {
             if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(token))
             {
@@ -144,8 +145,8 @@ namespace API.Controllers
         [HttpPost]
         [Route("[action]")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(LoginModel), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(UserProfileModel), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginModel loginModel)
         {
@@ -172,12 +173,12 @@ namespace API.Controllers
         /// </summary>
         /// <param name="email"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpGet]
         [Route("[action]")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(UserProfileModel), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [AllowAnonymous]
-        public async Task<IActionResult> ForgotPassword(string email)
+        public async Task<IActionResult> ForgotPassword([Required] string email)
         {
             if (!ModelState.IsValid)
             {
@@ -198,21 +199,22 @@ namespace API.Controllers
         /// <summary>
         /// Reset password
         /// </summary>
-        /// <param name="resetPasswordModel"></param>
+        /// <param name="email"></param>
+        /// <param name="token"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpGet]
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ResetPasswordModel), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Route("[action]")]
-        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordModel resetPasswordModel)
+        public async Task<IActionResult> ResetPassword([Required] string email, [Required] string token)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
 
-            var result = await _authenticationService.ResetPassword(resetPasswordModel);
+            var result = await _authenticationService.ResetPassword(email, token);
 
             if (result.Succeeded)
             {
@@ -231,8 +233,8 @@ namespace API.Controllers
         [HttpPost]
         [Route("[action]")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ChangePasswordModel), StatusCodes.Status400BadRequest)]
-        // [Authorize]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Authorize]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordModel changePasswordModel)
         {
             if (!ModelState.IsValid)
@@ -256,14 +258,98 @@ namespace API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        // [Authorize]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Route("[action]")]
         public async Task<IActionResult> Logout()
         {
             await _authenticationService.Logout();
-
+            Response.Cookies.Delete("token");
             return Ok();
+        }
+
+        /// <summary>
+        /// Admin Lock User
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Route("[action]")]
+        [Authorize(Roles = $"{UserRoles.Admin}")]
+        public async Task<IActionResult> LockUser([Required] string email)
+        {
+            var result = await _authenticationService.LockUser(email);
+
+            if (result.Item1)
+            {
+                return Ok(result.Item2);
+            }
+
+            return BadRequest(result.Item2);
+        }
+
+        /// <summary>
+        /// Admin Unlock User
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Route("[action]")]
+        [Authorize(Roles = $"{UserRoles.Admin}")]
+        public async Task<IActionResult> UnlockUser([Required] string email)
+        {
+            var result = await _authenticationService.UnlockUser(email);
+
+            if (result.Item1)
+            {
+                return Ok(result.Item2);
+            }
+
+            return BadRequest(result.Item2);
+        }
+
+        /// <summary>
+        /// Admin Set Role 
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Route("[action]")]
+        [Authorize(Roles = $"{UserRoles.Admin}")]
+        public async Task<IActionResult> AdminSetRole([Required] string email, [Required] string roleName)
+        {
+            var result = await _authenticationService.AdminSetRole(email, roleName);
+
+            if (result.Item1)
+            {
+                return Ok(result.Item2);
+            }
+
+            return BadRequest(result.Item2);
+        }
+
+        /// <summary>
+        /// Admin Remove Role 
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Route("[action]")]
+        [Authorize(Roles = $"{UserRoles.Admin}")]
+        public async Task<IActionResult> AdminRemoveRole([Required] string email, [Required] string roleName)
+        {
+            var result = await _authenticationService.AdminRemoveRole(email, roleName);
+
+            if (result.Item1)
+            {
+                return Ok(result.Item2);
+            }
+
+            return BadRequest(result.Item2);
         }
     }
 }
