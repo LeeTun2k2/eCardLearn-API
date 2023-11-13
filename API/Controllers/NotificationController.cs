@@ -1,4 +1,5 @@
-﻿using API.Data.DTOs.Notification;
+﻿using API.Data.Constants;
+using API.Data.DTOs.Notification;
 using API.Data.Entities;
 using API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -88,7 +89,7 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(NotificationAddModel), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        // [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
+        [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
         public async Task<IActionResult> Create([FromBody] NotificationAddModel model)
         {
             try
@@ -133,7 +134,7 @@ namespace API.Controllers
         [ProducesResponseType(typeof(NotificationEditModel), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(NotificationViewModel), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        // [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
+        [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] NotificationEditModel model)
         {
             try
@@ -187,7 +188,7 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(NotificationViewModel), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        // [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
+        [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
         public async Task<IActionResult> Delete(Guid id)
         {
             try
@@ -215,7 +216,7 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(NotificationViewModel), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        // [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
+        [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
         public async Task<IActionResult> GetByClassId(Guid id)
         {
             try
@@ -244,7 +245,7 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(NotificationViewModel), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        // [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
+        [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
         public async Task<IActionResult> GetByTeacherId(Guid id)
         {
             try

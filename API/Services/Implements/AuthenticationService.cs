@@ -251,11 +251,12 @@ namespace API.Services.Implements
             var role = await _userManager.GetRolesAsync(user);
             claims.AddRange(role.Select(r => new Claim(ClaimsIdentity.DefaultRoleClaimType, r)));
 
-            var token = new JwtSecurityToken(_config["JWT:Issuer"],
+            var token = new JwtSecurityToken(
                 _config["JWT:Issuer"],
+                _config["JWT:Audience"],
                 claims,
                 null,
-                expires: DateTime.Now.AddHours(8),
+                expires: DateTime.Now.AddDays(30),
                 signingCredentials: credentials);
             return new JwtSecurityTokenHandler().WriteToken(token);
         }

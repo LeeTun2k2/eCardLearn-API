@@ -21,8 +21,8 @@ namespace API.Commons
                 .AddEntityFrameworkStores<DataContext>()
                 .AddTokenProvider<DataProtectorTokenProvider<User>>(TokenOptions.DefaultProvider);
 
-                services.Configure<DataProtectionTokenProviderOptions>(
-                    option => option.TokenLifespan = TimeSpan.FromDays(30));
+            services.Configure<DataProtectionTokenProviderOptions>(
+                option => option.TokenLifespan = TimeSpan.FromDays(30));
 
             // Config identity framework
             services.Configure<IdentityOptions>(options =>
