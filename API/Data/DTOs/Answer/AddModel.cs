@@ -19,6 +19,12 @@ namespace API.Data.DTOs.Answer
         [Required]
         public Guid QuestionId { get; set; }
 
+        [Required]
+        /// <summary>
+        /// Is true if the Answer is correct, else is false
+        /// </summary>
+        public bool IsCorrect { get; set; }
+
         /// <summary>
         /// Created User Id
         /// </summary>

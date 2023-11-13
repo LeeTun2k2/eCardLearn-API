@@ -1,4 +1,6 @@
-﻿namespace API.Data.DTOs.Question
+﻿using API.Data.DTOs.Answer;
+
+namespace API.Data.DTOs.Question
 {
     /// <summary>
     /// Question View Model
@@ -16,14 +18,14 @@
         public string QuestionString { get; set; } = string.Empty;
 
         /// <summary>
-        /// Question Answer
-        /// </summary>
-        public Guid CorrectAnswerId { get; set; }
-
-        /// <summary>
         /// Course
         /// </summary>
         public Guid CourseId { get; set; }
+
+        /// <summary>
+        /// Answer
+        /// </summary>
+        public virtual IEnumerable<AnswerViewModel>? Answers { get; set; }
 
         /// <summary>
         /// Created User Id

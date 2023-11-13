@@ -25,6 +25,11 @@
         public virtual Question? Question { get; set; }
 
         /// <summary>
+        /// Is true if the Answer is correct, else is false
+        /// </summary>
+        public bool IsCorrect { get; set; }
+
+        /// <summary>
         /// Created User Id
         /// </summary>
         public Guid? CreatedUserId { get; set; }
