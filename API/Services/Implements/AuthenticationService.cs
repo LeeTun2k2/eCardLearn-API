@@ -1,4 +1,5 @@
 ﻿using API.Commons.Utils;
+using API.Data.Constants;
 using API.Data.DTOs.Authentication;
 using API.Data.Entities;
 using API.Services.Interfaces;
@@ -91,7 +92,7 @@ namespace API.Services.Implements
         {
             // get user by email
             var user = await _userManager.FindByEmailAsync(email);
-
+            
             if (user != null)
             {
                 // decode token
@@ -121,29 +122,35 @@ namespace API.Services.Implements
 
             var user = await _userManager.FindByEmailAsync(email);
 
-            if (user != null)
+            if (user == null)
             {
-                var username = user.UserName ?? string.Empty;
-
-                var result = await _signInManager.PasswordSignInAsync(username, password, rememberMe, true);
-
-                if (result.Succeeded)
-                {
-                    var userVM = _mapper.Map<UserProfileModel>(user);
-                    userVM.Roles = await _userManager.GetRolesAsync(user);
-
-                    var tokenString = await GenerateJsonWebToken(user);
-                    return (tokenString, userVM);
-                }
-
-                if (result.IsLockedOut)
-                {
-                    return ("User account locked out.", null);
-                }
-
-                return ("Login fail.", null);
+                return ("User not found.", null);
             }
-            return ("User not found.", null);
+
+            var username = user.UserName ?? string.Empty;
+
+            var result = await _signInManager.PasswordSignInAsync(username, password, rememberMe, true);
+
+            if (result.Succeeded)
+            {
+                var userVM = _mapper.Map<UserProfileModel>(user);
+                userVM.Roles = await _userManager.GetRolesAsync(user);
+
+                var tokenString = await GenerateJsonWebToken(user);
+                return (tokenString, userVM);
+            }
+
+            if (result.IsLockedOut)
+            {
+                return ("User account locked out.", null);
+            }
+
+            if (result.IsNotAllowed)
+            {
+                return ("User account is not allow.", null);
+            }
+
+            return ("Login fail.", null);
         }
 
         /// <summary>
@@ -160,8 +167,11 @@ namespace API.Services.Implements
                 // Generate password reset token
                 var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
+                // Encode Token
+                var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
+
                 // Generate password reset URL
-                var callbackUrl = $"{_config["AppUrl"]}/api/Authentication/ResetPassword?email={email}&token={token}";
+                var callbackUrl = $"{_config["AppUrl"]}/api/Authentication/ResetPassword?email={email}&token={encodedToken}";
 
                 // Send password reset email
                 await _mailService.SendAsync(MailTemplate.ForgotPassword(email, callbackUrl), new CancellationToken());
@@ -176,31 +186,43 @@ namespace API.Services.Implements
         /// <summary>
         /// Reset password
         /// </summary>
-        /// <param name="resetPasswordModel"></param>
+        /// <param name="email"></param>
+        /// <param name="token"></param>
         /// <returns></returns>
-        public async Task<IdentityResult> ResetPassword(ResetPasswordModel resetPasswordModel)
+        public async Task<IdentityResult> ResetPassword(string email, string token)
         {
             // Get User
-            var user = await _userManager.FindByEmailAsync(resetPasswordModel.Email);
+            var user = await _userManager.FindByEmailAsync(email);
 
-            if (user != null)
+            if (user == null)
             {
-                // Decode Token
-                var decodedTokenBytes = WebEncoders.Base64UrlDecode(resetPasswordModel.Token);
-                var decodedToken = Encoding.UTF8.GetString(decodedTokenBytes);
+                return IdentityResult.Failed(new IdentityError { Description = "User does not exist." });
+            }
 
-                // Reset Password
-                var result = await _userManager.ResetPasswordAsync(user, decodedToken, resetPasswordModel.Password);
+            // Decode Token
+            var decodedTokenBytes = WebEncoders.Base64UrlDecode(token);
+            var decodedToken = Encoding.UTF8.GetString(decodedTokenBytes);
 
-                if (result.Succeeded)
-                {
-                    return result;
-                }
+            // Generate new password
+            string newPassword = PasswordGenerators.Generate();
 
+            // Reset Password
+            var result = await _userManager.ResetPasswordAsync(user, decodedToken, newPassword);
+
+            if (!result.Succeeded)
+            {
                 return IdentityResult.Failed(new IdentityError { Description = "Failed to reset password." });
             }
 
-            return IdentityResult.Failed(new IdentityError { Description = "User does not exist." });
+            // Send new password to email                
+            var sendAction = await _mailService.SendAsync(MailTemplate.ResetPassword(email, newPassword), new CancellationToken());
+
+            if (sendAction == false)
+            {
+                return IdentityResult.Failed(new IdentityError { Description = "Failed to send email reset password." });
+            }
+
+            return IdentityResult.Success;
         }
 
         /// <summary>
@@ -243,9 +265,7 @@ namespace API.Services.Implements
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.UserName!),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
             };
 
             var role = await _userManager.GetRolesAsync(user);
@@ -270,5 +290,113 @@ namespace API.Services.Implements
             await _signInManager.SignOutAsync();
         }
 
+        /// <summary>
+        /// Lock user account
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        public async Task<(bool, string)> LockUser(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if (user == null)
+            {
+                return (false, "User not found.");
+            }
+
+            var lockUserTask = _userManager.SetLockoutEnabledAsync(user, true);
+
+            if (lockUserTask.Result.Succeeded)
+            {
+                return (true, "User's account has been locked.");
+            }
+
+            return (false, "Can not lock user.");
+        }
+
+
+        /// <summary>
+        /// Un lock user account
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        public async Task<(bool, string)> UnlockUser(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if (user == null)
+            {
+                return (false, "User not found.");
+            }
+
+            var lockUserTask = _userManager.SetLockoutEnabledAsync(user, false);
+
+            if (lockUserTask.Result.Succeeded)
+            {
+                return (true, "User's account has been unlocked.");
+            }
+
+            return (false, "Can not unlock user.");
+        }
+
+        /// <summary>
+        /// Admin set role for user.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="roleName"></param>
+        /// <returns></returns>
+        public async Task<(bool, string)> AdminSetRole(string email, string roleName)
+        {
+            if (roleName != UserRoles.Student && roleName != UserRoles.Teacher && roleName != UserRoles.Admin)
+            {
+                return (false, "Invalid user's role");
+            }
+
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if (user == null)
+            {
+                return (false, "User not found.");
+            }
+
+            var result = await _userManager.AddToRoleAsync(user, roleName);
+
+            if (result.Succeeded)
+            {
+                return (true, "Set user's role successfully.");
+            }
+
+            return (false, "Can not set role for user.");
+        }
+
+        /// <summary>
+        /// Admin remove role for user.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="roleName"></param>
+        /// <returns></returns>
+        public async Task<(bool, string)> AdminRemoveRole(string email, string roleName)
+        {
+            if (roleName != UserRoles.Student && roleName != UserRoles.Teacher && roleName != UserRoles.Admin)
+            {
+                return (false, "Invalid user's role");
+            }
+
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if (user == null)
+            {
+                return (false, "User not found.");
+            }
+
+            var result = await _userManager.RemoveFromRoleAsync(user, roleName);
+
+            if (result.Succeeded)
+            {
+                return (true, "Remove user's role successfully.");
+            }
+
+            return (false, "Can not remove role for user.");
+        }
     }
 }
