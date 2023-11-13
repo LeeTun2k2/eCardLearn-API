@@ -27,6 +27,11 @@ namespace API.Data.DTOs.Question
         public Guid CourseId { get; set; }
 
         /// <summary>
+        /// Answer
+        /// </summary>
+        public virtual IEnumerable<AnswerEditModel>? Answers { get; set; }
+
+        /// <summary>
         /// Created User Id
         /// </summary>
         public Guid? CreatedUserId { get; set; }
