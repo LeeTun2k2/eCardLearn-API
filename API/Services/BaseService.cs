@@ -1,5 +1,6 @@
 ﻿using API.Data.Repositories;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Services
 {
@@ -101,9 +102,31 @@ namespace API.Services
         /// <returns></returns>
         public async Task<ViewModel?> UpdateAsync(Guid id, EditModel model)
         {
-            var entity = _mapper.Map<TEntity>(model);
-            var updatedEntity = await _repository.UpdateAsync(entity);
-            return _mapper.Map<ViewModel>(updatedEntity);
+            var existingEntity = await _repository.GetByIdAsync(id);
+
+            if (existingEntity == null)
+            {
+                return null;
+            }
+
+            _mapper.Map(model, existingEntity);
+
+            try
+            {
+                var updatedEntity = await _repository.UpdateAsync(existingEntity);
+                var viewModel = _mapper.Map<ViewModel>(updatedEntity);
+                return viewModel;
+            }
+            catch (DbUpdateConcurrencyException dbUCE)
+            {
+                Console.WriteLine(dbUCE.Message);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
         }
     }
 }
