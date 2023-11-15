@@ -205,5 +205,63 @@ namespace API.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
+
+        /// <summary>
+        /// Get Class by Student Id
+        /// </summary>
+        /// <param name="StudentId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("[action]/{StudentId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetClassByStudentId(Guid StudentId)
+        {
+            try
+            {
+                var view = await _studentJoinClassService.GetClassByStudentId(StudentId);
+                if (view == null)
+                {
+                    return NotFound();
+                }
+                return Ok(view);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        /// <summary>
+        /// Get Student by Student Id
+        /// </summary>
+        /// <param name="ClassId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("[action]/{ClassId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetStudentByClassId(Guid ClassId)
+        {
+            try
+            {
+                var view = await _studentJoinClassService.GetStudentByClassId(ClassId);
+                if (view == null)
+                {
+                    return NotFound();
+                }
+                return Ok(view);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
     }
 }
