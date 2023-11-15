@@ -1,6 +1,7 @@
 ﻿using API.Data.Constants;
 using API.Data.DTOs.StudentJoinTest;
 using API.Data.Entities;
+using API.Services.Implements;
 using API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -198,6 +199,64 @@ namespace API.Controllers
                     return NoContent();
                 }
                 return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        /// <summary>
+        /// Get Test by Student Id
+        /// </summary>
+        /// <param name="StudentId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("[action]/{StudentId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetTestByStudentId(Guid StudentId)
+        {
+            try
+            {
+                var view = await _studentJoinTestService.GetTestByStudentId(StudentId);
+                if (view == null)
+                {
+                    return NotFound();
+                }
+                return Ok(view);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        /// <summary>
+        /// Get Student by Student Id
+        /// </summary>
+        /// <param name="TestId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("[action]/{TestId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetStudentByTestId(Guid TestId)
+        {
+            try
+            {
+                var view = await _studentJoinTestService.GetStudentByTestId(TestId);
+                if (view == null)
+                {
+                    return NotFound();
+                }
+                return Ok(view);
             }
             catch (Exception ex)
             {
