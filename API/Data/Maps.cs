@@ -16,6 +16,7 @@ namespace API.Data
             MapAnswer();
             MapAuthentication();
             MapClass();
+            MapCourseInClass();
             MapCourse();
             MapFeedback();
             MapNotification();

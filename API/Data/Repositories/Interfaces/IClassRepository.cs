@@ -8,6 +8,13 @@ namespace API.Data.Repositories.Interfaces
     public interface IClassRepository : IBaseRepository<Class>
     {
         /// <summary>
+        /// Get By Id
+        /// </summary>
+        /// <param name="ClassId"></param>
+        /// <returns></returns>
+        Task<Class?> GetById(Guid ClassId);
+
+        /// <summary>
         /// Get Class by Teacher id
         /// </summary>
         /// <param name="TeacherId"></param>

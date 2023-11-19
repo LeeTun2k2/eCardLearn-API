@@ -1,4 +1,6 @@
-﻿namespace API.Data.DTOs.Class
+﻿using API.Data.DTOs.Course;
+
+namespace API.Data.DTOs.Class
 {
     /// <summary>
     /// Class View Model
@@ -24,6 +26,11 @@
         /// Teacher
         /// </summary>
         public Guid TeacherId { get; set; }
+
+        /// <summary>
+        /// Courses
+        /// </summary>
+        public IEnumerable<CourseViewModel>? Courses { get; set; }
 
         /// <summary>
         /// Created User Id

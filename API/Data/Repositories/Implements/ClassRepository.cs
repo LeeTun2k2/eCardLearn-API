@@ -20,6 +20,19 @@ namespace API.Data.Repositories.Implements
         }
 
         /// <summary>
+        /// Get By Id
+        /// </summary>
+        /// <param name="ClassId"></param>
+        /// <returns></returns>
+        public async Task<Class?> GetById(Guid ClassId)
+        {
+            return await Entities
+                .Where(x => x.ClassId == ClassId)
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
+        }
+
+        /// <summary>
         /// Get Class by Teacher id
         /// </summary>
         /// <param name="TeacherId"></param>

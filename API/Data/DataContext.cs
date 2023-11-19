@@ -51,6 +51,11 @@ public partial class DataContext : IdentityDbContext<User, Role, Guid>
     public virtual DbSet<Class> Class { get; set; }
 
     /// <summary>
+    /// CourseInClass
+    /// </summary>
+    public virtual DbSet<CourseInClass> CourseInClass { get; set; }
+
+    /// <summary>
     /// Course
     /// </summary>
     public virtual DbSet<Course> Course { get; set; }
@@ -167,6 +172,19 @@ public partial class DataContext : IdentityDbContext<User, Role, Guid>
             .HasOne(x => x.Course)
             .WithMany(x => x.Tests)
             .HasForeignKey(x => x.CourseId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        // Config Course In Class
+        builder.Entity<CourseInClass>()
+            .HasOne(x => x.Course)
+            .WithMany(x => x.CourseInClasses)
+            .HasForeignKey(x => x.CourseId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        builder.Entity<CourseInClass>()
+            .HasOne(x => x.Class)
+            .WithMany(x => x.CourseInClasses)
+            .HasForeignKey(x => x.ClassId)
             .OnDelete(DeleteBehavior.NoAction);
 
         OnModelCreatingPartial(builder);

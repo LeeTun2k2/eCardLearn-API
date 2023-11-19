@@ -50,9 +50,14 @@
         public virtual IEnumerable<Question>? Questions { get; set; }
 
         /// <summary>
-        /// Questions
+        /// Tests
         /// </summary>
         public virtual IEnumerable<Test>? Tests { get; set; }
+
+        /// <summary>
+        /// Course In Class
+        /// </summary>
+        public virtual IEnumerable<CourseInClass>? CourseInClasses { get; set; }
 
         /// <summary>
         /// Created User Id
