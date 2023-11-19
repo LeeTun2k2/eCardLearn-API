@@ -59,7 +59,7 @@ namespace API.Controllers
         [HttpGet]
         [Route("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(CourseViewModel), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [AllowAnonymous]
         public async Task<IActionResult> GetById(Guid id)

@@ -1,47 +1,34 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace API.Data.DTOs.Test
+﻿namespace API.Data.Entities
 {
     /// <summary>
-    /// Test Add Model
+    /// CourseInClass
     /// </summary>
-    public class TestAddModel
+    public class CourseInClass
     {
         /// <summary>
-        /// Test Name
+        /// Id
         /// </summary>
-        [Required]
-        public string TestName { get; set; } = string.Empty;
+        public Guid CourseInClassId { get; set; }
 
         /// <summary>
-        /// Test Description
+        /// Course Id
         /// </summary>
-        [Required]
-        public string TestDescription { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Test Start
-        /// </summary>
-        [Required]
-        public DateTime TestStart { get; set; }
-
-        /// <summary>
-        /// Test End
-        /// </summary>
-        [Required]
-        public DateTime TestEnd { get; set; }
-
-        /// <summary>
-        /// Duration
-        /// </summary>
-        [Required]
-        public int Duration { get; set; } = 0;
-
-        /// <summary>
-        /// Course id
-        /// </summary>
-        [Required]
         public Guid CourseId { get; set; }
+
+        /// <summary>
+        /// Course
+        /// </summary>
+        public Course? Course { get; set; }
+
+        /// <summary>
+        /// Class Id
+        /// </summary>
+        public Guid ClassId { get; set; }
+
+        /// <summary>
+        /// Class
+        /// </summary>
+        public Class? Class { get; set; }
 
         /// <summary>
         /// Created User Id

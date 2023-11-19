@@ -1,4 +1,6 @@
-﻿namespace API.Data.DTOs.Test
+﻿using API.Data.DTOs.Course;
+
+namespace API.Data.DTOs.Test
 {
     /// <summary>
     /// Test View Model
@@ -33,6 +35,16 @@
         /// Duration
         /// </summary>
         public int Duration { get; set; } = 0;
+
+        /// <summary>
+        /// Course id
+        /// </summary>
+        public Guid CourseId { get; set; }
+
+        /// <summary>
+        /// Course
+        /// </summary>
+        public CourseViewModel? Course { get; set; }
 
         /// <summary>
         /// Created User Id

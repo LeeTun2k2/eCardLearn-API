@@ -1,6 +1,7 @@
 ﻿using API.Data.Constants;
-using API.Data.DTOs.Answer;
+using API.Data.DTOs.CourseInClass;
 using API.Data.Entities;
+using API.Services.Implements;
 using API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -9,27 +10,27 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers
 {
     /// <summary>
-    /// Answer Controller
+    /// CourseInClass Controller
     /// </summary>
-    public class AnswerController : BaseController
+    public class CourseInClassController : BaseController
     {
-        private readonly IAnswerService _answerService;
-        private readonly ILogger<AnswerController> _logger;
+        private readonly ICourseInClassService _studentJoinCourseService;
+        private readonly ILogger<CourseInClassController> _logger;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="answerService"></param>
+        /// <param name="studentJoinCourseService"></param>
         /// <param name="logger"></param>
         /// <param name="userManager"></param>
-        public AnswerController(IAnswerService answerService, ILogger<AnswerController> logger, UserManager<User> userManager) : base(userManager)
+        public CourseInClassController(ICourseInClassService studentJoinCourseService, ILogger<CourseInClassController> logger, UserManager<User> userManager) : base(userManager)
         {
-            _answerService = answerService;
+            _studentJoinCourseService = studentJoinCourseService;
             _logger = logger;
         }
 
         /// <summary>
-        /// Get a list of Answers filted by Answer filter model
+        /// Get a list of CourseInClasss filted by CourseInClass filter model
         /// </summary>
         /// <param name="filter"></param>
         /// <returns></returns>
@@ -37,11 +38,11 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [AllowAnonymous]
-        public async Task<IActionResult> Get([FromQuery] AnswerFilterModel filter)
+        public async Task<IActionResult> Get([FromQuery] CourseInClassFilterModel filter)
         {
             try
             {
-                var views = await _answerService.GetAsync(filter);
+                var views = await _studentJoinCourseService.GetAsync(filter);
                 return Ok(views);
             }
             catch (Exception ex)
@@ -52,21 +53,21 @@ namespace API.Controllers
         }
 
         /// <summary>
-        /// Get Answer by Id
+        /// Get CourseInClass by Id
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
         [Route("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(CourseInClassViewModel), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [AllowAnonymous]
         public async Task<IActionResult> GetById(Guid id)
         {
             try
             {
-                var view = await _answerService.GetByIdAsync(id);
+                var view = await _studentJoinCourseService.GetByIdAsync(id);
                 if (view == null)
                 {
                     return NotFound();
@@ -81,16 +82,16 @@ namespace API.Controllers
         }
 
         /// <summary>
-        /// Add Answer to database
+        /// Add CourseInClass to database
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(CourseInClassAddModel), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
-        public async Task<IActionResult> Create([FromBody] AnswerAddModel model)
+        public async Task<IActionResult> Create([FromBody] CourseInClassAddModel model)
         {
             try
             {
@@ -106,14 +107,14 @@ namespace API.Controllers
                 model.UpdatedDate = null;
 
                 // Add
-                var view = await _answerService.AddAsync(model);
+                var view = await _studentJoinCourseService.AddAsync(model);
 
                 if (view == null)
                 {
                     return BadRequest("Can not create object");
                 }
 
-                return CreatedAtAction(nameof(Create), new { id = view.AnswerId }, view);
+                return CreatedAtAction(nameof(Create), new { id = view.CourseInClassId }, view);
             }
             catch (Exception ex)
             {
@@ -123,7 +124,7 @@ namespace API.Controllers
         }
 
         /// <summary>
-        /// Update Answer to database
+        /// Update CourseInClass to database
         /// </summary>
         /// <param name="id"></param>
         /// <param name="model"></param>
@@ -131,21 +132,21 @@ namespace API.Controllers
         [HttpPut]
         [Route("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(CourseInClassEditModel), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(CourseInClassViewModel), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
-        public async Task<IActionResult> Update(Guid id, [FromBody] AnswerEditModel model)
+        public async Task<IActionResult> Update(Guid id, [FromBody] CourseInClassEditModel model)
         {
             try
             {
-                if (id != model.AnswerId)
+                if (id != model.CourseInClassId)
                 {
                     return BadRequest("ID in the URL does not match the ID in the request body.");
                 }
 
                 // Check existing entity
-                var existingEntity = await _answerService.GetByIdAsync(id);
+                var existingEntity = await _studentJoinCourseService.GetByIdAsync(id);
                 if (existingEntity == null)
                 {
                     return NotFound();
@@ -163,7 +164,7 @@ namespace API.Controllers
                 model.UpdatedDate = DateTime.Today;
 
                 // Update
-                var view = await _answerService.UpdateAsync(id, model);
+                var view = await _studentJoinCourseService.UpdateAsync(id, model);
                 if (view == null)
                 {
                     return BadRequest("Can not update object");
@@ -179,21 +180,21 @@ namespace API.Controllers
         }
 
         /// <summary>
-        /// Delete Answer from database
+        /// Delete CourseInClass from database
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete]
         [Route("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(CourseInClassViewModel), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
         public async Task<IActionResult> Delete(Guid id)
         {
             try
             {
-                if (await _answerService.DeleteAsync(id))
+                if (await _studentJoinCourseService.DeleteAsync(id))
                 {
                     return NoContent();
                 }
@@ -207,21 +208,21 @@ namespace API.Controllers
         }
 
         /// <summary>
-        /// Get Answer by Question Id
+        /// Get Course by Class Id
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="ClassId"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("[action]/{id}")]
+        [Route("[action]/{ClassId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
-        public async Task<IActionResult> GetByQuestionId(Guid id)
+        [AllowAnonymous]
+        public async Task<IActionResult> GetCourseByClassId(Guid ClassId)
         {
             try
             {
-                var view = await _answerService.GetByQuestionId(id);
+                var view = await _studentJoinCourseService.GetCourseByClassId(ClassId);
                 if (view == null)
                 {
                     return NotFound();
@@ -236,21 +237,21 @@ namespace API.Controllers
         }
 
         /// <summary>
-        /// Get Answer by Course Id
+        /// Get Class by Class Id
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="CourseId"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("[action]/{id}")]
+        [Route("[action]/{CourseId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
-        public async Task<IActionResult> GetByCourseId(Guid id)
+        [AllowAnonymous]
+        public async Task<IActionResult> GetClassByCourseId(Guid CourseId)
         {
             try
             {
-                var view = await _answerService.GetByCourseId(id);
+                var view = await _studentJoinCourseService.GetClassByCourseId(CourseId);
                 if (view == null)
                 {
                     return NotFound();

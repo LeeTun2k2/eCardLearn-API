@@ -162,6 +162,13 @@ public partial class DataContext : IdentityDbContext<User, Role, Guid>
             .HasForeignKey(x => x.TeacherId)
             .OnDelete(DeleteBehavior.NoAction);
 
+        // Config Test
+        builder.Entity<Test>()
+            .HasOne(x => x.Course)
+            .WithMany(x => x.Tests)
+            .HasForeignKey(x => x.CourseId)
+            .OnDelete(DeleteBehavior.NoAction);
+
         OnModelCreatingPartial(builder);
     }
 
