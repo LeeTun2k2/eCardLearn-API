@@ -1,36 +1,29 @@
-﻿using API.Data.DTOs.Course;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace API.Data.DTOs.Class
+namespace API.Data.DTOs.CourseInClass
 {
     /// <summary>
-    /// Class View Model
+    /// CourseInClass Edit Model
     /// </summary>
-    public class ClassViewModel
+    public class CourseInClassEditModel
     {
         /// <summary>
         /// Id
         /// </summary>
+        [Required]
+        public Guid CourseInClassId { get; set; }
+
+        /// <summary>
+        /// Course Id
+        /// </summary>
+        [Required]
+        public Guid CourseId { get; set; }
+
+        /// <summary>
+        /// Class Id
+        /// </summary>
+        [Required]
         public Guid ClassId { get; set; }
-
-        /// <summary>
-        /// Class Name
-        /// </summary>
-        public string ClassName { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Class Description
-        /// </summary>
-        public string ClassDescription { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Teacher
-        /// </summary>
-        public Guid TeacherId { get; set; }
-
-        /// <summary>
-        /// Courses
-        /// </summary>
-        public IEnumerable<CourseViewModel>? Courses { get; set; }
 
         /// <summary>
         /// Created User Id

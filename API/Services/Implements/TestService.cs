@@ -1,5 +1,6 @@
 ﻿using API.Commons.Paginations;
 using API.Data.DTOs.Test;
+using API.Data.DTOs.Test;
 using API.Data.Entities;
 using API.Data.Repositories.Interfaces;
 using API.Services.Interfaces;
@@ -62,6 +63,18 @@ namespace API.Services.Implements
             var models = _mapper.Map<IEnumerable<TestViewModel>>(entities);
 
             return models;
+        }
+
+        /// <summary>
+        /// Get By Id
+        /// </summary>
+        /// <param name="TestId"></param>
+        /// <returns></returns>
+        public async Task<TestViewModel?> GetById(Guid TestId)
+        {
+            var entity = await _repository.GetById(TestId);
+            var model = _mapper.Map<TestViewModel>(entity);
+            return model;
         }
     }
 }

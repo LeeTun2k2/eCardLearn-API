@@ -38,6 +38,12 @@ namespace API.Data.DTOs.Test
         public int Duration { get; set; } = 0;
 
         /// <summary>
+        /// Course id
+        /// </summary>
+        [Required]
+        public Guid CourseId { get; set; }
+
+        /// <summary>
         /// Created User Id
         /// </summary>
         public Guid? CreatedUserId { get; set; }

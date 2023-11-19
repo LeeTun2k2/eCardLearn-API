@@ -1,4 +1,5 @@
 ﻿using API.Data.DTOs.Class;
+using API.Data.DTOs.Class;
 using API.Data.Entities;
 
 namespace API.Services.Interfaces
@@ -8,6 +9,13 @@ namespace API.Services.Interfaces
     /// </summary>
     public interface IClassService : IBaseService<Class, ClassViewModel, ClassAddModel, ClassEditModel, ClassFilterModel>
     {
+        /// <summary>
+        /// Get By Id
+        /// </summary>
+        /// <param name="ClassId"></param>
+        /// <returns></returns>
+        Task<ClassViewModel?> GetById(Guid ClassId);
+
         /// <summary>
         /// Get Class by Teacher id
         /// </summary>

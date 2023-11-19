@@ -35,6 +35,16 @@
         public int Duration { get; set; } = 0;
 
         /// <summary>
+        /// Course id
+        /// </summary>
+        public Guid CourseId { get; set; }
+
+        /// <summary>
+        /// Course
+        /// </summary>
+        public Course? Course { get; set; }
+
+        /// <summary>
         /// Student Join Tests
         /// </summary>
         public virtual IEnumerable<StudentJoinTest>? StudentJoinTests { get; set; }

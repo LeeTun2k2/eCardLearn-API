@@ -1,36 +1,34 @@
-﻿using API.Data.DTOs.Course;
-
-namespace API.Data.DTOs.Class
+﻿namespace API.Data.Entities
 {
     /// <summary>
-    /// Class View Model
+    /// CourseInClass
     /// </summary>
-    public class ClassViewModel
+    public class CourseInClass
     {
         /// <summary>
         /// Id
         /// </summary>
+        public Guid CourseInClassId { get; set; }
+
+        /// <summary>
+        /// Course Id
+        /// </summary>
+        public Guid CourseId { get; set; }
+
+        /// <summary>
+        /// Course
+        /// </summary>
+        public Course? Course { get; set; }
+
+        /// <summary>
+        /// Class Id
+        /// </summary>
         public Guid ClassId { get; set; }
 
         /// <summary>
-        /// Class Name
+        /// Class
         /// </summary>
-        public string ClassName { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Class Description
-        /// </summary>
-        public string ClassDescription { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Teacher
-        /// </summary>
-        public Guid TeacherId { get; set; }
-
-        /// <summary>
-        /// Courses
-        /// </summary>
-        public IEnumerable<CourseViewModel>? Courses { get; set; }
+        public Class? Class { get; set; }
 
         /// <summary>
         /// Created User Id

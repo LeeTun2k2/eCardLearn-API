@@ -66,7 +66,7 @@ namespace API.Controllers
         {
             try
             {
-                var view = await _classService.GetByIdAsync(id);
+                var view = await _classService.GetById(id);
                 if (view == null)
                 {
                     return NotFound();

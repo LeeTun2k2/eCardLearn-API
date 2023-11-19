@@ -7,6 +7,11 @@ namespace API.Data.Repositories.Interfaces
     /// </summary>
     public interface ITestRepository : IBaseRepository<Test>
     {
-
+        /// <summary>
+        /// Get By Id
+        /// </summary>
+        /// <param name="TestId"></param>
+        /// <returns></returns>
+        Task<Test?> GetById(Guid TestId);
     }
 }

@@ -4,6 +4,7 @@ using API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20231119083153_Test")]
+    partial class Test
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -194,39 +197,6 @@ namespace API.Migrations
                     b.HasIndex("TopicId");
 
                     b.ToTable("Course");
-                });
-
-            modelBuilder.Entity("API.Data.Entities.CourseInClass", b =>
-                {
-                    b.Property<Guid>("CourseInClassId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ClassId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CourseId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("CreatedUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("UpdatedUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("CourseInClassId");
-
-                    b.HasIndex("ClassId");
-
-                    b.HasIndex("CourseId");
-
-                    b.ToTable("CourseInClass");
                 });
 
             modelBuilder.Entity("API.Data.Entities.Feedback", b =>
@@ -828,25 +798,6 @@ namespace API.Migrations
                     b.Navigation("Topic");
                 });
 
-            modelBuilder.Entity("API.Data.Entities.CourseInClass", b =>
-                {
-                    b.HasOne("API.Data.Entities.Class", "Class")
-                        .WithMany("CourseInClasses")
-                        .HasForeignKey("ClassId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("API.Data.Entities.Course", "Course")
-                        .WithMany("CourseInClasses")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Class");
-
-                    b.Navigation("Course");
-                });
-
             modelBuilder.Entity("API.Data.Entities.Feedback", b =>
                 {
                     b.HasOne("API.Data.Entities.Course", "Course")
@@ -1052,8 +1003,6 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Data.Entities.Class", b =>
                 {
-                    b.Navigation("CourseInClasses");
-
                     b.Navigation("Notifications");
 
                     b.Navigation("StudentJoinClasses");
@@ -1061,8 +1010,6 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Data.Entities.Course", b =>
                 {
-                    b.Navigation("CourseInClasses");
-
                     b.Navigation("Feedbacks");
 
                     b.Navigation("Questions");

@@ -39,6 +39,10 @@ namespace API.Data.Repositories
             services.AddTransient<IBaseRepository<Class>, ClassRepository>();
             services.AddTransient<IClassRepository, ClassRepository>();
 
+            // CourseInClass
+            services.AddTransient<IBaseRepository<CourseInClass>, CourseInClassRepository>();
+            services.AddTransient<ICourseInClassRepository, CourseInClassRepository>();
+
             // Course
             services.AddTransient<IBaseRepository<Course>, CourseRepository>();
             services.AddTransient<ICourseRepository, CourseRepository>();
