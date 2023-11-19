@@ -1,4 +1,5 @@
-﻿using API.Data.DTOs.TestAnswer;
+﻿using API.Data.DTOs.Test;
+using API.Data.DTOs.TestAnswer;
 using API.Data.Entities;
 
 namespace API.Services.Interfaces

@@ -5,43 +5,47 @@ using Microsoft.EntityFrameworkCore;
 namespace API.Data.Repositories.Implements
 {
     /// <summary>
-    /// Class Repository
+    /// CourseInClass Repository
     /// </summary>
-    public class ClassRepository : BaseRepository<Class>, IClassRepository
+    public class CourseInClassRepository : BaseRepository<CourseInClass>, ICourseInClassRepository
     {
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="context"></param>
         /// <param name="unitOfWork"></param>
-        public ClassRepository(DataContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
+        public CourseInClassRepository(DataContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
         {
 
         }
 
         /// <summary>
-        /// Get By Id
+        /// Get Course by Class id
         /// </summary>
         /// <param name="ClassId"></param>
         /// <returns></returns>
-        public async Task<Class?> GetById(Guid ClassId)
+        public async Task<IEnumerable<Course>> GetCourseByClassId(Guid ClassId)
         {
             return await Entities
                 .Where(x => x.ClassId == ClassId)
+                .Include(x => x.Course)
                 .AsNoTracking()
-                .FirstOrDefaultAsync();
+                .Select(x => x.Course!)
+                .ToListAsync();
         }
 
         /// <summary>
-        /// Get Class by Teacher id
+        /// Get Class by Course id
         /// </summary>
-        /// <param name="TeacherId"></param>
+        /// <param name="CourseId"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<Class>> GetByTeacherId(Guid TeacherId)
+        public async Task<IEnumerable<Class>> GetClassByCourseId(Guid CourseId)
         {
             return await Entities
-                .Where(x => x.TeacherId == TeacherId)
+                .Where(x => x.CourseId == CourseId)
+                .Include(x => x.Class)
                 .AsNoTracking()
+                .Select(x => x.Class!)
                 .ToListAsync();
         }
     }

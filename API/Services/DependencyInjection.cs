@@ -19,6 +19,7 @@ namespace API.Services
             service.AddTransient<IAnswerService, AnswerService>();
             service.AddTransient<IAuthenticationService, AuthenticationService>();
             service.AddTransient<IClassService, ClassService>();
+            service.AddTransient<ICourseInClassService, CourseInClassService>();
             service.AddTransient<ICourseService, CourseService>();
             service.AddTransient<IFeedbackService, FeedbackService>();
             service.AddTransient<INotificationService, NotificationService>();
