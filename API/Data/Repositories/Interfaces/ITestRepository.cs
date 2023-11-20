@@ -13,5 +13,12 @@ namespace API.Data.Repositories.Interfaces
         /// <param name="TestId"></param>
         /// <returns></returns>
         Task<Test?> GetById(Guid TestId);
+
+        /// <summary>
+        /// Get Tests by created user id
+        /// </summary>
+        /// <param name="UserId"></param>
+        /// <returns></returns>
+        Task<IEnumerable<Test>?> GetTestsByCreatedUserId(Guid UserId);
     }
 }

@@ -34,5 +34,19 @@ namespace API.Data.Repositories.Implements
                 .AsNoTracking()
                 .FirstOrDefaultAsync();
         }
+
+        /// <summary>
+        /// Get Test by created user id
+        /// </summary>
+        /// <param name="UserId"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<Test>?> GetTestsByCreatedUserId(Guid UserId)
+        {
+            return await Entities
+                .Where(x => x.CreatedUserId != null && x.CreatedUserId == UserId)
+                .Include(x => x.Course)
+                .AsNoTracking()
+                .ToListAsync();
+        }
     }
 }
