@@ -111,6 +111,11 @@ public partial class DataContext : IdentityDbContext<User, Role, Guid>
     public virtual DbSet<TestAnswer> TestAnswer { get; set; }
 
     /// <summary>
+    /// UserLoginHistory
+    /// </summary>
+    public virtual DbSet<UserLoginHistory> UserLoginHistory { get; set; }
+
+    /// <summary>
     /// UserEarnedAchievement
     /// </summary>
     public virtual DbSet<UserEarnedAchievement> UserEarnedAchievement { get; set; }
@@ -135,7 +140,7 @@ public partial class DataContext : IdentityDbContext<User, Role, Guid>
 
         // Config Student Join Test
         builder.Entity<StudentJoinTest>()
-            .HasOne(x => x.Test)
+            .HasOne(x => x.Student)
             .WithMany(x => x.StudentJoinTests)
             .HasForeignKey(x => x.StudentId)
             .OnDelete(DeleteBehavior.NoAction);

@@ -89,7 +89,7 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(StudentJoinClassAddModel), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
+        [Authorize]
         public async Task<IActionResult> Create([FromBody] StudentJoinClassAddModel model)
         {
             try
@@ -134,7 +134,7 @@ namespace API.Controllers
         [ProducesResponseType(typeof(StudentJoinClassEditModel), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(StudentJoinClassViewModel), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
+        [Authorize]
         public async Task<IActionResult> Update(Guid id, [FromBody] StudentJoinClassEditModel model)
         {
             try
@@ -188,7 +188,7 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(StudentJoinClassViewModel), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
+        [Authorize]
         public async Task<IActionResult> Delete(Guid id)
         {
             try

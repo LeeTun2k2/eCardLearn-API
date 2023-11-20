@@ -216,7 +216,7 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(CourseViewModel), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
+        [Authorize]
         public async Task<IActionResult> GetByTeacherId(Guid id)
         {
             try
@@ -245,7 +245,7 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(CourseViewModel), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = $"{UserRoles.Teacher}, {UserRoles.Admin}")]
+        [Authorize]
         public async Task<IActionResult> GetByTopicId(Guid id)
         {
             try
