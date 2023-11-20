@@ -29,6 +29,7 @@ namespace API.Services
             service.AddTransient<ITestAnswerService, TestAnswerService>();
             service.AddTransient<ITestService, TestService>();
             service.AddTransient<ITopicService, TopicService>();
+            service.AddTransient<IUserService, UserService>();
             service.AddTransient<IUserEarnedAchievementService, UserEarnedAchievementService>();
             return service;
         }
