@@ -14,5 +14,12 @@ namespace API.Services.Interfaces
         /// <param name="TestId"></param>
         /// <returns></returns>
         Task<TestViewModel?> GetById(Guid TestId);
+
+        /// <summary>
+        /// Get Test by created user id
+        /// </summary>
+        /// <param name="UserId"></param>
+        /// <returns></returns>
+        Task<IEnumerable<TestViewModel>?> GetTestsByCreatedUserId(Guid UserId);
     }
 }
