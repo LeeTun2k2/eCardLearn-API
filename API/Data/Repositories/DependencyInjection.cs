@@ -91,6 +91,10 @@ namespace API.Data.Repositories
             services.AddTransient<IBaseRepository<User>, UserRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
 
+            // UserLoginHistory
+            services.AddTransient<IBaseRepository<UserLoginHistory>, UserLoginHistoryRepository>();
+            services.AddTransient<IUserLoginHistoryRepository, UserLoginHistoryRepository>();
+
             // UserEarnedAchievement
             services.AddTransient<IBaseRepository<UserEarnedAchievement>, UserEarnedAchievementRepository>();
             services.AddTransient<IUserEarnedAchievementRepository, UserEarnedAchievementRepository>();
