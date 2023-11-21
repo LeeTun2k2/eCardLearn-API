@@ -15,21 +15,25 @@ namespace API.Controllers
     public class AuthenticationController : BaseController
     {
         private readonly IAuthenticationService _authenticationService;
+        private readonly IUserLoginHistoryService _userLoginHistoryService;
         private readonly ILogger<AuthenticationController> _logger;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="authenticationService">Authentication</param>
+        /// <param name="userLoginHistoryService">User login service</param>
         /// <param name="logger">Logger on server</param>
         /// <param name="userManager">User manager</param>
         public AuthenticationController(
             IAuthenticationService authenticationService, 
+            IUserLoginHistoryService userLoginHistoryService,
             ILogger<AuthenticationController> logger, 
             UserManager<User> userManager) 
             : base(userManager)
         {
             _authenticationService = authenticationService;
+            _userLoginHistoryService = userLoginHistoryService;
             _logger = logger;
         }
 
@@ -164,6 +168,10 @@ namespace API.Controllers
             {
                 return Unauthorized(new { Error = token });
             }
+
+            var log = await _userLoginHistoryService.WriteLoginHistory(userVM.Id);
+            if (log == false)
+                _logger.LogError("Can not write user's login history.");
 
             return Ok(new { Token = token, User = userVM });
         }
