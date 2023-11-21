@@ -59,7 +59,7 @@ namespace API.Controllers
         [HttpGet]
         [Route("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(StudentJoinClassViewModel), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [AllowAnonymous]
         public async Task<IActionResult> GetById(Guid id)
@@ -87,7 +87,7 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(typeof(StudentJoinClassAddModel), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize]
         public async Task<IActionResult> Create([FromBody] StudentJoinClassAddModel model)
@@ -131,8 +131,8 @@ namespace API.Controllers
         [HttpPut]
         [Route("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(StudentJoinClassEditModel), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(StudentJoinClassViewModel), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize]
         public async Task<IActionResult> Update(Guid id, [FromBody] StudentJoinClassEditModel model)
@@ -186,7 +186,7 @@ namespace API.Controllers
         [HttpDelete]
         [Route("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(typeof(StudentJoinClassViewModel), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize]
         public async Task<IActionResult> Delete(Guid id)

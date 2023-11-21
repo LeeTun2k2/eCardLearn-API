@@ -1,6 +1,7 @@
 ﻿using API.Data.Constants;
 using API.Data.DTOs.UserEarnedAchievement;
 using API.Data.Entities;
+using API.Services.Implements;
 using API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -59,7 +60,7 @@ namespace API.Controllers
         [HttpGet]
         [Route("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(UserEarnedAchievementViewModel), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [AllowAnonymous]
         public async Task<IActionResult> GetById(Guid id)
@@ -87,7 +88,7 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(typeof(UserEarnedAchievementAddModel), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize]
         public async Task<IActionResult> Create([FromBody] UserEarnedAchievementAddModel model)
@@ -131,8 +132,8 @@ namespace API.Controllers
         [HttpPut]
         [Route("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(UserEarnedAchievementEditModel), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(UserEarnedAchievementViewModel), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize]
         public async Task<IActionResult> Update(Guid id, [FromBody] UserEarnedAchievementEditModel model)
@@ -186,7 +187,7 @@ namespace API.Controllers
         [HttpDelete]
         [Route("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(typeof(UserEarnedAchievementViewModel), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize]
         public async Task<IActionResult> Delete(Guid id)
@@ -198,6 +199,64 @@ namespace API.Controllers
                     return NoContent();
                 }
                 return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        /// <summary>
+        /// Get Achievement by User Id
+        /// </summary>
+        /// <param name="UserId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("[action]/{UserId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetAchievementByUserId(Guid UserId)
+        {
+            try
+            {
+                var view = await _userEarnedAchievementService.GetAchievementByUserId(UserId);
+                if (view == null)
+                {
+                    return NotFound();
+                }
+                return Ok(view);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        /// <summary>
+        /// Get User by User Id
+        /// </summary>
+        /// <param name="AchievementId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("[action]/{AchievementId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetUserByAchievementId(Guid AchievementId)
+        {
+            try
+            {
+                var view = await _userEarnedAchievementService.GetUserByAchievementId(AchievementId);
+                if (view == null)
+                {
+                    return NotFound();
+                }
+                return Ok(view);
             }
             catch (Exception ex)
             {

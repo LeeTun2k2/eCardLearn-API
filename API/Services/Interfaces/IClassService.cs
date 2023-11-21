@@ -1,5 +1,4 @@
 ﻿using API.Data.DTOs.Class;
-using API.Data.DTOs.Class;
 using API.Data.Entities;
 
 namespace API.Services.Interfaces
