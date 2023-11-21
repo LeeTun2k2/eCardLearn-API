@@ -1,5 +1,6 @@
 ﻿using API.Data.Entities;
 using API.Data.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Data.Repositories.Implements
 {
@@ -16,6 +17,19 @@ namespace API.Data.Repositories.Implements
         public AchievementRepository(DataContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
         {
 
+        }
+
+        /// <summary>
+        /// Get by date requirement
+        /// </summary>
+        /// <param name="day"></param>
+        /// <returns></returns>
+        public async Task<Achievement?> GetByDay(int day)
+        {
+            return await Entities
+                .Where(x => x.DayRequirement == day)
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
         }
     }
 }

@@ -28,6 +28,7 @@ namespace API.Data
             MapTopic();
             MapUser();
             MapUserEarnedAchievement();
+            MapUserLoginHistory();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using API.Data.Entities;
 using API.Data.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Data.Repositories.Implements
 {
@@ -18,14 +19,31 @@ namespace API.Data.Repositories.Implements
 
         }
 
-        public Task<IEnumerable<UserLoginHistory>> GetByUserId(Guid UserId)
+        /// <summary>
+        /// Get User by id
+        /// </summary>
+        /// <param name="UserId"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<UserLoginHistory>?> GetByUserId(Guid UserId)
         {
-            throw new NotImplementedException();
+            return await Entities
+                .Where(x => x.UserId == UserId)
+                .AsNoTracking()
+                .ToListAsync();
         }
 
-        public Task<UserLoginHistory> GetLatest()
+        /// <summary>
+        /// Get lastest record
+        /// </summary>
+        /// <param name="UserId"></param>
+        /// <returns></returns>
+        public async Task<UserLoginHistory?> GetLatest(Guid UserId)
         {
-            throw new NotImplementedException();
+            return await Entities
+                .Where(x => x.UserId == UserId)
+                .OrderByDescending(x => x.LoginDateTime)
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
         }
     }
 }
