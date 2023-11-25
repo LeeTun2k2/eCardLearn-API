@@ -45,5 +45,13 @@ namespace API.Services.Interfaces
         /// <param name="email"></param>
         /// <returns></returns>
         Task<IEnumerable<UserProfileModel>?> FindTeacher(string? name, string? email);
+
+        /// <summary>
+        /// Update User
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="updateModel"></param>
+        /// <returns></returns>
+        Task<UserProfileModel?> UpdateUser(User user, UserProfileModel updateModel);
     }
 }
