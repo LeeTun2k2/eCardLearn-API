@@ -1,7 +1,9 @@
 using API.Commons;
 using API.Commons.Utils;
+using API.Commons.Utils.CloudinaryService;
 using API.Data;
 using API.Data.Constants;
+using API.Data.DTOs.Cloudinary;
 using API.Data.DTOs.Mail;
 using API.Data.Repositories;
 using API.Services;
@@ -36,6 +38,11 @@ builder.Services.AddCors(options =>
 // Config email service
 builder.Services.Configure<MailSettingsModel>(builder.Configuration.GetSection("MailSettings"));
 builder.Services.AddTransient<IMailService, MailService>();
+
+
+// Config cloudinary service
+builder.Services.Configure<CloudinarySettingsModel>(builder.Configuration.GetSection("CloudinarySettings"));
+builder.Services.AddTransient<ICloudinaryService, CloudinaryService>();
 
 // Add auto mapper
 builder.Services.AddAutoMapper(typeof(Maps).Assembly);

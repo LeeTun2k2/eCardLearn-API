@@ -136,5 +136,28 @@ namespace API.Services.Implements
             var user = await _userManager.FindByIdAsync(id.ToString());
             return _mapper.Map<UserProfileModel>(user);
         }
+
+        /// <summary>
+        /// Update User
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="updateModel"></param>
+        /// <returns></returns>
+        public async Task<UserProfileModel?> UpdateUser(User user, UserProfileModel updateModel)
+        {
+            user.Name = updateModel.Name;
+            user.BirthDate = updateModel.BirthDate;
+            user.PhoneNumber = updateModel.PhoneNumber;
+            user.AvatarUri = updateModel.AvatarUri;
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (result != null && result.Succeeded)
+            {
+                return _mapper.Map<UserProfileModel?>(user);
+            }
+
+            return null;
+        }
     }
 }
