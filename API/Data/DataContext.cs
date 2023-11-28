@@ -156,7 +156,7 @@ public partial class DataContext : IdentityDbContext<User, Role, Guid>
         builder.Entity<TestAnswer>()
             .HasOne(x => x.Student)
             .WithMany(x => x.TestAnswers)
-            .HasForeignKey(x => x.TestAnswerId)
+            .HasForeignKey(x => x.StudentId)
             .OnDelete(DeleteBehavior.NoAction);
 
         builder.Entity<TestAnswer>()
