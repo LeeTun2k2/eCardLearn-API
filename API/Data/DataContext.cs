@@ -149,7 +149,7 @@ public partial class DataContext : IdentityDbContext<User, Role, Guid>
         builder.Entity<Feedback>()
             .HasOne(x => x.User)
             .WithMany(x => x.Feedbacks)
-            .HasForeignKey(x => x.FeedbackId)
+            .HasForeignKey(x => x.UserId)
             .OnDelete(DeleteBehavior.NoAction);
 
         // Config TestAnswer
