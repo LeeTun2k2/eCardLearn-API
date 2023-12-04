@@ -121,6 +121,11 @@ public partial class DataContext : IdentityDbContext<User, Role, Guid>
     public virtual DbSet<UserEarnedAchievement> UserEarnedAchievement { get; set; }
 
     /// <summary>
+    /// OpenTriviaDBCategory
+    /// </summary>
+    public virtual DbSet<OpenTriviaDBCategory> OpenTriviaDBCategory { get; set; }
+
+    /// <summary>
     /// On model creating
     /// </summary>
     /// <param name="builder"></param>
