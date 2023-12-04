@@ -1,13 +1,11 @@
 ﻿using API.Commons.Paginations;
 using API.Data.DTOs.Answer;
-using API.Data.DTOs.Course;
 using API.Data.DTOs.OpenTriviaDB;
 using API.Data.DTOs.Question;
 using API.Data.Entities;
 using API.Data.Repositories.Interfaces;
 using API.Services.Interfaces;
 using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Linq.Expressions;
 
@@ -165,6 +163,8 @@ namespace API.Services.Implements
 
                 Random rnd = new Random();
                 int index = rnd.Next(0, 4);
+
+                question.Answers = answers;
 
                 if (index == 3)
                 {
