@@ -55,6 +55,10 @@ namespace API.Data.Repositories
             services.AddTransient<IBaseRepository<Notification>, NotificationRepository>();
             services.AddTransient<INotificationRepository, NotificationRepository>();
 
+            // OpenTriviaDBCategory
+            services.AddTransient<IBaseRepository<OpenTriviaDBCategory>, OpenTriviaDBCategoryRepository>();
+            services.AddTransient<IOpenTriviaDBCategoryRepository, OpenTriviaDBCategoryRepository>();
+
             // Question
             services.AddTransient<IBaseRepository<Question>, QuestionRepository>();
             services.AddTransient<IQuestionRepository, QuestionRepository>();
