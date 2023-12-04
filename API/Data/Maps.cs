@@ -20,6 +20,7 @@ namespace API.Data
             MapCourse();
             MapFeedback();
             MapNotification();
+            MapOpenTriviaDBCategory();
             MapQuestion();
             MapStudentJoinClass();
             MapStudentJoinTest();

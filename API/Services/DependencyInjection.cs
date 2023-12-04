@@ -23,6 +23,7 @@ namespace API.Services
             service.AddTransient<ICourseService, CourseService>();
             service.AddTransient<IFeedbackService, FeedbackService>();
             service.AddTransient<INotificationService, NotificationService>();
+            service.AddTransient<IOpenTriviaDBCategoryService, OpenTriviaDBCategoryService>();
             service.AddTransient<IQuestionService, QuestionService>();
             service.AddTransient<IStudentJoinClassService, StudentJoinClassService>();
             service.AddTransient<IStudentJoinTestService, StudentJoinTestService>();

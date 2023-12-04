@@ -21,5 +21,13 @@ namespace API.Services.Interfaces
         /// <param name="QuestionId"></param>
         /// <returns></returns>
         Task<QuestionViewModel?> GetById(Guid QuestionId);
+
+        /// <summary>
+        /// Generate Course By Open Trivia DB
+        /// </summary>
+        /// <param name="OpenTriviaDbCategoryId"></param>
+        /// <param name="number"></param>
+        /// <returns></returns>
+        Task<IEnumerable<QuestionViewModel>?> GenerateByOpenTriviaDB(Guid OpenTriviaDbCategoryId, int number);
     }
 }

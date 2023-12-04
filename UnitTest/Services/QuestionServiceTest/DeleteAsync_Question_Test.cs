@@ -11,14 +11,16 @@ namespace UnitTest.Services.QuestionRepositoryTest
     public class DeleteAsync_Question_Tests
     {
         private readonly Mock<IQuestionRepository> _mockRepository;
+        private readonly Mock<IOpenTriviaDBCategoryRepository> _mockOpenTriviaDBRepository;
         private readonly Mock<IMapper> _mockMapper;
         private readonly IQuestionService _service;
 
         public DeleteAsync_Question_Tests()
         {
             _mockRepository = new Mock<IQuestionRepository>();
+            _mockOpenTriviaDBRepository = new Mock<IOpenTriviaDBCategoryRepository>();
             _mockMapper = new Mock<IMapper>();
-            _service = new QuestionService(_mockRepository.Object, _mockMapper.Object);
+            _service = new QuestionService(_mockRepository.Object, _mockOpenTriviaDBRepository.Object, _mockMapper.Object);
         }
 
         [Fact]
