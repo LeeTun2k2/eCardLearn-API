@@ -14,14 +14,22 @@ namespace UnitTest.Services.TestServiceTest
     public class GetAsync_Test_Tests
     {
         private readonly Mock<ITestRepository> _mockRepository;
+        private readonly Mock<ITestAnswerRepository> _mockTestAnswerRepository;
+        private readonly Mock<IStudentJoinClassRepository> _mockStudentJoinClassRepository;
         private readonly Mock<IMapper> _mockMapper;
         private readonly ITestService _service;
 
         public GetAsync_Test_Tests()
         {
             _mockRepository = new Mock<ITestRepository>();
+            _mockTestAnswerRepository = new Mock<ITestAnswerRepository>();
+            _mockStudentJoinClassRepository = new Mock<IStudentJoinClassRepository> { };
             _mockMapper = new Mock<IMapper>();
-            _service = new TestService(_mockRepository.Object, _mockMapper.Object);
+            _service = new TestService(
+                _mockRepository.Object,
+                _mockTestAnswerRepository.Object,
+                _mockStudentJoinClassRepository.Object,
+                _mockMapper.Object);
         }
 
         [Fact]

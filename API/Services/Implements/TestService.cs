@@ -1,5 +1,8 @@
 ﻿using API.Commons.Paginations;
+using API.Data.DTOs.Answer;
+using API.Data.DTOs.Question;
 using API.Data.DTOs.Test;
+using API.Data.DTOs.TestResult;
 using API.Data.Entities;
 using API.Data.Repositories.Interfaces;
 using API.Services.Interfaces;
@@ -14,16 +17,26 @@ namespace API.Services.Implements
     public class TestService : BaseService<Test, TestViewModel, TestAddModel, TestEditModel, TestFilterModel>, ITestService
     {
         private new readonly ITestRepository _repository;
+        private readonly ITestAnswerRepository _testAnswerRepository;
+        private readonly IStudentJoinClassRepository _studentJoinClassRepository;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="repository"></param>
+        /// <param name="testAnswerRepository"></param>
+        /// <param name="studentJoinClassRepository"></param>
         /// <param name="mapper"></param>
-        public TestService(ITestRepository repository, IMapper mapper) 
+        public TestService(
+            ITestRepository repository, 
+            ITestAnswerRepository testAnswerRepository,
+            IStudentJoinClassRepository studentJoinClassRepository,
+            IMapper mapper) 
             : base(repository, mapper)
         {
             _repository = repository;
+            _testAnswerRepository = testAnswerRepository;
+            _studentJoinClassRepository = studentJoinClassRepository;
         }
 
         /// <summary>
@@ -86,6 +99,75 @@ namespace API.Services.Implements
             var entities = await _repository.GetTestsByCreatedUserId(UserId);
             var models = _mapper.Map<IEnumerable<TestViewModel>>(entities);
             return models;
+        }
+
+        /// <summary>
+        /// Summary Report
+        /// </summary>
+        /// <param name="TestId"></param>
+        /// <param name="ClassId"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<TestResult_Summary>?> SummaryReport(Guid TestId, Guid? ClassId)
+        {
+            var testResults = await _testAnswerRepository.Get(TestId);
+
+            if (testResults == null)
+            {
+                return null;
+            }
+
+            if (ClassId != null)
+            {
+                var studentIds = await _studentJoinClassRepository.GetStudentIdByClassId((Guid)ClassId);
+
+                if (studentIds != null)
+                {
+                    testResults = testResults.Where(x => studentIds.Contains(x.StudentId));
+                }
+            }
+
+            var summary = testResults
+                .GroupBy(x => x.StudentId)
+                .Select(g => new TestResult_Summary
+                {
+                    FullName = string.Empty,
+                    UserId = g.Key,
+                    NoCorrectAnswer = g.Where(x => x.Answer!.IsCorrect).Count(),
+                    NoIncorrectAnswer = g.Where(x => x.Answer!.IsCorrect== false).Count(),
+                })
+                .ToList();
+
+            return summary;
+        }
+
+        /// <summary>
+        /// Detail Report
+        /// </summary>
+        /// <param name="TestId"></param>
+        /// <param name="UserId"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<TestResult_Detail>?> DetailReport(Guid TestId, Guid UserId)
+        {
+            var testResults = await _testAnswerRepository.Get(TestId, UserId);
+
+            if (testResults == null)
+            {
+                return null;
+            }
+
+            var details = testResults
+                .Select(x => new TestResult_Detail
+                {
+                    QuestionId = x.QuestionId,
+                    Question = _mapper.Map<QuestionViewModel>(x.Question),
+                    AnswerId = x.AnswerId,
+                    Answer = _mapper.Map<AnswerViewModel>(x.Answer),
+                    CorrectAnswerId = x.Question?.Answers?.FirstOrDefault(q => q.IsCorrect)?.AnswerId ?? Guid.Empty,
+                    CorrectAnswer = _mapper.Map<AnswerViewModel>(x.Question?.Answers?.FirstOrDefault(q => q.IsCorrect)),
+                })
+                .ToList();
+
+            return details;
         }
     }
 }
