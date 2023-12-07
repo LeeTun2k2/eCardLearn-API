@@ -20,5 +20,19 @@ namespace API.Data.Repositories.Interfaces
         /// <param name="TestId"></param>
         /// <returns></returns>
         Task<IEnumerable<Guid>> GetStudentIdByTestId(Guid TestId);
+
+        /// <summary>
+        /// Get TestAnswer by Test id
+        /// </summary>
+        /// <param name="TestId"></param>
+        /// <returns></returns>
+        Task<IEnumerable<TestAnswer>?> Get(Guid TestId);
+
+        /// <summary>
+        /// Get TestAnswer by Test id and User id
+        /// </summary>
+        /// <param name="TestId"></param>
+        /// <returns></returns>
+        Task<IEnumerable<TestAnswer>?> Get(Guid TestId, Guid UserId);
     }
 }

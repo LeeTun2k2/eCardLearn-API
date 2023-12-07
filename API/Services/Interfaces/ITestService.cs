@@ -1,4 +1,5 @@
 ﻿using API.Data.DTOs.Test;
+using API.Data.DTOs.TestResult;
 using API.Data.Entities;
 
 namespace API.Services.Interfaces
@@ -21,5 +22,21 @@ namespace API.Services.Interfaces
         /// <param name="UserId"></param>
         /// <returns></returns>
         Task<IEnumerable<TestViewModel>?> GetTestsByCreatedUserId(Guid UserId);
+
+        /// <summary>
+        /// Summary Report
+        /// </summary>
+        /// <param name="TestId"></param>
+        /// <param name="ClassId"></param>
+        /// <returns></returns>
+        Task<IEnumerable<TestResult_Summary>?> SummaryReport(Guid TestId, Guid? ClassId);
+
+        /// <summary>
+        /// Detail Report
+        /// </summary>
+        /// <param name="TestId"></param>
+        /// <param name="UserId"></param>
+        /// <returns></returns>
+        Task<IEnumerable<TestResult_Detail>?> DetailReport(Guid TestId, Guid UserId);
     }
 }

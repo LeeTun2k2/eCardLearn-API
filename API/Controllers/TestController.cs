@@ -234,5 +234,55 @@ namespace API.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
+
+        /// <summary>
+        /// Get Summary of Report
+        /// </summary>
+        /// <param name="TestId"></param>
+        /// <param name="ClassId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("[action]")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [AllowAnonymous]
+        public async Task<IActionResult> SummaryReport(Guid TestId, Guid? ClassId)
+        {
+            try
+            {
+                var views = await _testService.SummaryReport(TestId, ClassId);
+                return Ok(views);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        /// <summary>
+        /// Get details of report
+        /// </summary>
+        /// <param name="TestId"></param>
+        /// <param name="StudentId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("[action]")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [AllowAnonymous]
+        public async Task<IActionResult> DetailReport(Guid TestId, Guid StudentId)
+        {
+            try
+            {
+                var views = await _testService.DetailReport(TestId, StudentId);
+                return Ok(views);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
     }
 }
