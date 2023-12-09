@@ -80,6 +80,8 @@ builder.Services
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddSwagger();
 
+builder.Services.AddHttpsRedirection(options => options.HttpsPort = 443);
+
 var app = builder.Build();
 
 // Seed data

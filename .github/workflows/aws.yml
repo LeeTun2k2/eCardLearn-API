@@ -65,4 +65,4 @@ jobs:
     
     - name: EC2 - Start Docker container
       run: |
-        ssh -i private.pem -o "StrictHostKeyChecking no" -o "UserKnownHostsFile=/dev/null" ec2-user@${{env.EC2_IP_ADDRESS}} 'docker run -d -p 80:80 --name ${{env.ECR_REPOSITORY}} ${{env.ECR_REGISTRY}}/${{env.ECR_REPOSITORY}}:${{env.IMAGE_TAG}}'
+	ssh -i private.pem -o "StrictHostKeyChecking no" -o "UserKnownHostsFile=/dev/null" ec2-user@${{env.EC2_IP_ADDRESS}} 'docker run -d -p 80:80 -p 443:443 --name ${{env.ECR_REPOSITORY}} ${{env.ECR_REGISTRY}}/${{env.ECR_REPOSITORY}}:${{env.IMAGE_TAG}}'
