@@ -19,9 +19,4 @@ RUN dotnet publish "API.csproj" -c Release -o /app/publish /p:UseAppHost=false
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-
-COPY ${HOME}/.aspnet/https/aspnetapp.pfx .
-ENV ASPNETCORE_Kestrel__Certificates__Default__Password=P@ssw0rd
-ENV ASPNETCORE_Kestrel__Certificates__Default__Path=/app/aspnetapp.pfx
-
 ENTRYPOINT ["dotnet", "API.dll"]
