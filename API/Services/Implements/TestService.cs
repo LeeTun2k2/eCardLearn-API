@@ -7,6 +7,7 @@ using API.Data.Entities;
 using API.Data.Repositories.Interfaces;
 using API.Services.Interfaces;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using System.Linq.Expressions;
 
 namespace API.Services.Implements
@@ -19,6 +20,7 @@ namespace API.Services.Implements
         private new readonly ITestRepository _repository;
         private readonly ITestAnswerRepository _testAnswerRepository;
         private readonly IStudentJoinClassRepository _studentJoinClassRepository;
+        private readonly UserManager<User> _userManager;
 
         /// <summary>
         /// Constructor
@@ -26,17 +28,20 @@ namespace API.Services.Implements
         /// <param name="repository"></param>
         /// <param name="testAnswerRepository"></param>
         /// <param name="studentJoinClassRepository"></param>
+        /// <param name="userManager"></param>
         /// <param name="mapper"></param>
         public TestService(
             ITestRepository repository, 
             ITestAnswerRepository testAnswerRepository,
             IStudentJoinClassRepository studentJoinClassRepository,
+            UserManager<User> userManager,
             IMapper mapper) 
             : base(repository, mapper)
         {
             _repository = repository;
             _testAnswerRepository = testAnswerRepository;
             _studentJoinClassRepository = studentJoinClassRepository;
+            _userManager = userManager;
         }
 
         /// <summary>
@@ -136,6 +141,16 @@ namespace API.Services.Implements
                     NoIncorrectAnswer = g.Where(x => x.Answer!.IsCorrect== false).Count(),
                 })
                 .ToList();
+
+            foreach (var row in summary)
+            {
+                var user = await _userManager.FindByIdAsync(row.UserId.ToString());
+
+                if (user != null)
+                {
+                    row.FullName = user.Name;
+                }
+            }
 
             return summary;
         }

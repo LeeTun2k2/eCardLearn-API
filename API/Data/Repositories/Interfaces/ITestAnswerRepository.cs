@@ -32,6 +32,7 @@ namespace API.Data.Repositories.Interfaces
         /// Get TestAnswer by Test id and User id
         /// </summary>
         /// <param name="TestId"></param>
+        /// <param name="UserId"></param>
         /// <returns></returns>
         Task<IEnumerable<TestAnswer>?> Get(Guid TestId, Guid UserId);
     }

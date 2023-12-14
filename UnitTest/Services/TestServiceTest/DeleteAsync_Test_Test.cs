@@ -3,7 +3,9 @@ using API.Data.Repositories.Interfaces;
 using API.Services.Implements;
 using API.Services.Interfaces;
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
+using UnitTest.Mocks;
 using Xunit;
 
 namespace UnitTest.Services.TestRepositoryTest
@@ -22,10 +24,17 @@ namespace UnitTest.Services.TestRepositoryTest
             _mockTestAnswerRepository = new Mock<ITestAnswerRepository>();
             _mockStudentJoinClassRepository = new Mock<IStudentJoinClassRepository> { };
             _mockMapper = new Mock<IMapper>();
+
+            var userManager = MockUserManager.Mock_UserManager();
+            var controllerContext = new ControllerContext
+            {
+                HttpContext = MockHttpContext.CreateMockHttpContext(() => "00000000-0000-0000-0000-000000000001")
+            };
             _service = new TestService(
                 _mockRepository.Object,
                 _mockTestAnswerRepository.Object,
                 _mockStudentJoinClassRepository.Object,
+                userManager,
                 _mockMapper.Object);
         }
 
