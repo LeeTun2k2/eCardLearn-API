@@ -138,8 +138,39 @@ namespace API.Controllers
                 return BadRequest(new { result.Errors });
             }
 
-            return Ok(new { result.Succeeded });
+            string htmlContent = @"
+                <!DOCTYPE html>
+                <html lang='en'>
+                <head>
+                    <meta charset='UTF-8'>
+                    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+                    <title>Email Confirmation</title>
+                    <style>
+                        body {
+                            font-family: 'Arial', sans-serif;
+                            text-align: center;
+                            margin: 40px;
+                        }
+                        h1 {
+                            color: #4CAF50;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <h1>Email Confirmed!</h1>
+                    <p>Your email has been successfully confirmed.</p>
+                </body>
+                </html>
+            ";
+
+            return new ContentResult
+            {
+                Content = htmlContent,
+                ContentType = "text/html",
+                StatusCode = StatusCodes.Status200OK
+            };
         }
+
 
         /// <summary>
         /// Login
@@ -226,7 +257,37 @@ namespace API.Controllers
 
             if (result.Succeeded)
             {
-                return Ok();
+                string htmlContent = @"
+                    <!DOCTYPE html>
+                    <html lang='en'>
+                    <head>
+                        <meta charset='UTF-8'>
+                        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+                        <title>Email Confirmation</title>
+                        <style>
+                            body {
+                                font-family: 'Arial', sans-serif;
+                                text-align: center;
+                                margin: 40px;
+                            }
+                            h1 {
+                                color: #4CAF50;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <h1>Password Reset!</h1>
+                        <p>Please check your email to get new password!.</p>
+                    </body>
+                    </html>
+                ";
+
+                return new ContentResult
+                {
+                    Content = htmlContent,
+                    ContentType = "text/html",
+                    StatusCode = StatusCodes.Status200OK
+                };
             }
 
             var errors = result.Errors.Select(error => error.Description);
